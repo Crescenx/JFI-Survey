@@ -1,0 +1,33 @@
+% review.tex
+% Minimal review protocol for collaborative drafting.
+% Usage in main .tex preamble:
+%   \input{review}
+%
+% Before journal submission:
+%   1. Switch \reviewfalse below and compile once.
+%   2. Resolve all remaining \cmt commands.
+%   3. Remove \input{review} from the main file after all review markup is gone.
+
+\usepackage{comment}
+
+\newif\ifreview
+\reviewtrue
+% \reviewfalse  % final-check mode: hide drafting blocks; error on comments
+
+\ifreview
+  \specialcomment{drafting}
+    {\par\smallskip\begingroup\small\color{blue!65!black}%
+     \noindent\textbf{[drafting]}\par\noindent}
+    {\par\endgroup\smallskip}
+
+  \newcommand{\cmt}[2][note]{%
+    \textcolor{red!70!black}{\textbf{[#1]}~#2}%
+  }
+\else
+  \excludecomment{drafting}
+
+  \newcommand{\cmt}[2][note]{%
+    \PackageError{review}{Unresolved comment remains: #1}%
+    {Remove all \string\cmt\space commands before submission.}%
+  }
+\fi
