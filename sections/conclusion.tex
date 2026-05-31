@@ -1,0 +1,133 @@
+\section{Synthesis and Outlook}
+\label{sec:synthesis}
+
+\begin{drafting}
+\textbf{Section framing.} The conclusion does the one thing the body could not:
+read the six domains as a single movement and say what that movement implies
+going forward. It closes the loop opened in Section~\ref{sec:intro} (the
+specification--construction gap) and Section~\ref{sec:recap} (game theory ending
+on computation, deep learning ending on construction at scale).
+\cmt[skeleton]{Five movements: (1) synthesize the two directions against the one
+shared problem, reusing the two spine sentences; (2) name the common movement
+(one counterfactual certificate crosses the specification$\leftrightarrow$%
+construction boundary in both directions); (3) co-evolution --- this is where the
+two paragraphs deleted from the intro land, tightened; (4) research directions,
+all flagged tentative; (5) close on the future of game theory itself. Keep it
+shorter than the body sections; ``\emph{can be simple for now}.''}
+
+\cmt[step]{(1) Synthesize. Restate the shared problem, then what each direction
+did to it. Reuse Part~I's recurring-move sentence and Part~II's scalar$\to$object
+spine verbatim in substance.}
+The six domains answer one question from two sides: how can a strategic property
+defined over counterfactual interaction be represented inside a computational
+system? Section~\ref{sec:ai4gt} takes the property as given and makes it
+constructible. Across constructive equilibrium, strategic inference, and neural
+mechanism design, the recurring move relocates a game-theoretic constraint into a
+computational substrate (a differentiable residual, a no-regret trajectory, an
+architectural bias, or a checkable certificate), while the guarantee itself
+re-enters through a classical layer such as linear programming, no-regret theory,
+safe resolving, or symbolic proof. Section~\ref{sec:gt4ai} takes the construction
+as given and asks what it must satisfy. Across strategic evaluation, training, and
+deployment governance, each step replaces a scalar with a game-theoretic object:
+a benchmark score with exploitability, a fixed reward with the equilibrium of a
+game, source-code inspection with an equilibrium-level audit.
+
+\cmt[step]{(2) The common movement. The point is that it is the \emph{same}
+object traveling both ways; that observation is the synthesis, not a restatement
+of (1).}
+A single object travels in both directions: the counterfactual certificate that
+quantifies over deviations not taken, types not reported, and opponents not
+encountered. Section~\ref{sec:ai4gt} carries it from specification toward
+construction, building or approximating the certificate that classical theory
+could only define. Section~\ref{sec:gt4ai} carries it the other way, attaching a
+counterfactual specification to systems built before anyone asked what they
+should satisfy. The specification--construction gap named in
+Section~\ref{sec:intro} is therefore worked from both banks at once.
+
+\cmt[step]{(3) Co-evolution. These two paragraphs are the tightened descendants
+of the two co-evolution paragraphs cut from the intro (``Read together \dots''
+and ``The two sides converge \dots''); the intro's \cmt[todo] points here. The
+last sentence of the second paragraph is the intro's single forward-pointing
+sentence, now developed.}
+Read from both sides, the domains describe a co-evolution. On the first side,
+strategic specifications become executable: a Nash equilibrium, an
+incentive-compatible mechanism, or a correlated-equilibrium bound stops being
+only an analytic object and becomes something a learning system can search for,
+approximate, and certify. The game-theoretic constraint acquires a constructive
+arm it lacked once the relevant games grew large.
+
+On the second side, executions carry their own specifications. Once a trained
+system negotiates, prices, or persuades, its competence becomes opponent-relative
+and its alignment becomes a relation among policies, so the system itself
+generates the demand for a strategic property to evaluate and govern.
+Construction acquires a specification arm it lacked when behavior was scored
+against a fixed test set. The two sides close into a loop: as strategic AI grows
+more capable it demands richer specifications to stay legible and governable, and
+richer specifications unlock the construction of still more capable systems.
+
+\cmt[step]{(4) Research directions. User asked for a few possible directions, all
+marked ``\emph{to be determined}.'' Each ties back to a tension the body already
+exposed, so they are openings of this survey's own argument, not a generic
+wish-list. Keep citations to keys already in ref.bib.}
+Several open problems follow from the synthesis; the list below is a first pass,
+and each item is flagged tentative pending the authors' final scoping.
+\begin{itemize}
+  \item \textbf{Certified equilibrium beyond two-player zero-sum.} The complexity
+        partition that organizes Section~\ref{subsec:constructive-equilibrium}
+        (linear-programming tractability in zero-sum, PPAD-hardness in
+        general-sum) still bounds what learned solvers can guarantee; methods that
+        scale retreat to (C)CE and lose the exact certificate. A learned solver
+        whose output carries a machine-checkable Nash guarantee in general-sum
+        games would close the gap from the construction side.
+  \item \textbf{An identifiability theory for neural behavior generators.}
+        Section~\ref{subsec:strategic-inference} showed that fit is cheap and
+        identification hard, with recovery guaranteed only under auxiliary
+        assumptions such as entropy regularization. When the latent strategic
+        state is recoverable from observed behavior, and relative to which assumed
+        response map, remains open.
+  \item \textbf{Exact incentive compatibility at deployment scale.}
+        Section~\ref{subsec:mechanism-design} reached verifiable institutional
+        artifacts, but exact strategy-proofness over multi-bidder, combinatorial,
+        or continuous type spaces is enforced only
+        partially~\cite{Duetting2024,WangBundleFlow2025}. Mechanisms that are
+        truthful by construction and verified end-to-end at scale are still to be
+        built.
+  \item \textbf{Preference coherence as a precondition for alignment.}
+        Section~\ref{subsec:strategic-evaluation} noted that exploitability and
+        rankings presuppose a coherent utility whose existence is itself uncertain
+        for current models~\cite{RossKimLo2024,Mazeika2025}. Auditing whether the
+        utility exists and selecting the equilibrium it should play are treated
+        separately by current pipelines.
+  \item \textbf{Equilibrium-level governance standards.}
+        Section~\ref{subsec:deployment-governance} framed calibrated-regret
+        auditing as a recent program~\cite{HartlineWangZhang2025,Hartline2026}.
+        Turning it into a deployable standard, with an agreed equilibrium-level
+        property, test, and sample-complexity budget, is a direction for both
+        theory and policy.
+  \item \textbf{Language models as certificate engines.} LLMs appeared in
+        Section~\ref{subsec:constructive-equilibrium} and
+        Section~\ref{subsec:mechanism-design} as symbolic solvers and
+        institutional compilers that restore the certificate in
+        full~\cite{PrimeNash2025,LegoNE2025,LiuGuoConitzer2025}. Whether they can
+        reliably emit machine-checkable strategic certificates, and under what
+        verification, is unsettled.
+\end{itemize}
+\cmt[tentative]{All six are first-pass candidates --- confirm scope and pruning
+with co-authors. Likely merges: items~1 and~6 are both ``learned construction +
+checkable certificate.'' Likely addition: a cross-cutting item on a common formal
+language for ``a counterfactual strategic property represented inside a
+computational system,'' once Section~\ref{sec:intro}'s framing is final. Decide
+whether the list stays prose-itemized here or moves to a short table.}
+
+\cmt[step]{(5) Close on the future of game theory itself, matching the intro's
+promise (``\dots the future of game theory itself''). One paragraph; land on the
+fourth turn of the field's binding question.}
+Game theory has turned its binding question several times: from whether an
+equilibrium exists, to how an institution should be designed, to what an
+equilibrium costs to compute (Section~\ref{sec:recap}). The interface with AI adds
+another turn. The objects of the theory, equilibria, incentive-compatible
+mechanisms, and regret-bounded dynamics, are increasingly built, learned, and
+audited inside computational systems, where earlier they were characterized on
+paper. Game theory thereby gains a constructive and a governance face alongside
+its analytic one, and the systems it governs gain a vocabulary precise enough to
+stay accountable as they grow more capable.
