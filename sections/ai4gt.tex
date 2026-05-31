@@ -1,0 +1,311 @@
+\section{AI for Game Theory}
+\label{sec:ai4gt}
+
+\begin{drafting}
+\textbf{Part I framing.} AI makes strategic specifications executable. The
+recurring move is to relocate a game-theoretic constraint into a differentiable
+residual, a no-regret trajectory, an architectural guarantee, or a checkable
+certificate. The three subsections take this move in turn: constructive
+equilibrium (\ref{subsec:constructive-equilibrium}), strategic inference
+(\ref{subsec:strategic-inference}), and neural mechanism design
+(\ref{subsec:mechanism-design}).
+\cmt[scope]{Selection rule for the whole section: a method enters the main text
+only if its objective or stopping condition drives a strategic certificate (Nash
+gap / exploitability / regret / IC violation) toward zero, or directly produces
+and proves the object. Methods where equilibrium merely emerges as a by-product
+(generic return-maximizing self-play or MARL) stay out of the main line.}
+\end{drafting}
+
+
+\subsection{Constructive Equilibrium: Relaxing, Approximating, and Transforming the Nash Certificate}
+\label{subsec:constructive-equilibrium}
+
+\begin{drafting}
+\emph{Leading question: the Nash equilibrium is easy to define and hard to
+compute. Given that the global ``no profitable deviation'' certificate cannot be
+enforced directly, what detour around it does each method take?}
+
+\textbf{Thesis.} The difficulty of equilibrium lies in one demand: a global
+no-profitable-deviation certificate. Search-space size is not the binding
+constraint; the certificate is. Modern AI methods form a spectrum of detours
+around it: preserve, residualize, relax in time, substitute the concept,
+approximate in space, online the certificate through state transformation, and
+re-prove. Across this spectrum, AI (scale, gradients, parameterization) buys
+approximation, while the Nash / convergence guarantee always re-enters through a
+classical layer (LP, no-regret, safe resolving, symbolic proof).
+
+\begin{itemize}
+  \item \textbf{The constructive gap (pre-AI setup).} Existence is free
+        (fixed-point theorems); constructing the certificate is the hard,
+        regime-dependent step. Finding an exact Nash equilibrium is PPAD-complete
+        in general-sum games, while two-player zero-sum collapses to LP /
+        no-regret duality~\cite{DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}.
+        \cmt[layer]{No AI here; this is the complexity partition that governs
+        everything downstream.}
+  \item \textbf{Transform, no relaxation: classical numerical solvers
+        (baseline).} The certificate is rewritten as an algebraic /
+        complementarity / LP system (support enumeration, Lemke--Howson,
+        homotopy) without weakening it; the price is an explicit, finite, fully
+        specified game~\cite{LemkeHowson1964,gambit}.
+        \cmt[layer]{Reference zero point: no scale, no gradients, no
+        parameterization.}
+  \item \textbf{Transform, residualization: differentiable / regularized
+        methods.} The certificate becomes the vanishing residual of a
+        regularized best-response map, driven to zero by gradients. NashPG fixes
+        a large regularization strength and iteratively refines the reference
+        policy, yielding monotone improvement and convergence to exact Nash in
+        two-player zero-sum without a uniqueness assumption, and scaling to
+        domains such as No-Limit Texas Hold'em; QFR gives the first principled
+        policy-gradient method with provable best-iterate convergence to a
+        regularized Nash in two-player zero-sum imperfect-information EFGs while
+        avoiding importance sampling~\cite{NashPG2025,LiuFarinaOzdaglar2025}.
+        \cmt[layer]{Purest contemporary AI template: parameterized policy +
+        policy gradient + neural networks.}
+  \item \textbf{Relax in time: regret minimization.} The one-shot universal
+        deviation test relaxes into ``no long-run regret''; exploitability is the
+        quantity directly minimized, and equilibrium is the limiting object of a
+        learning trajectory. CFR supplies the tabular kernel through
+        information-set counterfactual regret; Deep CFR carries the same
+        no-regret relaxation into neural function approximation and large
+        domains~\cite{Zinkevich2007,BrownDeepCFR2019}.
+        \cmt[guardrail]{Restrict to \emph{regret-minimizing} self-play. Pure
+        return-maximizing RL self-play (AlphaZero/AlphaStar-type) is excluded:
+        equilibrium is only an emergent by-product. The AI lives in the Deep CFR
+        approximation layer; the no-regret guarantee comes from learning theory.}
+  \item \textbf{Relax the concept: from Nash down to (C)CE.} In general-sum
+        games, no-regret dynamics guarantee only a CCE (no-swap-regret a CE):
+        polynomially verifiable but weaker certificates. This is a constraint the
+        learner inherits, not its contribution. Meta-learned CFR trains a
+        parameterized regret minimizer with a strategy-correlation meta-loss that
+        steers a CCE-converging learner back toward Nash and bounds the residual
+        gap; JPSRO solves equilibrium selection over a deep-RL best-response
+        oracle using a max-Gini (C)CE rule~\cite{Marris2021,Sychrovsky2025}.
+        \cmt[guardrail]{Say the substitution out loud: JPSRO's ultimate object is
+        CCE/CE, not Nash. Verifiability of (C)CE comes from no-regret theory, not
+        from deep learning.}
+  \item \textbf{Approximate in space: EGTA and PSRO.} When the full game cannot
+        be written down, EGTA samples a simulator into an empirical game; PSRO
+        then solves a restricted empirical game over a growing policy population,
+        using a parameterized deep-RL best-response oracle as the deviation
+        search and ``oracle finds no profitable deviation''
+        (restricted-game exploitability $\to 0$) as the stopping
+        condition~\cite{WellmanTuylsGreenwald2025,McAleerPipelinePSRO2020}. The
+        approximation is triple: strategy space, payoffs, and best response.
+        \cmt[guardrail]{MARL appears only as PSRO's best-response oracle /
+        strategy generator, not as a stand-alone equilibrium-solving direction.}
+  \item \textbf{Transform the state and re-prove online: public belief states
+        and safe subgame resolving.} An imperfect-information game is lifted to a
+        continuous-state perfect-information MDP over public belief states, then
+        re-solved online with safe nested subgame resolving, so overall
+        exploitability stays under the blueprint; the certificate becomes a
+        local, online, error-bounded guarantee. ReBeL learns the value and policy
+        networks by self-play deep RL with provable convergence to Nash in
+        two-player zero-sum; DeepStack is the deep counterfactual-value
+        precursor~\cite{BrownReBeL2020,Moravcik2017}.
+        \cmt[guardrail]{Anchor on imperfect-information, exploitability-bounded
+        variants. Libratus (CFR+ blueprint + LP-based safe resolving, no neural
+        net)~\cite{BrownSandholm2018} appears only as historical contrast;
+        perfect-info RL+search is excluded (equilibrium is a by-product).}
+  \item \textbf{Re-prove: LLM symbolic solving and algorithm synthesis.}
+        Against the trend of lowering the certificate's cost, the LLM branch
+        restores it in full, across two layers. Instance solving plus proof:
+        PrimeNash derives closed-form Nash and emits machine-checkable proof
+        objects~\cite{PrimeNash2025}. Algorithm synthesis: LegoNE compiles a
+        Python-like algorithm into a constrained optimization whose solution is a
+        provable approximation bound~\cite{LegoNE2025}. AI acts as the engine
+        while the certificate is rebuilt symbolically.
+        \cmt[guardrail]{Exclude LLM work where equilibrium is merely a tool
+        (consensus-game decoding, LLM-as-players evaluation, NE-coordinated
+        multi-agent systems).}
+\end{itemize}
+
+\textbf{Synthesis.} The detours form a single spectrum: classical
+\emph{transform} into an algebraic system $\to$ differentiable \emph{transform}
+into a residual fixed point $\to$ \emph{temporal relaxation} into long-run
+no-regret $\to$ conceptual \emph{relaxation} into (C)CE $\to$ EGTA/PSRO
+\emph{spatial approximation} into an empirical no-deviation population $\to$ PBS
+\emph{onlining} of the certificate $\to$ LLM \emph{re-proof}. AI reorganizes the
+pipeline through which the Nash certificate is searched, approximated,
+substituted, and re-verified, while leaving its rigor intact.
+\end{drafting}
+
+
+\subsection{Strategic Inference: Learning Behavior Generators for Hidden Strategic States}
+\label{subsec:strategic-inference}
+
+\begin{drafting}
+\emph{Leading question: when observed strategic behavior can be rationalized by
+many latent games, what exactly has been identified?}
+
+\textbf{Thesis.} AI turns behavioral theories, game structures, and agent
+simulations into trainable \emph{behavior generators} that can be
+\emph{constructed}, \emph{inverted}, and \emph{expanded}. Behavioral theory stays
+in the loop as the trainable object, so identification keeps its mechanistic
+content. The unified problem has two faces: a forward generator
+$a_t \sim G_\phi(h_t,z_i)$ and an inversion $p(z_i \mid h_t,a_t)$, where $h_t$ is
+observable history and $z_i$ a latent strategic state.
+\cmt[axis]{Verb framing that draws the subsection boundaries: 3.2.2 and 3.2.4
+are the two ends of the \emph{construct} axis (hand-written theory vs.\ machine
+discovery); 3.2.3 in the middle is \emph{invert}. 3.2.4 is motivated by the
+limitation 3.2.3 exposes: the true generator may not be in the hand-written
+library.}
+
+\begin{itemize}
+  \item \textbf{Fit is cheap, identification is hard.} Behavioral fit does not
+        amount to mechanism identification. Two underidentification failures must
+        be kept apart. \emph{Falsifiability}: does the model restrict behavior at
+        all? QRE imposes no falsifiable restriction and can rationalize any
+        behavior, so its empirical content comes entirely from auxiliary
+        assumptions. \emph{Recovery}: even a structured model may not pin down
+        parameters, because the feasible reward set shows a single Nash
+        equilibrium mapping to many reward structures, with uniqueness recovered
+        only under entropy
+        regularization~\cite{HaileHortacsuKosenok2008,FreihautRamponi2025}.
+        \cmt[term]{Use ``feasible reward set / reward non-uniqueness under
+        equilibrium observation,'' not ``multi-reward underidentification.''}
+  \item \textbf{Neuralizing behavioral priors (construct, I).} Theory becomes a
+        trainable constraint on the \emph{form} of $G_\phi(h,z)$: a pretraining
+        distribution, an architecture, a teacher signal, a regularizer, or a
+        candidate family. Cognitive-model priors pretrain on theory-generated
+        synthetic data and then fine-tune on human data; GameNet turns
+        hand-written cognitive features into a trainable architecture that softly
+        encodes iterated-response structure~\cite{Bourgin2019,Hartford2016}.
+        \cmt[domain]{Cognitive-model priors are demonstrated on individual risky
+        choice (prospect theory), imported here as a paradigm template, not as
+        direct game evidence.}
+        \cmt[tension]{GameNet self-positions as removing hand-crafted features;
+        we read it instead as ``theory as architecture.'' Flag this, and set up
+        the black-box (GameNet) vs.\ interpretable (AutoBM) contrast for 3.2.4.}
+  \item \textbf{Inverting behavior generators (invert).} With $G_\phi$ fixed,
+        recover $z$ from observed actions. (a) Differentiable equilibrium layers:
+        Ling et al.\ embed a regularized equilibrium solver ($\mathrm{QRE}_\tau$)
+        as a differentiable behavior map and back-propagate through the
+        equilibrium to learn payoffs, chance, and game parameters end-to-end. (b)
+        Weak-rationality private-information inference: BLUE derives feasible
+        valuation intervals from ``no strictly dominated strategy,'' then learns
+        history-dependent behavior with an RNN, avoiding full-equilibrium
+        assumptions. (c) Social-relation / ToM inversion: composable team
+        hierarchies over stochastic games recover hidden relations through
+        Bayesian inverse planning~\cite{Ling2018,CuiYu2023,Shum2019}.
+        \cmt[caveat]{Identification is always \emph{relative to} the assumed
+        response map. Shum et al.\ use Bayesian inverse planning, not
+        gradient-based neural inversion; do not imply trainable gradient
+        inversion.}
+  \item \textbf{Expanding the behavior-generator space (construct, II).} When the
+        existing theory library is too small to contain the true generator,
+        enlarge the candidate family. MARL (MAGAIL) supplies executable
+        multi-agent strategic dynamics through generalized inverse RL; LLMs
+        (AutoBM) generate, evaluate, and refine interpretable symbolic behavioral
+        models from real human data, compiling natural-language specifications
+        into PyTorch, gradient-fitting tunable parameters, and selecting by
+        validation NLL through evolution plus LLM self-critique, and they
+        consistently beat hand-crafted models (QRE/IA/ERC) and LLM baselines on
+        ultimatum, repeated RPS, and continuous double
+        auction~\cite{Song2018,AutoBM2026}.
+        \cmt[caveat]{Asymmetric caveat: MARL rollouts are simulated trajectories
+        that need grounding against real data; AutoBM's LLM hypotheses are not
+        automatically true, but it operationalizes empirical selection (fit +
+        validation NLL), so its outputs are stronger than a blanket ``synthetic
+        $\neq$ evidence.'' This closes the black-box $\to$ interpretable line from
+        3.2.2.}
+\end{itemize}
+
+\textbf{Story chain.} Two underidentifications (falsifiability / recovery) $\to$
+neuralized priors (construct the generator's form) $\to$ generator inversion
+(recover $z$) $\to$ MARL/LLM expansion of the generator space (machine
+discovery, black-box $\to$ interpretable).
+\end{drafting}
+
+
+\subsection{Mechanism Design: Embedding Incentives into Neural Institutions}
+\label{subsec:mechanism-design}
+
+\begin{drafting}
+\emph{Leading question: incentive compatibility (IC) is a counterfactual
+constraint. Truthful reporting must dominate every misreport, for every type and
+every opponent profile: $u_i(v_i,v_i,b_{-i}) \ge u_i(v_i,b'_i,b_{-i})\ \forall
+i,v_i,b'_i,b_{-i}$. Where should IC live --- in the optimizer, the loss, the
+architecture, the mechanism representation, or a post-hoc verifier?}
+
+\textbf{Thesis.} Differentiable mechanism design advances by moving the IC
+constraint step by step inside the machine: first an external constraint, then a
+regret-based loss, then an architectural inductive bias, then a
+truthful-by-construction representation, and finally a verifiable, interpretable,
+compilable institutional object. Each step relocates IC closer to a structural
+guarantee and away from an optimized penalty.
+
+\begin{itemize}
+  \item \textbf{IC as the core obstacle (AMD as pre-history).} Mechanism design
+        departs from ordinary learning at one point: once published, a mechanism
+        is something agents react to strategically. IC is therefore a global
+        counterfactual constraint over the whole mechanism, and it cannot be
+        reduced to a sample-level error. Early automated mechanism design wrote
+        this as an LP / constrained optimization (variables: allocation and
+        payment per type profile; constraints: IC, IR, feasibility), but
+        type-space discretization explodes and injects IC
+        error~\cite{CurryAMDSurvey2025}.
+        \cmt[insight]{AMD's first contribution was turning mechanism design from
+        theorem-proving into a computational object, before any neural network
+        entered. Transition: the question becomes \emph{where} to place IC inside
+        a learning system, not merely how to maximize revenue.}
+  \item \textbf{IC as loss: RegretNet.} RegretNet parameterizes allocation and
+        payment as a neural network that maximizes expected revenue while
+        minimizing ex-post regret, trained by an augmented Lagrangian; IC is
+        rewritten as ``expected ex-post regret $=0$.'' This is the first time IC
+        enters a deep-learning pipeline as a differentiable
+        loss~\cite{Duetting2019}.
+        \cmt[tension]{Low empirical regret does not equal exact
+        strategy-proofness: this remains approximate IC, useful for benchmark
+        discovery and not yet sufficient for deployment. The gap drives
+        everything after.}
+  \item \textbf{IC as learnable violation: scaling the regret paradigm.} A wave
+        of work keeps ``IC as regret penalty'' and patches four practical issues:
+        better regret optimization (ALGNet casts auction learning as an
+        auctioneer-vs-misreporter two-player game), better architecture
+        (RegretFormer adds attention and an explicit regret budget; EquivariantNet
+        bakes in bidder/item symmetry), context and variable scale (CITransNet
+        handles bidder/item context with permutation-equivariant transformers),
+        and objectives beyond revenue (PreferenceNet encodes fairness and
+        diversity as exemplar-based
+        constraints)~\cite{Rahme2021Auction,Ivanov2022,Rahme2021Equivariant,Duan2022,Peri2021}.
+        \cmt[insight]{These enrich the paradigm but remain ``IC as optimized
+        violation'': still approximate, not yet a structural guarantee.}
+  \item \textbf{IC by construction: menus and affine maximizers.} The search
+        space is restricted to natively truthful families instead of penalizing
+        violations. Menu-based mechanisms (MenuNet / RochetNet) give
+        truthful-by-construction single-bidder mechanisms through bidder-optimal
+        menu selection; affine-maximizer auctions (AMenuNet) inherit DSIC and IR
+        from AMA structure while a neural network generates AMA parameters and
+        candidate allocations for scalability; GemNet pushes exact
+        strategy-proofness from single- to multi-bidder by defining and enforcing
+        \emph{menu compatibility} (training penalty plus post-hoc price
+        transformation, discretization, and Lipschitz reasoning over the whole
+        type space)~\cite{Shen2019,Duetting2019,Duan2023,Duetting2024}.
+        \cmt[insight]{The defining post-RegretNet trend is the return of economic
+        structure: networks search, mechanism theory bounds the search space, and
+        verification/post-processing pushes approximate learning toward exact
+        guarantees. \emph{Consider a small table here: IC location (loss /
+        architecture bias / truthful representation / structure+verification)
+        $\times$ representative line $\times$ benefit $\times$ cost.}}
+  \item \textbf{IC as certificate: toward verified institutional generation.}
+        Once IC is structurally represented, the question turns institutional:
+        can the mechanism be verified, interpreted, and deployed as a rule?
+        BundleFlow pushes DSIC menu learning into combinatorial auctions through
+        ODE/flow-generated bundle distributions, scaling to hundreds of items;
+        the discretization-free truthful-learning frontier learns truthful
+        mechanisms over continuous outcome spaces via affine-maximizer structure;
+        and LLM-AMD reformulates mechanism design as code generation plus a
+        problem-specific fixing process for feasibility and strategy-proofness,
+        rediscovering Myerson and reserve-price/redistribution mechanisms and
+        explaining neural solutions by
+        programming-by-example~\cite{WangBundleFlow2025,TEDI2025,LiuGuoConitzer2025}.
+        \cmt[insight]{The endpoint is a search + structure + verification +
+        explanation pipeline, not a black-box neural auction. Position LLMs
+        precisely: they act as an institutional compiler, not as another
+        RegretNet.}
+  \item \cmt[todo]{Add the ``Where does IC live?'' narrative figure (external
+        constraint $\to$ differentiable loss $\to$ better regret learning $\to$
+        truthful representation $\to$ structure + verification $\to$
+        code/certificate) and write the opening and closing paragraphs.}
+\end{itemize}
+\end{drafting}

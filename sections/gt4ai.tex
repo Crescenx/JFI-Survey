@@ -1,0 +1,259 @@
+% gt4ai.tex
+% Section 4: Game Theory for Strategic AI
+% Preliminary English draft outline transcribed from the section-4 planning note.
+% Each subsection body is wrapped in a `drafting` block (see review.tex): it
+% renders in blue under \reviewtrue and is hidden under \reviewfalse. Self-notes
+% / guardrails / positioning are marked with \cmt.
+%
+% Requires the main preamble to contain \input{review}.
+
+\section{Game Theory for Strategic AI}
+\label{sec:gt4ai}
+
+\begin{drafting}
+\textbf{Part II framing.} Static ML asks whether a model scores well; strategic
+AI asks whether a policy stays robust when other agents adapt. \emph{When AI
+systems act strategically alongside other adaptive agents, what should be
+evaluated, optimized, and governed?} The structure follows evaluation $\to$
+equilibrium-seeking training $\to$ deployment governance
+(\ref{subsec:strategic-evaluation}, \ref{subsec:training-alignment},
+\ref{subsec:deployment-governance}).
+\cmt[spine]{The spine across all three subsections: each replaces a \emph{scalar}
+with a \emph{game-theoretic object}. Benchmark score $\to$
+exploitability/equilibrium; fixed scalar reward $\to$ equilibrium selection;
+source-code inspection $\to$ equilibrium-level audit.}
+\end{drafting}
+
+
+\subsection{Strategic Evaluation: Competence Is Opponent-Relative}
+\label{subsec:strategic-evaluation}
+
+\begin{drafting}
+\emph{Leading question: if strategic competence depends on opponents, protocols,
+and strategy spaces, can it still be evaluated as a scalar model score?}
+
+\textbf{Thesis.} The first role of game theory is diagnostic. It asks what it
+means to evaluate competence when performance is opponent-relative, and, prior to
+that, whether the agent even holds a coherent utility for any such evaluation to
+be well-posed. The unit of evaluation shifts from an isolated model score to a
+policy under interaction.
+
+\begin{itemize}
+  \item \textbf{Step 1 --- static benchmarks fail under adaptive opponents.}
+        Accuracy and win-rate stop being meaningful once opponents adapt. The
+        canonical RL-side diagnosis is that proliferating benchmark suites and
+        baselines dilute evaluation and invite cherry-picking, which motivates a
+        population-level unit of evaluation~\cite{Balduzzi2018}.
+  \item \textbf{Step 2 --- opponent-relative competence: the RL/EGTA vocabulary.}
+        This line \emph{predates and grounds} today's LLM-evaluation vocabulary.
+        In conceptual order: EGTA names population-level evaluation by estimating
+        an empirical game from simulation or data and inducing a verdict through a
+        solution concept~\cite{Wellman2006}; PSRO with joint-policy correlation
+        formalizes overfitting-to-training-opponents, i.e.\ the profile
+        dependence of competence~\cite{Lanctot2017}; Nash averaging reweights a
+        meta-game by its max-entropy Nash to discount redundant tasks and weak
+        baselines~\cite{Balduzzi2018}; $\alpha$-Rank tracks non-transitivity and
+        sinks in a population ranking~\cite{Omidshafiei2019}; open-ended learning
+        separates transitive from non-transitive structure (in a cycle one can
+        ``get stronger but against whom is unclear''
+        )~\cite{Balduzzi2019Open}; and Spinning Tops raises non-transitivity from
+        a toy example to the generic geometry of real-world
+        games~\cite{Czarnecki2020}.
+        \cmt[caveat]{Flag $\alpha$-Rank's scalability limit (Yang et al.\ 2020,
+        \cite{Yang2020}) at the point of mention.}
+        \cmt[evidence]{Engineering evidence that opponent-relative robustness is
+        already the deployed norm: AlphaStar outputs a Nash distribution over
+        least-exploitable agents~\cite{Vinyals2019}; DeepStack / Libratus /
+        Pluribus report exploitability (LBR) as the core metric instead of
+        win-rate~\cite{Moravcik2017,BrownSandholm2018,Brown2019Pluribus}.}
+  \item \textbf{Step 3 --- the same vocabulary, latest chapter on LLMs.}
+        Migrated to LLM strategic behavior, the vocabulary exposes profile
+        dependence: GTBench shows strategic reasoning varies with game
+        structure~\cite{GTBench2024}; repeated-games studies show that
+        cooperation and coordination are modulated by prompt, opponent, and
+        interaction (GPT-4 is unforgiving in the Prisoner's Dilemma yet cannot
+        coordinate with an alternating opponent in Battle of the
+        Sexes)~\cite{Akata2025}. LLM benchmarks are a downstream application of
+        the EGTA / $\alpha$-Rank tradition, not an island.
+  \item \textbf{Step 4 --- precondition: preference coherence is the ground
+        floor.} Steps 1--3 assume the agent holds a well-defined utility to play
+        from; equilibrium, best response, and payoff all presuppose it. When
+        preferences are incoherent or drift with framing, exploitability and
+        rankings rest on sand. Utility-theory work audits this precondition.
+        ``LLM economicus?'' tests inequity/risk-loss aversion and time
+        discounting and finds current LLMs neither fully human-like nor fully
+        economicus, struggling to stay consistent across
+        settings~\cite{RossKimLo2024}; Utility Engineering fits Thurstonian
+        random-utility models and finds preference coherence
+        (transitivity/completeness) \emph{increasing with model
+        scale}~\cite{Mazeika2025}.
+        \cmt[footnote]{Footnote the behavioral-economics Turing-test line:
+        \cite{Mei2024,Horton2023,Aher2023}.}
+        \cmt[framing]{Ross--Kim--Lo include a competence test and analyze only
+        models that pass it, itself an admission of the split between prior
+        preference coherence and posterior strategic competence. Steps 2--3 audit
+        play given a utility; Step 4 audits whether the utility exists.}
+\end{itemize}
+\end{drafting}
+
+
+\subsection{Training and Tuning: Alignment as Equilibrium Selection}
+\label{subsec:training-alignment}
+
+\begin{drafting}
+\emph{Leading question: when the alignment signal cannot be reduced to a fixed
+scalar objective, because it is defined only against an adversary, only as a
+non-transitive preference, or only as what a bounded verifier can be brought to
+accept, what should training optimize instead?}
+
+\textbf{Thesis.} The unified answer replaces ``maximize a fixed scalar
+objective'' with ``select the equilibrium of a game.'' Two preliminaries set up
+the strands. First, self-play is the shared computational mechanism of all three
+strands, not a classification axis; its ``self-play $\to$ Nash'' foundation is
+fictitious play and its deep
+variants~\cite{Brown1951,Robinson1951,Heinrich2015,HeinrichSilver2016}. Second,
+the three strands are distinguished by \emph{what the equilibrium certifies}:
+robustness (Strand 2), preference (Strand 1), truth (Strand 3). We present them
+in the order 2 $\to$ 1 $\to$ 3, because GAN is the historical template for
+``training as equilibrium-seeking'' that the other two inherit.
+
+\textbf{Strand 2 --- Adversarial games (template + dynamics diagnosis).}
+\begin{itemize}
+  \item Template: the GAN as zero-sum minimax, with Nash where the discriminator
+        cannot distinguish real from generated data~\cite{Goodfellow2014}.
+  \item Alignment instances: robust training as a saddle point~\cite{Madry2018};
+        red-teaming as an attacker--defender game~\cite{Perez2022}.
+  \item Difficulty (empirical fact): first-order methods often fail to converge,
+        and GAN games may even lack a local Nash
+        equilibrium~\cite{FarniaOzdaglar2020}.
+  \item \cmt[box]{Boxed supplement --- differential game dynamics: decompose the
+        game Jacobian into symmetric (potential) and antisymmetric (Hamiltonian)
+        parts and use it to design SGA toward stable fixed
+        points~\cite{BalduzziSGA2018,Letcher2019}. Position it NOT as a Nash
+        solver or core anchor but as the dynamical lens for \emph{why}
+        equilibrium-seeking training rotates / fails to converge; it distinguishes
+        stable fixed points from local Nash. Adjacent: \cite{Mescheder2017,
+        Daskalakis2017}.}
+\end{itemize}
+
+\textbf{Strand 1 --- Preference games (template for ``preference is not scalar'').}
+\begin{itemize}
+  \item Insufficiency: Bradley--Terry forces transitivity, while real and
+        aggregated preferences can be intransitive and
+        cyclic~\cite{BradleyTerry1952,May1954,Tversky1969,Dudik2015}.
+  \item Conceptual anchor (NLHF): treat the pairwise preference model as a
+        symmetric two-player game, solve for a regularized Nash equilibrium, and
+        converge through last-iterate Nash-MD, so that RLHF becomes equilibrium
+        selection~\cite{Munos2024}.
+  \item Scalable implementations (lead with INPO): INPO approximates Nash by
+        no-regret self-play with a single loss~\cite{Zhang2025INPO}; DNO is an
+        iterative-DPO variant~\cite{Rosset2024DNO}; SPPO uses a constant-sum
+        Hedge update~\cite{Wu2024SPPO}; SPO/Minimaximalist is the social-choice
+        Minimax-Winner template~\cite{Swamy2024SPO}.
+  \item Back to the box (convergence dynamics): mirror descent gives only
+        average-iterate convergence while the last iterate orbits
+        Nash~\cite{Mertikopoulos2018}; last-iterate fixes use extragradient-style
+        updates.
+  \item PSRO bridge (one line): a robust policy is a robustness search over a
+        strategy population~\cite{Lanctot2017}.
+        \cmt[footnote]{Distribution-matching self-play: SPIN, \cite{Chen2024SPIN}.}
+\end{itemize}
+
+\textbf{Strand 3 --- Interactive-proof games (template for ``the judge is weaker
+than the model'').}
+\begin{itemize}
+  \item Complexity foundation: self-play on a zero-sum debate game with a
+        polynomial-time judge can reach optimal play in PSPACE, isomorphic to
+        IP$=$PSPACE~\cite{Irving2018}.
+  \item Two canonical protocols: Debate (symmetric: two provers + judge); and
+        Prover--Verifier Games (asymmetric, fitting weak-to-strong, where only
+        some variants provably have ideal equilibria and sequential forms can
+        fail)~\cite{Anil2021}, scaled to legibility
+        training~\cite{Kirchner2024}.
+  \item Obstruction and refinement: obfuscated arguments let a dishonest prover
+        construct claims that take exponential time to
+        refute~\cite{BarnesChristiano2020}; doubly-efficient debate guarantees
+        the honest prover a polynomial-time winning
+        strategy~\cite{BrownCohen2023}.
+  \item Empirical landing: with stronger expert debaters and weaker non-expert
+        judges, debate consistently raises accuracy (76\%/88\% vs.\ 48\%/60\%
+        baselines), and adversarial protocols beat non-adversarial
+        ones~\cite{Khan2024}.
+  \item \cmt[positioning]{Closing position: when the supervision signal is no
+        longer reliable, an interactive-proof game designs the equilibrium to
+        \emph{certify truth}.}
+\end{itemize}
+\end{drafting}
+
+
+\subsection{Deployment Governance: Local Alignment Is Not System Alignment}
+\label{subsec:deployment-governance}
+
+\begin{drafting}
+\emph{Leading question: when individually aligned AI agents interact through
+markets, institutions, and delegation chains, what system-level equilibria do
+they induce?}
+
+\textbf{Thesis.} The third role of game theory is institutional. It asks what
+system-level equilibria emerge when individually aligned agents interact, and how
+those equilibria can be audited, reshaped, or governed. The question shifts from
+whether a single agent is aligned to what locally aligned agents induce in
+interaction. A single game-theoretic line makes the cut: the economics of
+no-regret learning plus calibrated-regret auditing.
+
+\begin{itemize}
+  \item \textbf{Step 1 --- delegation games: a conceptual decomposition for
+        ``local $\neq$ system''.} Multi-principal multi-agent settings are
+        formalized as delegation games, with failure modes decomposed
+        orthogonally into (control $\times$ cooperation) $\times$ (alignment
+        $\times$ capabilities); no single measure suffices, all four together do,
+        and a bound on principal welfare loss follows~\cite{Sourbut2024}.
+        \cmt[positioning]{Position as conceptual framework / decomposition (why a
+        per-agent property is not composable), not the main theoretical support
+        of this subsection.}
+  \item \textbf{Step 2 --- algorithmic pricing as adaptive market failure
+        (phenomenon + key qualifications).} Q-learning agents in Bertrand
+        oligopoly learn supra-competitive prices without communication, supported
+        by punishment-then-return strategies; this is a \emph{simulation} result
+        with no general convergence guarantee~\cite{Calvano2020}. Three
+        qualifications follow. ``Collusion'' is largely an artifact of the
+        \emph{asynchronous} learning protocol and mostly vanishes under
+        synchronous learning or minimal economic structure~\cite{Asker2022}; the
+        outcomes are fragile and exploitable by an optimizing
+        opponent~\cite{denBoer2022}; and a Folk-Theorem-style result makes
+        collusion only one of many reachable payoffs, not a
+        necessity~\cite{Cartea2025}. The governance target should therefore be
+        \emph{whether observed strategic behavior satisfies an equilibrium-level
+        property}, rather than whether the algorithm ``is Q-learning,'' which
+        pushes governance from source-code inspection to behavioral audit.
+  \item \textbf{Step 3 --- calibrated-regret audit as the governance response
+        (theoretical climax).} The ``for AI'' bridge is direct: classical
+        algorithmic game theory predates AI agents, yet these AI learning agents
+        \emph{are} precisely the no-regret learners those theorems quantify over.
+        \begin{itemize}
+          \item Theoretical basis (making ``observed behavior'' an auditable
+                object): no-internal-regret learning converges to correlated
+                equilibrium~\cite{FosterVohra1997,HartMasColell2000,BlumMansour2007};
+                in smooth games the social welfare of no-regret learners is bounded
+                by the price of anarchy~\cite{Roughgarden2015,SyrgkanisTardos2013};
+                modern algorithms converge at near-optimal
+                rates~\cite{Syrgkanis2015,Anagnostides2022,Dagan2024}.
+          \item Audit mechanism: instead of inspecting source code, test whether
+                a seller has vanishing (pessimistic) calibrated regret, which
+                proves that (i) any no-regret algorithm can be retrofit to pass,
+                (ii) passers cannot be manipulated into supra-competitive prices,
+                and (iii) a sample-complexity bound
+                holds~\cite{HartlineLongZhang2024,HartlineWangZhang2025}; a recent
+                survey proposes no-swap-regret as a rationality axiom for
+                algorithmic agents, bridging classical AGT to AI
+                agents~\cite{Hartline2026}.
+                \cmt[wording]{Frame this as a \emph{recent program} building on
+                classical no-regret theory, not an established field. Cite the two
+                CSLAW papers as primary; the 2026 survey as a programmatic
+                reference.}
+          \item \cmt[optional]{If space allows, extend to learning in mechanisms:
+                selling to a no-regret buyer~\cite{Braverman2018}; first-price bid
+                suppression~\cite{BanchioSkrzypacz2022}.}
+        \end{itemize}
+\end{itemize}
+\end{drafting}

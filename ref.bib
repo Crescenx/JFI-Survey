@@ -26,14 +26,14 @@
 }
 
 @inproceedings{Duetting2019,
-  author    = {D{\"u}tting, Paul and Feng, Zhe and Narasimhan, Harikrishna and Parkes, David C.},
+  author    = {D{\"u}tting, Paul and Feng, Zhe and Narasimhan, Harikrishna and Parkes, David C. and Ravindranath, Sai Srivatsa},
   title     = {Optimal Auctions through Deep Learning},
   booktitle = {Proceedings of the 36th International Conference on Machine Learning (ICML)},
   series    = {PMLR},
   volume    = {97},
   pages     = {1706--1715},
   year      = {2019},
-  note      = {Journal version: J. ACM, 2024, doi:10.1145/3630749}
+  note      = {RegretNet/RochetNet; journal version: J. ACM, 2024, doi:10.1145/3630749}
 }
 
 @inproceedings{Balduzzi2018,
@@ -41,7 +41,8 @@
   title     = {Re-evaluating Evaluation},
   booktitle = {Advances in Neural Information Processing Systems 31 (NeurIPS)},
   pages     = {3272--3283},
-  year      = {2018}
+  year      = {2018},
+  note      = {Nash averaging}
 }
 
 % ============================================================
@@ -81,4 +82,831 @@
   title     = {Training Language Models to Follow Instructions with Human Feedback},
   booktitle = {Advances in Neural Information Processing Systems 35 (NeurIPS)},
   year      = {2022}
+}
+
+
+% ===== 3.1 Constructive equilibrium =====
+
+
+@article{LemkeHowson1964,
+  author  = {Lemke, C. E. and Howson, J. T.},
+  title   = {Equilibrium Points of Bimatrix Games},
+  journal = {Journal of the Society for Industrial and Applied Mathematics},
+  volume  = {12},
+  number  = {2},
+  pages   = {413--423},
+  year    = {1964},
+}
+
+@misc{gambit,
+  author       = {Savani, Rahul and Turocy, Theodore L.},
+  title        = {Gambit: The Package for Computation in Game Theory},
+  howpublished = {\url{https://www.gambit-project.org}},
+  note         = {Software},
+}
+
+@misc{NashPG2025,
+  author        = {Yu, Eason and Liu, Tzu Hao and Canonne, Cl\'ement L. and Wang, Yunke and Xu, Chang and Tran, Nguyen H. and Albrecht, Stefano V.},
+  title         = {{NashPG}: A Policy Gradient Method with Iteratively Refined Regularization for Finding {Nash} Equilibria},
+  year          = {2025},
+  eprint        = {2510.18183},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GT},
+}
+
+@inproceedings{LiuFarinaOzdaglar2025,
+  author    = {Liu, Mingyang and Farina, Gabriele and Ozdaglar, Asuman},
+  title     = {A Policy-Gradient Approach to Solving Imperfect-Information Games with Best-Iterate Convergence},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  note      = {arXiv:2408.00751},
+}
+
+@inproceedings{Zinkevich2007,
+  author    = {Zinkevich, Martin and Johanson, Michael and Bowling, Michael and Piccione, Carmelo},
+  title     = {Regret Minimization in Games with Incomplete Information},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2007},
+}
+
+@inproceedings{BrownDeepCFR2019,
+  author    = {Brown, Noam and Lerer, Adam and Gross, Sam and Sandholm, Tuomas},
+  title     = {Deep Counterfactual Regret Minimization},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2019},
+}
+
+@inproceedings{Marris2021,
+  author    = {Marris, Luke and Muller, Paul and others},
+  title     = {Multi-Agent Training Beyond Zero-Sum with Correlated Equilibrium Meta-Solvers},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2021},
+  note      = {JPSRO},
+}
+
+@misc{Sychrovsky2025,
+  author        = {Sychrovsk\'y, David and Solinas, Christopher and MacQueen, Revan and Wang, Kevin and Wright, James R. and Sturtevant, Nathan R. and Bowling, Michael},
+  title         = {Approximating {Nash} Equilibria in General-Sum Games via Meta-Learning},
+  year          = {2025},
+  eprint        = {2504.18868},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GT},
+}
+
+@article{WellmanTuylsGreenwald2025,
+  author  = {Wellman, Michael P. and Tuyls, Karl and Greenwald, Amy},
+  title   = {Empirical Game-Theoretic Analysis: A Survey},
+  journal = {Journal of Artificial Intelligence Research},
+  volume  = {82},
+  pages   = {1017--1076},
+  year    = {2025},
+  note    = {arXiv:2403.04018},
+}
+
+@inproceedings{McAleerPipelinePSRO2020,
+  author    = {McAleer, Stephen and others},
+  title     = {Pipeline {PSRO}: A Scalable Approach for Finding Approximate {Nash} Equilibria in Large Games},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2020},
+}
+
+@inproceedings{BrownReBeL2020,
+  author    = {Brown, Noam and Bakhtin, Anton and Lerer, Adam and Gong, Qucheng},
+  title     = {Combining Deep Reinforcement Learning and Search for Imperfect-Information Games},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2020},
+  note      = {ReBeL},
+}
+
+@article{Moravcik2017,
+  author  = {Morav\v{c}\'ik, Maty\'a\v{s} and Schmid, Martin and Burch, Neil and Lis\'y, Viliam and Morrill, Dustin and Bard, Nolan and Davis, Trevor and Waugh, Kevin and Johanson, Michael and Bowling, Michael},
+  title   = {{DeepStack}: Expert-Level Artificial Intelligence in Heads-Up No-Limit Poker},
+  journal = {Science},
+  volume  = {356},
+  number  = {6337},
+  pages   = {508--513},
+  year    = {2017},
+}
+
+
+@article{PrimeNash2025,
+  author  = {Liu and others},
+  title   = {An {LLM} Agent-Based Framework for Analytical Characterization of {Nash} Equilibria},
+  journal = {Nexus},
+  year    = {2025},
+  note    = {PrimeNash; author list to verify},
+}
+
+@misc{LegoNE2025,
+  author        = {Li, Hanyu and Li, Dongchen and Deng, Xiaotie},
+  title         = {Discovering Expert-Level {Nash} Equilibrium Algorithms with Large Language Models},
+  year          = {2025},
+  eprint        = {2508.11874},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GT},
+  note          = {LegoNE},
+}
+
+% ===== 3.2 Strategic inference =====
+
+@article{HaileHortacsuKosenok2008,
+  author  = {Haile, Philip A. and Horta\c{c}su, Ali and Kosenok, Grigory},
+  title   = {On the Empirical Content of Quantal Response Equilibrium},
+  journal = {American Economic Review},
+  volume  = {98},
+  number  = {1},
+  pages   = {180--200},
+  year    = {2008},
+}
+
+@inproceedings{FreihautRamponi2025,
+  author    = {Freihaut, Till and Ramponi, Giorgia},
+  title     = {On Feasible Rewards in Multi-Agent Inverse Reinforcement Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2025},
+  note      = {arXiv:2411.15046},
+}
+
+@inproceedings{Bourgin2019,
+  author    = {Bourgin, David D. and Peterson, Joshua C. and Reichman, Daniel and Russell, Stuart J. and Griffiths, Thomas L.},
+  title     = {Cognitive Model Priors for Predicting Human Decisions},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2019},
+}
+
+@inproceedings{Hartford2016,
+  author    = {Hartford, Jason S. and Wright, James R. and Leyton-Brown, Kevin},
+  title     = {Deep Learning for Predicting Human Strategic Behavior},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2016},
+  note      = {GameNet},
+}
+
+@inproceedings{Ling2018,
+  author    = {Ling, Chun Kai and Fang, Fei and Kolter, J. Zico},
+  title     = {What Game Are We Playing? End-to-End Learning in Normal and Extensive Form Games},
+  booktitle = {International Joint Conference on Artificial Intelligence (IJCAI)},
+  year      = {2018},
+}
+
+@inproceedings{CuiYu2023,
+  author    = {Cui, Lvye and Yu, Haoran},
+  title     = {Inferring Private Valuations from Behavioral Data in Bilateral Sequential Bargaining},
+  booktitle = {International Joint Conference on Artificial Intelligence (IJCAI)},
+  pages     = {2624--2632},
+  year      = {2023},
+  note      = {BLUE},
+}
+
+@inproceedings{Shum2019,
+  author    = {Shum, Michael and Kleiman-Weiner, Max and Littman, Michael L. and Tenenbaum, Joshua B.},
+  title     = {Theory of Minds: Understanding Behavior in Groups Through Inverse Planning},
+  booktitle = {AAAI Conference on Artificial Intelligence},
+  year      = {2019},
+}
+
+@inproceedings{Song2018,
+  author    = {Song, Jiaming and Ren, Hongyu and Sadigh, Dorsa and Ermon, Stefano},
+  title     = {Multi-Agent Generative Adversarial Imitation Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2018},
+  note      = {MAGAIL},
+}
+
+@inproceedings{AutoBM2026,
+  author    = {Xie and Yu and Shou and Huang},
+  title     = {Automated Human Strategic Behavior Modeling via Large Language Models},
+  booktitle = {AAAI Conference on Artificial Intelligence},
+  year      = {2026},
+  note      = {AutoBM; full given names to confirm},
+}
+
+% ===== 3.3 Mechanism design =====
+
+@article{CurryAMDSurvey2025,
+  author  = {Curry, Michael J. and Fan, Zhe and Jiang, Yanchen and Ravindranath, Sai Srivatsa and Wang, Tonghan and Parkes, David C.},
+  title   = {Automated Mechanism Design: A Survey},
+  journal = {ACM SIGecom Exchanges},
+  volume  = {22},
+  number  = {2},
+  pages   = {102--120},
+  year    = {2025},
+}
+
+
+@inproceedings{Rahme2021Auction,
+  author    = {Rahme, Jad and Jelassi, Samy and Weinberg, S. Matthew},
+  title     = {Auction Learning as a Two-Player Game},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2021},
+  note      = {ALGNet},
+}
+
+@article{Ivanov2022,
+  author  = {Ivanov, Dmitry and Safiulin, Iskander and Filippov, Igor and Balabaeva, Ksenia},
+  title   = {Optimal-er Auctions Through Attention},
+  journal = {Advances in Neural Information Processing Systems (NeurIPS)},
+  volume  = {35},
+  pages   = {34734--34747},
+  year    = {2022},
+  note    = {RegretFormer},
+}
+
+@inproceedings{Rahme2021Equivariant,
+  author    = {Rahme, Jad and Jelassi, Samy and Bruna, Joan and Weinberg, S. Matthew},
+  title     = {A Permutation-Equivariant Neural Network Architecture for Auction Design},
+  booktitle = {AAAI Conference on Artificial Intelligence},
+  year      = {2021},
+  note      = {EquivariantNet},
+}
+
+@inproceedings{Duan2022,
+  author    = {Duan, Zhijian and Tang, Jingwu and Yin, Yutong and Feng, Zhe and Yan, Xiang and Zaheer, Manzil and Deng, Xiaotie},
+  title     = {A Context-Integrated Transformer-Based Neural Network for Auction Design},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2022},
+  note      = {CITransNet},
+}
+
+@inproceedings{Peri2021,
+  author    = {Peri, Neehar and Curry, Michael J. and Dooley, Samuel and Dickerson, John P.},
+  title     = {{PreferenceNet}: Encoding Human Preferences in Auction Design with Deep Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2021},
+}
+
+@inproceedings{Shen2019,
+  author    = {Shen, Weiran and Tang, Pingzhong and Zuo, Song},
+  title     = {Automated Mechanism Design via Neural Networks},
+  booktitle = {International Conference on Autonomous Agents and Multiagent Systems (AAMAS)},
+  year      = {2019},
+  note      = {MenuNet},
+}
+
+@inproceedings{Duan2023,
+  author    = {Duan, Zhijian and Sun, Haoran and Chen, Yurong and Deng, Xiaotie},
+  title     = {A Scalable Neural Network for {DSIC} Affine Maximizer Auction Design},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2023},
+  note      = {AMenuNet; arXiv:2305.12162},
+}
+
+@misc{Duetting2024,
+  author        = {D\"utting, Paul and Feng, Zhe and Narasimhan, Harikrishna and Parkes, David C. and Ravindranath, Sai Srivatsa and Wang, Tonghan and others},
+  title         = {{GemNet}: Menu-Based, Strategy-Proof Multi-Bidder Auctions Through Deep Learning},
+  year          = {2024},
+  eprint        = {2406.07428},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GT},
+}
+
+@inproceedings{WangBundleFlow2025,
+  author    = {Wang, Tonghan and Jiang, Yanchen and Parkes, David C.},
+  title     = {{BundleFlow}: Deep Menus for Combinatorial Auctions by Diffusion-Based Optimization},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2025},
+  note      = {arXiv:2502.15283},
+}
+
+@misc{TEDI2025,
+  author        = {{Authors to confirm}},
+  title         = {Learning Truthful Mechanisms Without Discretization},
+  year          = {2025},
+  eprint        = {2506.22911},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GT},
+  note          = {Discretization-free / neural affine maximizer frontier; verify exact paper and authors},
+}
+
+@misc{LiuGuoConitzer2025,
+  author        = {Liu, Jiayuan and Guo, Mingyu and Conitzer, Vincent},
+  title         = {An Interpretable Automated Mechanism Design Framework with Large Language Models},
+  year          = {2025},
+  eprint        = {2502.12203},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GT},
+  note          = {LLM-AMD},
+}
+
+
+% ===== 4.1 Strategic evaluation =====
+
+
+@inproceedings{Wellman2006,
+  author    = {Wellman, Michael P.},
+  title     = {Methods for Empirical Game-Theoretic Analysis},
+  booktitle = {AAAI Conference on Artificial Intelligence},
+  year      = {2006},
+}
+
+@inproceedings{Lanctot2017,
+  author    = {Lanctot, Marc and Zambaldi, Vinicius and Gruslys, Audrunas and Lazaridou, Angeliki and Tuyls, Karl and P\'erolat, Julien and Silver, David and Graepel, Thore},
+  title     = {A Unified Game-Theoretic Approach to Multiagent Reinforcement Learning},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2017},
+  note      = {PSRO},
+}
+
+@article{Omidshafiei2019,
+  author  = {Omidshafiei, Shayegan and Papadimitriou, Christos and Piliouras, Georgios and Tuyls, Karl and Rowland, Mark and Lespiau, Jean-Baptiste and Czarnecki, Wojciech M. and Lanctot, Marc and P\'erolat, Julien and Munos, R\'emi},
+  title   = {$\alpha$-Rank: Multi-Agent Evaluation by Evolution},
+  journal = {Scientific Reports},
+  volume  = {9},
+  number  = {1},
+  pages   = {9937},
+  year    = {2019},
+}
+
+@inproceedings{Yang2020,
+  author    = {Yang, Yaodong and Tutunov, Rasul and Sakulwongtana, Phu and Bou Ammar, Haitham},
+  title     = {$\alpha^{\alpha}$-Rank: Practically Scaling $\alpha$-Rank through Stochastic Optimization},
+  booktitle = {International Conference on Autonomous Agents and Multiagent Systems (AAMAS)},
+  year      = {2020},
+  note      = {Venue to verify},
+}
+
+@inproceedings{Balduzzi2019Open,
+  author    = {Balduzzi, David and Garnelo, Marta and Bachrach, Yoram and Czarnecki, Wojciech M. and P\'erolat, Julien and Jaderberg, Max and Graepel, Thore},
+  title     = {Open-ended Learning in Symmetric Zero-sum Games},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2019},
+}
+
+@inproceedings{Czarnecki2020,
+  author    = {Czarnecki, Wojciech M. and Gidel, Gauthier and Tracey, Brendan and Tuyls, Karl and Omidshafiei, Shayegan and Balduzzi, David and Jaderberg, Max},
+  title     = {Real World Games Look Like Spinning Tops},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2020},
+}
+
+@article{Vinyals2019,
+  author  = {Vinyals, Oriol and Babuschkin, Igor and Czarnecki, Wojciech M. and others},
+  title   = {Grandmaster Level in {StarCraft II} Using Multi-Agent Reinforcement Learning},
+  journal = {Nature},
+  volume  = {575},
+  pages   = {350--354},
+  year    = {2019},
+}
+
+@article{Brown2019Pluribus,
+  author  = {Brown, Noam and Sandholm, Tuomas},
+  title   = {Superhuman {AI} for Multiplayer Poker},
+  journal = {Science},
+  volume  = {365},
+  number  = {6456},
+  pages   = {885--890},
+  year    = {2019},
+  note    = {Pluribus},
+}
+
+@inproceedings{GTBench2024,
+  author    = {Duan, Jinhao and Zhang, Renming and Diffenderfer, James and Kailkhura, Bhavya and Sun, Lichao and Stengel-Eskin, Elias and Bansal, Mohit and Chen, Tianlong and Xu, Kaidi},
+  title     = {{GTBench}: Uncovering the Strategic Reasoning Limitations of {LLMs} via Game-Theoretic Evaluations},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2024},
+}
+
+@article{Akata2025,
+  author  = {Akata, Elif and Schulz, Lion and Coda-Forno, Julian and Oh, Seong Joon and Bethge, Matthias and Schulz, Eric},
+  title   = {Playing Repeated Games with Large Language Models},
+  journal = {Nature Human Behaviour},
+  volume  = {9},
+  number  = {7},
+  pages   = {1380--1390},
+  year    = {2025},
+}
+
+@inproceedings{RossKimLo2024,
+  author    = {Ross, Jillian and Kim, Yoon and Lo, Andrew W.},
+  title     = {{LLM} Economicus? Mapping the Behavioral Biases of {LLMs} via Utility Theory},
+  booktitle = {Conference on Language Modeling (COLM)},
+  year      = {2024},
+  note      = {arXiv:2408.02784},
+}
+
+@inproceedings{Mazeika2025,
+  author    = {Mazeika, Mantas and Yin, Xuwang and Tamirisa, Rishub and Lim, Jaehyuk and Lee, Bruce W. and Ren, Richard and Phan, Long and Mu, Norman and Khoja, Adam and Zhang, Oliver and Hendrycks, Dan},
+  title     = {Utility Engineering: Analyzing and Controlling Emergent Value Systems in {AIs}},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2025},
+  note      = {Spotlight; arXiv:2502.08640},
+}
+
+@article{Mei2024,
+  author  = {Mei, Qiaozhu and Xie, Yutong and Yuan, Walter and Jackson, Matthew O.},
+  title   = {A {Turing} Test of Whether {AI} Chatbots Are Behaviorally Similar to Humans},
+  journal = {Proceedings of the National Academy of Sciences},
+  volume  = {121},
+  number  = {9},
+  year    = {2024},
+}
+
+@techreport{Horton2023,
+  author      = {Horton, John J.},
+  title       = {Large Language Models as Simulated Economic Agents: What Can We Learn from Homo Silicus?},
+  institution = {National Bureau of Economic Research},
+  number      = {31122},
+  year        = {2023},
+}
+
+@inproceedings{Aher2023,
+  author    = {Aher, Gati and Arriaga, Rosa I. and Kalai, Adam Tauman},
+  title     = {Using Large Language Models to Simulate Multiple Humans and Replicate Human Subject Studies},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2023},
+}
+
+% ===== 4.2 Training and alignment =====
+
+@incollection{Brown1951,
+  author    = {Brown, George W.},
+  title     = {Iterative Solution of Games by Fictitious Play},
+  booktitle = {Activity Analysis of Production and Allocation},
+  publisher = {Wiley},
+  year      = {1951},
+}
+
+@article{Robinson1951,
+  author  = {Robinson, Julia},
+  title   = {An Iterative Method of Solving a Game},
+  journal = {Annals of Mathematics},
+  volume  = {54},
+  number  = {2},
+  pages   = {296--301},
+  year    = {1951},
+}
+
+@inproceedings{Heinrich2015,
+  author    = {Heinrich, Johannes and Lanctot, Marc and Silver, David},
+  title     = {Fictitious Self-Play in Extensive-Form Games},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2015},
+}
+
+@misc{HeinrichSilver2016,
+  author        = {Heinrich, Johannes and Silver, David},
+  title         = {Deep Reinforcement Learning from Self-Play in Imperfect-Information Games},
+  year          = {2016},
+  eprint        = {1603.01121},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+}
+
+@inproceedings{Goodfellow2014,
+  author    = {Goodfellow, Ian J. and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
+  title     = {Generative Adversarial Nets},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2014},
+}
+
+@inproceedings{Madry2018,
+  author    = {Madry, Aleksander and Makelov, Aleksandar and Schmidt, Ludwig and Tsipras, Dimitris and Vladu, Adrian},
+  title     = {Towards Deep Learning Models Resistant to Adversarial Attacks},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2018},
+}
+
+@inproceedings{Perez2022,
+  author    = {Perez, Ethan and Huang, Saffron and Song, Francis and Cai, Trevor and Ring, Roman and Aslanides, John and Glaese, Amelia and McAleese, Nat and Irving, Geoffrey},
+  title     = {Red Teaming Language Models with Language Models},
+  booktitle = {Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2022},
+}
+
+@inproceedings{FarniaOzdaglar2020,
+  author    = {Farnia, Farzan and Ozdaglar, Asuman},
+  title     = {Do {GANs} Always Have {Nash} Equilibria?},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2020},
+}
+
+@inproceedings{BalduzziSGA2018,
+  author    = {Balduzzi, David and Racani\`ere, S\'ebastien and Martens, James and Foerster, Jakob and Tuyls, Karl and Graepel, Thore},
+  title     = {The Mechanics of $n$-Player Differentiable Games},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2018},
+  note      = {Symplectic Gradient Adjustment (SGA)},
+}
+
+@article{Letcher2019,
+  author  = {Letcher, Alistair and Balduzzi, David and Racani\`ere, S\'ebastien and Martens, James and Foerster, Jakob and Tuyls, Karl and Graepel, Thore},
+  title   = {Differentiable Game Mechanics},
+  journal = {Journal of Machine Learning Research},
+  volume  = {20},
+  number  = {84},
+  pages   = {1--40},
+  year    = {2019},
+}
+
+@inproceedings{Mescheder2017,
+  author    = {Mescheder, Lars and Nowozin, Sebastian and Geiger, Andreas},
+  title     = {The Numerics of {GANs}},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2017},
+}
+
+@inproceedings{Daskalakis2017,
+  author    = {Daskalakis, Constantinos and Ilyas, Andrew and Syrgkanis, Vasilis and Zeng, Haoyang},
+  title     = {Training {GANs} with Optimism},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2018},
+}
+
+@article{BradleyTerry1952,
+  author  = {Bradley, Ralph Allan and Terry, Milton E.},
+  title   = {Rank Analysis of Incomplete Block Designs: I. The Method of Paired Comparisons},
+  journal = {Biometrika},
+  volume  = {39},
+  number  = {3/4},
+  pages   = {324--345},
+  year    = {1952},
+}
+
+@article{May1954,
+  author  = {May, Kenneth O.},
+  title   = {Intransitivity, Utility, and the Aggregation of Preference Patterns},
+  journal = {Econometrica},
+  volume  = {22},
+  number  = {1},
+  pages   = {1--13},
+  year    = {1954},
+}
+
+@article{Tversky1969,
+  author  = {Tversky, Amos},
+  title   = {Intransitivity of Preferences},
+  journal = {Psychological Review},
+  volume  = {76},
+  number  = {1},
+  pages   = {31--48},
+  year    = {1969},
+}
+
+@inproceedings{Dudik2015,
+  author    = {Dud\'ik, Miroslav and Hofmann, Katja and Schapire, Robert E. and Slivkins, Aleksandrs and Zoghi, Masrour},
+  title     = {Contextual Dueling Bandits},
+  booktitle = {Conference on Learning Theory (COLT)},
+  year      = {2015},
+}
+
+@inproceedings{Munos2024,
+  author    = {Munos, R\'emi and Valko, Michal and Calandriello, Daniele and Gheshlaghi Azar, Mohammad and Rowland, Mark and Guo, Zhaohan Daniel and Tang, Yunhao and Geist, Matthieu and others},
+  title     = {Nash Learning from Human Feedback},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2024},
+  note      = {Nash-MD; arXiv:2312.00886},
+}
+
+@inproceedings{Zhang2025INPO,
+  author    = {Zhang, Yuheng and others},
+  title     = {Iterative {Nash} Policy Optimization: Aligning {LLMs} with General Preferences via No-Regret Learning},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  note      = {INPO; arXiv:2407.00617},
+}
+
+@misc{Rosset2024DNO,
+  author        = {Rosset, Corby and Cheng, Ching-An and Mitra, Arindam and Santacroce, Michael and Awadallah, Ahmed and Xie, Tengyang},
+  title         = {Direct {Nash} Optimization: Teaching Language Models to Self-Improve with General Preferences},
+  year          = {2024},
+  eprint        = {2404.03715},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+}
+
+@misc{Wu2024SPPO,
+  author        = {Wu, Yue and Sun, Zhiqing and Yuan, Huizhuo and Ji, Kaixuan and Yang, Yiming and Gu, Quanquan},
+  title         = {Self-Play Preference Optimization for Language Model Alignment},
+  year          = {2024},
+  eprint        = {2405.00675},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  note          = {SPPO},
+}
+
+@inproceedings{Swamy2024SPO,
+  author    = {Swamy, Gokul and Dann, Christoph and Kidambi, Rahul and Wu, Zhiwei Steven and Agarwal, Alekh},
+  title     = {A Minimaximalist Approach to Reinforcement Learning from Human Feedback},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2024},
+  note      = {SPO},
+}
+
+@inproceedings{Mertikopoulos2018,
+  author    = {Mertikopoulos, Panayotis and Papadimitriou, Christos and Piliouras, Georgios},
+  title     = {Cycles in Adversarial Regularized Learning},
+  booktitle = {ACM-SIAM Symposium on Discrete Algorithms (SODA)},
+  year      = {2018},
+  note      = {Paper to confirm against intended last-iterate reference},
+}
+
+@inproceedings{Chen2024SPIN,
+  author    = {Chen, Zixiang and Deng, Yihe and Yuan, Huizhuo and Ji, Kaixuan and Gu, Quanquan},
+  title     = {Self-Play Fine-Tuning Converts Weak Language Models to Strong Language Models},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2024},
+  note      = {SPIN},
+}
+
+@misc{Irving2018,
+  author        = {Irving, Geoffrey and Christiano, Paul and Amodei, Dario},
+  title         = {{AI} Safety via Debate},
+  year          = {2018},
+  eprint        = {1805.00899},
+  archivePrefix = {arXiv},
+  primaryClass  = {stat.ML},
+}
+
+@misc{Anil2021,
+  author        = {Anil, Cem and Zhang, Guodong and Wu, Yuhuai and Grosse, Roger},
+  title         = {Learning to Give Checkable Answers with Prover-Verifier Games},
+  year          = {2021},
+  eprint        = {2108.12099},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+}
+
+@misc{Kirchner2024,
+  author        = {Kirchner, Jan Hendrik and Chen, Yining and Edwards, Harri and Leike, Jan and McAleese, Nat and Burda, Yuri},
+  title         = {Prover-Verifier Games Improve Legibility of {LLM} Outputs},
+  year          = {2024},
+  eprint        = {2407.13692},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+}
+
+@misc{BarnesChristiano2020,
+  author       = {Barnes, Beth and Christiano, Paul},
+  title        = {Debate Update: Obfuscated Arguments Problem},
+  howpublished = {AI Alignment Forum},
+  year         = {2020},
+}
+
+@misc{BrownCohen2023,
+  author        = {Brown-Cohen, Jonah and Irving, Geoffrey and Piliouras, Georgios},
+  title         = {Scalable {AI} Safety via Doubly-Efficient Debate},
+  year          = {2023},
+  eprint        = {2311.14125},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+}
+
+@inproceedings{Khan2024,
+  author    = {Khan, Akbir and Hughes, John and Valentine, Dan and Ruis, Laura and Sachan, Kshitij and Radhakrishnan, Ansh and Grefenstette, Edward and Bowman, Samuel R. and Rockt\"aschel, Tim and Perez, Ethan},
+  title     = {Debating with More Persuasive {LLMs} Leads to More Truthful Answers},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2024},
+  note      = {Best Paper; arXiv:2402.06782},
+}
+
+% ===== 4.3 Deployment governance =====
+
+@inproceedings{Sourbut2024,
+  author    = {Sourbut, Oliver and Hammond, Lewis and Wood, Harriet},
+  title     = {Cooperation and Control in Delegation Games},
+  booktitle = {International Joint Conference on Artificial Intelligence (IJCAI)},
+  pages     = {229--237},
+  year      = {2024},
+  doi       = {10.24963/ijcai.2024/26},
+}
+
+@article{Calvano2020,
+  author  = {Calvano, Emilio and Calzolari, Giacomo and Denicol\`o, Vincenzo and Pastorello, Sergio},
+  title   = {Artificial Intelligence, Algorithmic Pricing, and Collusion},
+  journal = {American Economic Review},
+  volume  = {110},
+  number  = {10},
+  pages   = {3267--3297},
+  year    = {2020},
+}
+
+@article{Asker2022,
+  author  = {Asker, John and Fershtman, Chaim and Pakes, Ariel},
+  title   = {Artificial Intelligence, Algorithm Design, and Pricing},
+  journal = {AEA Papers and Proceedings},
+  volume  = {112},
+  pages   = {452--456},
+  year    = {2022},
+  note    = {Journal version: Artificial Intelligence and Pricing, JEMS 2024},
+}
+
+@techreport{denBoer2022,
+  author      = {den Boer, Arnoud V. and Meylahn, Janusz M. and Schinkel, Maarten Pieter},
+  title       = {Artificial Collusion: Examining Supracompetitive Pricing by {Q}-learning Algorithms},
+  institution = {Amsterdam Center for Law and Economics / Tinbergen Institute},
+  year        = {2022},
+  note        = {Working paper; details to verify},
+}
+
+@misc{Cartea2025,
+  author = {Cartea, \'Alvaro and others},
+  title  = {Algorithmic Collusion and a Folk Theorem for Learning in Games},
+  year   = {2025},
+  note   = {Authors and exact title to verify},
+}
+
+@article{FosterVohra1997,
+  author  = {Foster, Dean P. and Vohra, Rakesh V.},
+  title   = {Calibrated Learning and Correlated Equilibrium},
+  journal = {Games and Economic Behavior},
+  volume  = {21},
+  number  = {1--2},
+  pages   = {40--55},
+  year    = {1997},
+}
+
+@article{HartMasColell2000,
+  author  = {Hart, Sergiu and Mas-Colell, Andreu},
+  title   = {A Simple Adaptive Procedure Leading to Correlated Equilibrium},
+  journal = {Econometrica},
+  volume  = {68},
+  number  = {5},
+  pages   = {1127--1150},
+  year    = {2000},
+}
+
+@article{BlumMansour2007,
+  author  = {Blum, Avrim and Mansour, Yishay},
+  title   = {From External to Internal Regret},
+  journal = {Journal of Machine Learning Research},
+  volume  = {8},
+  pages   = {1307--1324},
+  year    = {2007},
+}
+
+@article{Roughgarden2015,
+  author  = {Roughgarden, Tim},
+  title   = {Intrinsic Robustness of the Price of Anarchy},
+  journal = {Journal of the ACM},
+  volume  = {62},
+  number  = {5},
+  pages   = {1--42},
+  year    = {2015},
+}
+
+@inproceedings{SyrgkanisTardos2013,
+  author    = {Syrgkanis, Vasilis and Tardos, \'Eva},
+  title     = {Composable and Efficient Mechanisms},
+  booktitle = {ACM Symposium on Theory of Computing (STOC)},
+  year      = {2013},
+}
+
+@inproceedings{Syrgkanis2015,
+  author    = {Syrgkanis, Vasilis and Agarwal, Alekh and Luo, Haipeng and Schapire, Robert E.},
+  title     = {Fast Convergence of Regularized Learning in Games},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2015},
+  note      = {Best Paper},
+}
+
+@inproceedings{Anagnostides2022,
+  author    = {Anagnostides, Ioannis and Daskalakis, Constantinos and Farina, Gabriele and Fishelson, Maxwell and Golowich, Noah and Sandholm, Tuomas},
+  title     = {Near-Optimal No-Regret Learning for Correlated Equilibria in Multi-Player General-Sum Games},
+  booktitle = {ACM Symposium on Theory of Computing (STOC)},
+  year      = {2022},
+}
+
+@inproceedings{Dagan2024,
+  author    = {Dagan, Yuval and Daskalakis, Constantinos and Fishelson, Maxwell and Golowich, Noah},
+  title     = {From External to Swap Regret 2.0: An Efficient Reduction for Large Action Spaces},
+  booktitle = {ACM Symposium on Theory of Computing (STOC)},
+  year      = {2024},
+}
+
+@inproceedings{HartlineLongZhang2024,
+  author    = {Hartline, Jason D. and Long, Sheng and Zhang, Chenhao},
+  title     = {Regulation of Algorithmic Collusion},
+  booktitle = {Symposium on Computer Science and Law (CSLAW)},
+  year      = {2024},
+  doi       = {10.1145/3614407.3643706},
+}
+
+@inproceedings{HartlineWangZhang2025,
+  author    = {Hartline, Jason D. and Wang, Chang and Zhang, Chenhao},
+  title     = {Regulation of Algorithmic Collusion, Refined: Testing Pessimistic Calibrated Regret},
+  booktitle = {Symposium on Computer Science and Law (CSLAW)},
+  pages     = {108--120},
+  year      = {2025},
+  note      = {arXiv:2501.09740},
+}
+
+@misc{Hartline2026,
+  author = {Hartline, Jason D.},
+  title  = {No-Swap-Regret as a Rationality Axiom for Algorithmic Agents (Survey)},
+  year   = {2026},
+  note   = {Programmatic reference; exact title and venue to verify},
+}
+
+@inproceedings{Braverman2018,
+  author    = {Braverman, Mark and Mao, Jieming and Schneider, Jon and Weinberg, S. Matthew},
+  title     = {Selling to a No-Regret Buyer},
+  booktitle = {ACM Conference on Economics and Computation (EC)},
+  year      = {2018},
+}
+
+@inproceedings{BanchioSkrzypacz2022,
+  author    = {Banchio, Martino and Skrzypacz, Andrzej},
+  title     = {Artificial Intelligence and Auction Design},
+  booktitle = {ACM Conference on Economics and Computation (EC)},
+  year      = {2022},
 }
