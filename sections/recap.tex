@@ -1,0 +1,225 @@
+\section{Recap: Game Theory and Deep Learning}
+\label{sec:recap}
+
+\begin{drafting}
+\textbf{Recap framing.} This section follows each field along its own
+developmental path and stops where the two paths begin to meet. Game theory is
+traced from the existence of equilibrium to the cost of computing it; deep
+learning is traced from the function-approximation idea to the systems that now
+act and reason at scale. The account is meant to be read on its own; the
+concepts the rest of the article relies on appear in their native context rather
+than as a checklist.
+\cmt[goal]{Two changes from a pure ``preliminaries'' section: (i) tell each
+discipline's story as a history with its own logic, so 2.x reads independently of
+3.x/4.x; (ii) keep every forward reference (``this is what 3.1 uses'') inside
+\cmt, never in the prose. The two arcs are chosen to converge: game theory ends
+on \emph{computation} (algorithmic game theory), deep learning ends on
+\emph{construction at scale}, and Section~\ref{sec:intro}'s gap sits exactly
+between them.}
+\cmt[style]{Follow introduction.tex, not ai4gt/gt4ai: narrative paragraphs with
+\cmt[step] markers between movements, no Leading-question / Thesis / itemize
+scaffolding. One topic sentence opens each movement; no summary-only closers.}
+\end{drafting}
+
+
+\subsection{Game Theory: From Existence to Computation}
+\label{subsec:recap-gt}
+
+\begin{drafting}
+\cmt[arc]{Five movements, each a real turn in the field's history: (1) founding
+on zero-sum + utility; (2) Nash's generalization to arbitrary games; (3)
+information, dynamics, and refinement; (4) the design turn (mechanism design);
+(5) the computational turn (AGT). The narrative spine is the slow shift of the
+binding question from ``does an equilibrium exist'' to ``can one be
+constructed.''}
+
+\cmt[step]{(1) Founding: a mathematics of interaction, born zero-sum.}
+Game theory began as the search for a principled way to act when one's payoff
+depends on the choices of others. Von Neumann's minimax theorem settled the
+two-player zero-sum case by showing that every such game has a value and a pair
+of optimal mixed strategies, a saddle point neither player can improve
+upon~\cite{Neumann1928}. The field acquired its scope when von Neumann and
+Morgenstern grounded payoffs in an axiomatic theory of expected utility and
+proposed game-theoretic reasoning as a foundation for economic
+behavior~\cite{vNM1944}. At this stage the central solved object was the value of
+a strictly competitive game.
+
+\cmt[step]{(2) Nash: the leap to general-sum, and existence via fixed point. Land
+on the certificate, because everything later relaxes or computes it.}
+Nash extended the theory to games that are neither two-player nor zero-sum. A
+Nash equilibrium is a strategy profile in which each player already best-responds
+to the others, so no one can gain by deviating alone; using a fixed-point
+argument, Nash proved that every finite game has at least one such equilibrium in
+mixed strategies~\cite{Nash1951}. Existence thereby became automatic, and the
+content of the concept settled onto the condition it certifies: a global
+guarantee that no unilateral deviation pays. This no-profitable-deviation
+certificate, and the question of how to reach it, organizes most of what
+follows.
+\cmt[anchor]{Define exploitability / the Nash gap here in one clause so 3.1 and
+4.1 can reuse it without re-introducing: the worst-case gain available to a
+best-responding deviator, zero exactly at equilibrium.}
+
+\cmt[step]{(3) Information, dynamics, refinement: the post-Nash elaboration that
+won the 1994 + 2005 Nobels. Keep it as one connected movement, not a list.}
+The decades after Nash enriched the equilibrium concept along three fronts. The
+extensive form gave games a temporal structure of moves and information sets, and
+Kuhn's theorem related behavior strategies to mixed strategies under perfect
+recall~\cite{Kuhn1953}. Because Nash equilibrium permits incredible threats off
+the equilibrium path, Selten introduced refinements, subgame and trembling-hand
+perfection, that demand rationality at every contingency~\cite{Selten1975}.
+Harsanyi brought private information inside the theory by modeling uncertainty
+about payoffs as uncertainty about a player's type drawn from a common prior,
+turning games of incomplete information into ordinary Bayesian
+games~\cite{Harsanyi1968}. A parallel epistemic program asked what players must
+believe about one another: Aumann formalized common knowledge and showed that
+correlation through a shared signal yields a broader and often more natural
+notion, the correlated equilibrium~\cite{Aumann1976,Aumann1974}. Where perfect
+rationality strained against evidence, weaker behavioral concepts appeared:
+quantal response equilibrium replaces exact optimization with a smooth, noisy
+best response~\cite{McKelveyPalfrey1995}, and rationalizability keeps only the
+strategies that survive iterated removal of choices that are never a best
+response~\cite{Bernheim1984,Pearce1984}.
+\cmt[forward]{Quiet hooks for later, not stated in prose: correlated / coarse
+correlated equilibrium = the certificates no-regret dynamics actually reach
+(3.1, 4.3); QRE = the differentiable response map inverted in 3.2. Mention them
+in their own historical right here; let 3.x/4.x cite back.}
+
+\cmt[step]{(4) The design turn: invert the question. Predict play -> design rules.
+This is the ``for game theory'' engineering face and the natural home of IC.}
+A second line inverted the analytic question. Mechanism design takes the desired
+outcome as given and asks how to set the rules of a game so that self-interested
+play produces it. The ambition met early limits:
+Arrow showed that no voting rule can aggregate preferences while satisfying a
+short list of reasonable axioms~\cite{Arrow1951}, and Gibbard and Satterthwaite
+showed that any non-dictatorial choice rule over unrestricted preferences is
+manipulable~\cite{Gibbard1973,Satterthwaite1975}. Within these limits a
+constructive theory grew. The revelation principle lets a designer restrict
+attention to direct mechanisms in which truthful reporting is an equilibrium, so
+the design problem reduces to imposing incentive compatibility and individual
+rationality. The Vickrey--Clarke--Groves mechanisms achieve efficient outcomes in
+dominant strategies by charging each agent its externality on the
+others~\cite{Vickrey1961,Clarke1971,Groves1973}, and Myerson characterized the
+revenue-maximizing auction for a single item~\cite{Myerson1981}. Incentive
+compatibility is the counterfactual constraint at the center of this theory:
+truthful reporting must remain optimal against every misreport an agent could
+have made.
+\cmt[anchor]{This IC definition + the VCG / affine-maximizer family are exactly
+what 3.3 relocates step by step; introduce them as economics here so 3.3 can lean
+on them without redefining.}
+
+\cmt[step]{(5) The computational turn: from existence to construction. This is
+where the survey picks up. Land the complexity partition hard.}
+As the games and mechanisms of interest grew large, the binding question moved
+from whether a solution exists to whether one can be computed, and algorithmic
+game theory formed around that question~\cite{NisanRoughgardenTardosVazirani2007}.
+The answer depends sharply on the setting. A two-player zero-sum equilibrium
+coincides with the minimax value and is computable by linear programming, hence
+efficient. Computing a Nash equilibrium of a general game is far harder: the
+problem is PPAD-complete, a class capturing fixed-point problems whose solutions
+are guaranteed to exist but appear intractable to find, and the hardness persists
+even for two players~\cite{Papadimitriou1994,DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}.
+Classical exact solvers such as Lemke--Howson run in worst-case exponential
+time~\cite{LemkeHowson1964}. The correlated solution concepts are by contrast
+benign: a correlated or coarse correlated equilibrium can be computed in
+polynomial time, and is reached by simple decentralized learning,
+since the empirical play of agents who each minimize regret converges to this
+set~\cite{HartMasColell2000,BlumMansour2007}. How much such self-interested
+learning costs society is itself bounded, by the price of anarchy in games with
+appropriate smoothness~\cite{KoutsoupiasPapadimitriou1999,Roughgarden2015,SyrgkanisTardos2013}.
+Mechanism design carries an analogous computational burden, since constructing
+optimal incentive-compatible mechanisms is itself a hard optimization over the
+space of type-contingent rules~\cite{ConitzerSandholm2002}.
+\cmt[bridge]{This paragraph is the hand-off to the whole paper, but say it in one
+later sentence, not here: zero-sum tractability and PPAD-hardness are why 3.1's
+solvers target two-player zero-sum and retreat to (C)CE elsewhere; no-regret ->
+correlated equilibrium is the hinge to 4.3; AGT is the field this survey extends.}
+
+The shift this section traces, from establishing that an equilibrium exists to
+asking at what cost it can be built, is precisely the opening that learning-based
+methods step into.
+\end{drafting}
+
+
+\subsection{Deep Learning: From Function Approximation to Systems That Act}
+\label{subsec:recap-dl}
+
+\begin{drafting}
+\cmt[arc]{Five movements paralleling 2.1's logic: (1) the network as a trainable
+function approximator; (2) scale turns capacity into capability; (3) architecture
+as inductive bias; (4) generative modeling; (5) decision-making and language. End
+where the substrate becomes capable of \emph{constructing} the objects 2.1
+priced.}
+
+\cmt[step]{(1) Foundations: connectionism -> backprop -> universal approximation.
+Frame the network as a differentiable parameterized map. This is the technical
+primitive the whole survey rests on.}
+Deep learning rests on a single idea: represent an unknown mapping as a composition
+of simple adjustable units and fit it to data. The early connectionist model, the
+perceptron, learned a linear separator by adjusting weights from
+examples~\cite{Rosenblatt1958}, but Minsky and Papert showed that a single layer
+cannot represent even elementary nonlinear functions, and interest
+lapsed~\cite{MinskyPapert1969}. The obstruction fell once networks with hidden
+layers were trained by backpropagation, which computes the gradient of a loss
+with respect to every weight by the chain rule~\cite{Rumelhart1986}, and once it
+was proved that a network with a single hidden layer of sufficient width can
+approximate any continuous function on a compact
+domain~\cite{Cybenko1989,Hornik1991}. A neural network is thus a parameterized,
+differentiable map, and training is the minimization of an empirical loss by
+gradient descent. This is the primitive on which everything later is built.
+
+\cmt[step]{(2) Scale: capacity -> capability. The 2012 inflection. Representation
+learning replaces hand-engineered features.}
+Approximation capacity alone did not make networks useful; scale did. Larger
+datasets and faster hardware turned depth into a practical advantage, a shift
+marked by convolutional networks for images~\cite{LeCun1998} and by the
+large-margin improvement of a deep network on the ImageNet benchmark, which moved
+the field decisively toward learned representations over hand-engineered
+features~\cite{Krizhevsky2012}. Stochastic gradient descent with adaptive step
+sizes made the optimization of very large models routine~\cite{Kingma2015Adam},
+and the consolidation of these advances established deep networks as the default
+approximator across domains~\cite{LeCunBengioHinton2015,GoodfellowBengioCourville2016}.
+
+\cmt[step]{(3) Architecture as inductive bias. The lesson: match structure to
+data; the architecture encodes a prior that holds for every input.}
+The next lesson was that the form of the network matters as much as its size,
+because a well-chosen architecture builds the structure of the problem into the
+model. Convolution encodes spatial locality and translation invariance; attention
+and the transformer let every element of a set or sequence condition on every
+other, removing the assumption of a fixed input order~\cite{Vaswani2017}; and
+equivariant designs make a network respect symmetries of its input by
+construction. An architectural choice acts as a prior that holds for all inputs,
+without being learned from data or enforced by the loss.
+
+\cmt[step]{(4) Generative modeling: learn to sample, not just to predict. Flag
+GAN as itself a game in one clause; full treatment is 4.2.}
+A parallel line of work learned the data distribution itself, so that new
+samples can be drawn from it. Variational autoencoders optimize a
+likelihood bound through an encoder--decoder pair~\cite{KingmaWelling2014};
+generative adversarial networks pit a generator against a discriminator and
+reach their target when the discriminator can no longer tell real data from
+generated~\cite{Goodfellow2014}; and diffusion models generate by learning to
+reverse a gradual noising process~\cite{Ho2020DDPM}. The adversarial formulation
+is notable for casting generation as a two-player game, a framing the alignment
+literature would later adopt directly.
+
+\cmt[step]{(5) Decision-making and language: from prediction to action, then to
+symbolic/linguistic competence. Close on LLMs as both actors and engines.}
+Two further developments extended learned approximation from prediction to action
+and language. Reinforcement learning treats behavior as a policy in a Markov
+decision process and improves it from reward, either through estimated values or
+through the policy gradient, which differentiates expected return with respect to
+the policy's parameters~\cite{Williams1992,SuttonPolicyGradient2000,SuttonBarto2018};
+combined with deep function approximation, this produced agents that learn control
+from raw perception~\cite{Mnih2015} and, through self-play, reach superhuman
+strength in games of pure skill~\cite{Silver2018}. A related strand recovers the
+objective itself from observed behavior, through inverse reinforcement learning
+and its adversarial imitation variants~\cite{NgRussell2000,HoErmon2016}. Most
+recently, transformers trained at scale to predict the next token in text have
+become large language models that acquire in-context learning and the generation
+of code and structured arguments~\cite{Vaswani2017,BrownGPT3_2020}, extending the
+same differentiable-approximation machinery to symbolic and linguistic tasks.
+
+By the end of this path the network can search, generate, act, and write
+programs, and that capability is what the next section turns toward the
+construction of game-theoretic objects.
+\end{drafting}
