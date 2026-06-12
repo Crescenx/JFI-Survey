@@ -1,47 +1,51 @@
 # State
 
-Base commit before `_agents` initialization: 08910f3
-Last updated: 2026-05-31
+Last reviewed commit: 4afc2ea
+Last updated: 2026-06-12
 
 ## Manuscript Structure
 
-- `main.tex`: main document
-- `sections/intro.tex`: introduction.
-- `sections/recap.tex`: Section 2 recap of game theory and deep learning.
-- `sections/ai4gt.tex`: AI for game theory.
-- `sections/gt4ai.tex`: game theory for strategic AI.
-- `sections/conclusion.tex`: synthesis/outlook section
+- `main.tex`: main document. The abstract has not yet been revised for the
+  round-one framing.
+- `sections/intro.tex`: current introduction draft. It frames game-theoretic
+  concepts as universally quantified certificates, defines finite access, and
+  points toward the specification -> construction -> verification loop.
+- `sections/recap.tex`: Section 2 recap. It develops the equilibrium guardrail,
+  the PPAD prototype of construction-verification decoupling, and the deep
+  learning capability history.
+- `sections/ai4gt.tex`: Section 3 draft. It treats AI for game theory through
+  constructive equilibrium, strategic inference, and neural mechanism design.
+- `sections/gt4ai.tex`: Section 4 draft. It treats game theory for strategic AI
+  through strategic evaluation, verification-dominated training, and deployment
+  governance.
+- `sections/conclusion.tex`: Section 5 draft. It currently carries the
+  checkable-certificate definition, certificate taxonomy, capability table, and
+  fourth-turn closing claim.
 - `ref.bib`: bibliography file used by `main.tex`.
 
-## Current State
+## Current Draft Position
 
-The manuscript is a rough AI-assisted draft whose current value is the paper
-skeleton: section structure, topic selection, and early narrative content are in
-place, but the prose is not yet submission-level.
+The current draft proposes a revised main line in response to Prof. Huang's
+suggestions and the author's subsequent feedback. The proposed load-bearing
+object is the checkable strategic certificate. The proposed refrain is universal
+certificate versus finite access. The proposed corollary is the fourth turn of
+game theory. The proposed guardrail separates equilibrium from one-sided robust
+optimization and from dynamical stability.
 
-The intended story is that AI and game theory have each matured enough that new
-mutual needs are becoming visible. The paper frames this as a gap that motivates
-two reciprocal directions: AI for game theory and game theory for AI. Each
-direction is organized into three leading-question-driven subdirections, and the
-conclusion should point toward AI and game theory co-evolving.
+The LLM observation is currently framed through specification-side symbolic
+generation. The draft presents this as a row pattern in the Section 5 capability
+table, with examples drawn from proof generation, mechanism-as-code, symbolic
+behavioral models, and audit rules.
 
-Current development emphasis:
+## Current Collaboration Stage
 
-- Sections 3 and 4 have received the most attention, especially topic selection
-  and narrative structure.
-- Section 1 has received secondary attention as the main framing entry point.
-- Section 5 / conclusion is connected to the manuscript but remains comparatively
-  rough.
+The project remains in the outline-and-framing stage. The next collaborator
+should evaluate whether Prof. Huang's suggestions, the author's response, and
+the revised section structure fit together. If the outline is accepted, the
+project can move into prose drafting, likely beginning with the Introduction.
 
-Current collaboration setup:
+## Drafting Status
 
-- `AGENTS.md` explains how agents should understand and work with the project.
-- `_agents/changelog/` stores detailed collaboration history.
-- Human collaborators may still review, comment, and edit directly in Overleaf.
-
-Current review need:
-
-- Assess whether the overall skeleton is suitable.
-- Assess whether the AI4GT / GT4AI split and the six subdirections are balanced.
-- Assess whether the collaboration workflow across Overleaf, git, and `_agents/`
-  is workable for multiple collaborators.
+The paper remains in drafting mode. `review.tex` still enables visible drafting
+blocks and comments. The current prose is suitable for collaborator review, not
+submission.

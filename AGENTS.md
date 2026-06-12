@@ -34,6 +34,9 @@ _agents/
     auto/
       YYYY-MM-DD-git-<commit>.md
 
+  materials/
+    descriptive-name.md
+
   decisions/
     open.md
     resolved.md
@@ -130,6 +133,15 @@ not write a changelog entry, agents may generate a fallback entry from git
 history and place it under `_agents/changelog/auto/`. Mark such entries as
 `source: git-auto` and treat them as lower-context summaries.
 
+### `_agents/materials/`
+
+`materials/` stores collaboration materials produced or received during the
+paper-writing process, such as review memos, author responses, planning notes,
+and source documents that inform later changelog, state, focus, or manuscript
+updates. Keep filenames descriptive and prefer linking to these files from
+`state.md`, `focus.md`, changelog entries, or decisions instead of copying long
+passages.
+
 ### `_agents/decisions/`
 
 `decisions/` manages suggestions, questions, and decisions. Entries may come
@@ -217,6 +229,7 @@ three-step workflow.
   edits elsewhere.
 - Manuscript files remain the source of truth.
 - `_agents/changelog/` records history.
+- `_agents/materials/` stores collaboration materials and source documents.
 - `_agents/state.md` records the current state.
 - `_agents/focus.md` guides the next collaborator.
 - `_agents/decisions/` manages suggestions, questions, and accepted decisions.
