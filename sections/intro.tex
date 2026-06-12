@@ -6,6 +6,31 @@
 % marked with \cmt.
 %
 % Requires the main preamble to contain \input{review}.
+%
+% REVISION (this pass) --- implements the Section-1 row of the corrected
+% review mapping:
+%   R1'      the three-obstruction taxonomy of the previous draft is promoted
+%            to the article-wide refrain and re-derived as "universally
+%            quantified certificate vs. finite access", with two access
+%            regimes (query / observational) plus the cross-cutting
+%            verification question; on/off-path language survives only as the
+%            special case of the observational regime; every Part I/II bullet
+%            now carries its regime tag, redeeming the refrain's promise.
+%   R2'+R4'  step (5)'s forward pointer is retargeted from "co-evolution" in
+%            the abstract to the three-node loop specification -> construction
+%            -> verification; the fourth turn of the binding question appears
+%            exactly once, in corollary tone, with the single clause that
+%            distinguishes it from the computational turn (the certified
+%            object is a deployed learning system, not an explicitly described
+%            game).
+%   R5'      the left fence post (equilibrium = reciprocal consistency, not a
+%            unilateral robustness guarantee against nature; coincidence only
+%            in zero-sum) is planted at the end of step (1); the right post
+%            (consistency carries no dynamical-stability claim) is only
+%            forward-referenced to 2.1 / 4.2, where it lands and works.
+%   R6       step (4) is upgraded from describing the scattered literature to
+%            an explicit defense of problem-oriented organization, argued from
+%            the material (regret recurring across three communities).
 
 \section{Introduction}
 \label{sec:intro}
@@ -14,20 +39,32 @@
 \textbf{Introduction framing.} The introduction has to carry the reader from two
 mature-but-separate fields to a single shared problem, and then to the article's
 plan for attacking it from both sides.
-\cmt[skeleton]{Five-step spine: (1) state of game theory and AI; (2) a
-complementary deficit on each side, so each field naturally calls for the other;
-(3) name the gap, then turn to why it is structurally hard; (4) the bridging
-effort, organized by \emph{problem} across the two directions; (5) close by
-pointing at co-evolution. Guardrails: do NOT open any unit with a ``Why \dots''
-question header --- it reads as self-interrogation / self-justification. Narrate
-the gap \emph{before} turning to its difficulty. Introduce the article's
-organization by describing the scattered literature, never by announcing ``this
-is a positioning survey.'' Keep co-evolution to one forward-pointing sentence
-here; develop it in full in Section~5.}
+\cmt[skeleton]{Five-step spine, revised: (1) state of game theory and AI ---
+land on game-theoretic concepts as \emph{universally quantified certificates},
+and plant the R5' left fence post immediately after that landing; (2) a
+complementary deficit on each side, so each field naturally calls for the
+other, naming the gap at the end in the vocabulary (finite data, finite
+computation) that step (3) collects under ``finite access''; (3) turn to why
+the gap is structurally hard, and promote the three obstructions to the
+article-wide refrain: a universal certificate met by finite access, with the
+regime of access (query / observational / certifier's deficit) deciding which
+obstruction results (R1'); (4) the bridging effort, organized by problem, with
+the organizational choice explicitly defended from the material (R6) and each
+subsection tagged by its access regime; (5) close on the specification $\to$
+construction $\to$ verification loop with the fourth turn as a one-sentence
+corollary (R2'+R4'), then the roadmap. Guardrails: do NOT open any unit with a
+``Why \dots'' question header --- it reads as self-interrogation /
+self-justification. Narrate the gap \emph{before} turning to its difficulty.
+Defend the organization by argument from the material, never by announcing
+``this is a positioning survey.'' Keep the loop to one forward-pointing move
+here; the full development belongs to Section~5.}
 
-\cmt[step]{(1) Current state. Game theory = a language for counterfactual
-robustness; AI has turned interactive in exactly that sense. Land the move on:
-competence is now a strategic question, not a scalar one.}
+\cmt[step]{(1) Current state. Game theory = a language of universally
+quantified certificates; AI has turned interactive in exactly the sense those
+certificates quantify over. Land the move on: competence is now a strategic
+question, not a scalar one. The R5' left post closes the first paragraph; the
+right post is only pointed at (\ref{subsec:recap-gt} draws it,
+\ref{subsec:training-alignment} uses it).}
 Game theory was built to reason about situations in which an outcome depends on
 how multiple agents respond to one another. Its central concepts (Nash
 equilibrium, Bayesian games, incentive compatibility, rationalizability, common
@@ -36,81 +73,139 @@ quantifies over what was \emph{not} observed: whether a proposed outcome would
 survive deviations no one took, whether the beliefs that could have generated
 the play are consistent, whether truthful reporting would remain optimal against
 every possible misreport, whether an institution would still perform once
-participants understand and adapt to its rules. Game theory is a language for
-\emph{counterfactual robustness} in interactive systems.
+participants understand and adapt to its rules. The logical form is the same in
+each case: a universal statement ranging over counterfactual interaction. Game
+theory is a language of \emph{universally quantified certificates} for
+interactive systems.
+
+One boundary of this language must be fixed before anything is built on it,
+because its central certificate invites a conflation. A Nash equilibrium
+certifies \emph{reciprocal} consistency: every player simultaneously best
+responds to every other, so the profile is a fixed point of mutual adaptation.
+Robust optimization makes a different demand, asking a single decision-maker to
+perform well against an adversarial environment; the two conditions coincide
+only in two-player zero-sum games, where equilibrium play reduces to minimax
+robustness. Section~\ref{subsec:recap-gt} draws this fence on both of its
+sides. The second side, that a consistency condition asserts nothing about
+whether any learning dynamics settle on it, supplies the explanation in
+Section~\ref{subsec:training-alignment} of why equilibrium-seeking training can
+fail to converge.
 
 That language has become newly urgent because artificial intelligence has turned
-interactive in precisely this sense. Modern AI systems act in environments
-shaped by other agents and by responses to their own behavior.
-Reinforcement-learning agents learn through repeated feedback; self-play systems
-reach superhuman strength in chess, Go, and poker by improving against changing
-opponents~\cite{Silver2018,BrownSandholm2018}; language-model agents negotiate,
-persuade, delegate, and coordinate; and pricing, recommendation, and trading
-algorithms operate in environments shaped by other algorithms and by human
-responses to them. Once a system acts in such a setting, its competence must be
-measured strategically: how does it behave when others adapt to it, exploit it,
-imitate it, or organize around it?
+interactive in precisely the sense the certificates quantify over. Modern AI
+systems act in environments shaped by other agents and by responses to their own
+behavior. Reinforcement-learning agents learn through repeated feedback;
+self-play systems reach superhuman strength in chess, Go, and poker by improving
+against changing opponents~\cite{Silver2018,BrownSandholm2018}; language-model
+agents negotiate, persuade, delegate, and coordinate; and pricing,
+recommendation, and trading algorithms operate in environments shaped by other
+algorithms and by human responses to them. Once a system acts in such a setting,
+its competence must be measured strategically: how does it behave when others
+adapt to it, exploit it, imitate it, or organize around it?
 
 \cmt[step]{(2) The complementary deficit. GT specifies but cannot construct at
 scale; AI constructs but cannot say what behavior should satisfy. Each lack is
 the other's strength, so the two fields call for each other. Name the gap at the
-END of this move, so step (3) has something concrete to turn on.}
+END of this move, in terms (finite data, finite computation) that step (3)
+will gather under ``finite access,'' so the refrain's definition is earned
+rather than dropped in.}
 AI and game theory meet at complementary deficits. Game theory supplies precise
-strategic specifications, but once the number of agents, types, or states grows
-large, it cannot \emph{construct} the procedures that reach them at scale. AI
-supplies scalable procedures for search, function approximation, simulation, and
-language-based generation, yet offers no principled account of what their
-interactive behavior should \emph{satisfy}. Game theory tends toward
-specification, AI toward construction. The gap between them runs between
-strategic conditions defined over counterfactual interaction and computational
-procedures that must learn, approximate, or verify those conditions from finite
-data and finite computation.
+strategic specifications of the kind just described, but once the number of
+agents, types, or states grows large, it cannot \emph{construct} the procedures
+that reach them at scale. AI supplies scalable procedures for search, function
+approximation, simulation, and language-based generation, yet offers no
+principled account of what their interactive behavior should \emph{satisfy}.
+Game theory tends toward specification, AI toward construction. The gap between
+them runs between strategic conditions quantified over counterfactual
+interaction and computational procedures that must learn, approximate, or verify
+those conditions from finite data and finite computation.
 
-\cmt[step]{(3) Why hard. Pivot on ``This gap is hard for a structural reason.''
-Off-equilibrium counterfactuals -> combinatorial blow-up -> the object is too
-explicit. Then the three obstructions (computational / epistemic / verification)
-and the payoff line: closing the gap means restructuring the specification
-$\leftrightarrow$ construction relation.}
-This gap is hard for a structural reason. Every nontrivial strategic condition
-is defined over \emph{off-equilibrium counterfactuals}: the deviations not
-taken, the types not reported, the opponents not encountered, the private values
-not observed. This counterfactual space grows combinatorially in the number of
-agents, actions, and states, too vast to enumerate and too high-dimensional to
-resolve in closed form. The theoretical object is too explicit; it quantifies
-over more possibilities than any procedure can handle directly.
+\cmt[step]{(3) Why hard --- and the article-wide refrain (R1'). Pivot on ``This
+gap is hard for a structural reason.'' Derivation order: universal certificate
+$\to$ finite access $\to$ the regime of access decides the obstruction. The
+three obstructions of the previous draft (computational / epistemic /
+verification) are preserved but re-derived: query access yields the
+computational obstruction, observational access the epistemic one, and the
+certifier's deficit of access relative to the builder yields the verification
+one. On-/off-path language survives only inside the observational case. End on
+the promise that the refrain is instantiated regime by regime across the six
+subsections; the Part I/II bullets below redeem that promise.}
+This gap is hard for a structural reason, and the reason organizes the rest of
+the article. Every nontrivial strategic condition is a universally quantified
+certificate: it ranges over the deviations not taken, the types not reported,
+the opponents not encountered, the private values not observed, a
+counterfactual space that grows combinatorially in the number of agents,
+actions, and states. Any computational procedure, by contrast, reaches that
+space only through what we will call \emph{finite access}: finitely many
+evaluations of an explicit model, finitely many rollouts of a simulator, or
+finitely many observations of play that actually occurred. The theoretical
+object quantifies over more possibilities than any finite window can contain,
+and which obstruction this mismatch produces depends on the regime of access.
 
-The obstruction takes three forms. When a condition is specified but its
-construction is intractable, the obstruction is \emph{computational}: computing
-a Nash equilibrium in general finite games is PPAD-complete, and the hardness
-persists down to the two-player
-case~\cite{DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}. When a
-procedure is observed but its governing condition is unknown, the obstruction is
-\emph{epistemic}: the same behavior can be rationalized by many distinct payoff
-structures, belief hierarchies, or reasoning rules, so conduct does not uniquely
-reveal the private information that produced it. When the procedure is an opaque
-neural system, the obstruction is one of \emph{verification}: properties such as
-non-exploitability or incentive compatibility range over counterfactual
-interactions that finite testing can never exhaust. Closing the gap therefore
-means restructuring the relationship between a specification and its
-construction.
+Under \emph{query access}, the game is explicitly described, or a simulator or
+differentiable model can evaluate any single counterfactual on demand. Every
+individual deviation is checkable at a price, and the obstruction is
+\emph{computational}: the quantified space cannot be exhausted, and assembling
+finitely many local checks into the global certificate is itself intractable,
+since computing a Nash equilibrium of a general finite game is PPAD-complete
+and the hardness persists down to the two-player
+case~\cite{DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}. Under
+\emph{observational access}, no counterfactual can be queried at any price:
+only realized play is available, and the deviations not taken have left no
+trace in it. The obstruction is \emph{epistemic}: the same finite record of
+behavior is consistent with many distinct payoff structures, belief
+hierarchies, and reasoning rules, so conduct does not uniquely reveal the
+private structure that produced it. What the literature calls off-path behavior
+is the case worth naming here, because it is exactly the part of the
+certificate that observation never delivers.
 
-\cmt[step]{(4) Bridging effort, organized by problem. The literature is
-scattered across communities that share one implicit problem; organizing by
-problem (not by community) reveals the common movement. This is where the
-``problem-oriented'' choice of organization is justified by description, not
-asserted. Then hand off to the two-direction breakdown, Part I / Part II, which
-doubles as the article structure.}
+A third obstruction cuts across both regimes, because construction and
+certification are rarely performed by the same party with the same access.
+Whoever must certify a system typically holds less access than whoever built
+it: finite tests against an opaque policy, finite rounds of interaction with a
+stronger prover, finite behavioral records from a deployed agent. The
+obstruction is then one of \emph{verification}: whether a universally
+quantified property can be certified from finite access at all.
+
+This confrontation between a universal certificate and a finite window of
+access is the refrain of the article. Each of the six domains surveyed below
+instantiates it in a definite regime, named in each case, and closing the gap
+in any regime means restructuring how a specification, its construction, and
+its verification relate to one another.
+\cmt[refrain]{Reverse lookup for the body sections, to keep the tags below
+consistent: query regime $\to$ \ref{subsec:constructive-equilibrium},
+\ref{subsec:mechanism-design}; observational regime $\to$
+\ref{subsec:strategic-inference}, \ref{subsec:deployment-governance};
+intermediate / verification-dominated $\to$ \ref{subsec:strategic-evaluation},
+\ref{subsec:training-alignment}. Section~5 collects the refrain into the
+certificate definition and taxonomy (R2') and closes the loop.}
+
+\cmt[step]{(4) Bridging effort, organized by problem --- now defended (R6), not
+merely described. Two prongs: (a) organized by community, the shared question
+stays implicit seven times over; (b) a method takes its shape from its access
+regime and from where it relocates the certificate, and community of origin
+predicts neither --- witness the same regret quantity recurring as solution
+method (3.1), training loss (3.3), and audit statistic (4.3). Then the
+two-direction breakdown, Part I / Part II, which doubles as the article
+structure; every bullet carries its regime tag.}
 Work at this interface is abundant, but it is scattered across communities
 (equilibrium computation, multi-agent reinforcement learning, empirical
 game-theoretic analysis, neural mechanism design, behavioral modeling, AI
-alignment, algorithmic governance), each with its own methods and benchmarks and
-each leaving a shared problem implicit. Equilibrium solvers, inverse-game
-methods, neural auctions, language-model evaluations, self-play alignment
-procedures, and regret-based audits all confront one question: how can a
-counterfactual strategic property be represented inside a computational system?
-Organizing this work by the problems it addresses, rather than by the community
-that produced it, brings the common movement into view. We examine the gap from
-both directions.
+alignment, algorithmic governance), each with its own methods and benchmarks.
+A survey must choose its organizing axis, and the material itself argues for
+one choice. Organized by community, the literature resolves into seven internal
+histories, and the question they share stays implicit in every one of them: how
+can a universally quantified strategic property be represented inside a system
+with finite access? Organized by problem, that question becomes the unit of
+exposition, and a regularity appears that the community partition hides: a
+method takes its shape from the access regime it works in and from the place to
+which it relocates the certificate, and its community of origin predicts
+neither. The same regret quantity recurs as a solution method in equilibrium
+computation, as a training loss in neural auction design, and as an audit
+statistic in algorithmic governance; an equilibrium solver and a debate
+protocol, communities apart, face the same problem of certifying a universal
+property from finitely many checks. We therefore organize by problem and
+examine the gap from both directions.
 
 \paragraph{Part I: AI for game theory (Section 3).}
 Here AI helps make strategic specifications executable. The key observation is
@@ -118,22 +213,31 @@ that AI relocates the game-theoretic constraint into a differentiable residual,
 a no-regret trajectory, an architectural guarantee, or a checkable certificate.
 \begin{itemize}
   \item \textbf{Constructive equilibrium (3.1).} The Nash equilibrium is easy to
-        define and hard to compute. We trace a spectrum of methods that relax,
-        approximate, transform, or re-prove the equilibrium certificate, from
-        differentiable residuals and no-regret self-play to language-model-based
-        symbolic solvers. \emph{Given that the equilibrium certificate cannot be
-        enforced globally, what detour around it does each method take?}
+        define and hard to compute. The regime is query access: the game is
+        explicit or simulatable, any deviation can be evaluated, and the
+        obstruction is computational. We trace a spectrum of methods that
+        relax, approximate, transform, or re-prove the equilibrium certificate,
+        from differentiable residuals and no-regret self-play to
+        language-model-based symbolic solvers. \emph{Given that the equilibrium
+        certificate cannot be enforced globally, what detour around it does
+        each method take?}
   \item \textbf{Strategic inference (3.2).} Observed behavior is consistent with
-        many latent games. We examine how AI turns behavioral theories into
-        trainable \emph{behavior generators} that can be constructed, inverted,
-        and expanded, recovering hidden preferences, beliefs, and social
-        relations. \emph{Given that fitting behavior is easy but identifying the
-        mechanism is hard, what identification discipline does AI supply?}
+        many latent games. The regime is observational: counterfactual play
+        cannot be queried, only the realized record is available, and the
+        obstruction is epistemic. We examine how AI turns behavioral theories
+        into trainable \emph{behavior generators} that can be constructed,
+        inverted, and expanded, recovering hidden preferences, beliefs, and
+        social relations. \emph{Given that fitting behavior is easy but
+        identifying the mechanism is hard, what identification discipline does
+        AI supply?}
   \item \textbf{Mechanism design (3.3).} Incentive compatibility requires
         truthful reporting to dominate every misreport, for every type and every
-        opponent. We trace how this counterfactual constraint moves step by step
-        inside the learning system: first as an external linear program, then as
-        a differentiable regret penalty~\cite{Duetting2019}, then as an
+        opponent. The regime is again query access, since the learner's inner
+        loop can search for profitable misreports on demand, while the
+        quantified space of types and misreports remains inexhaustible. We
+        trace how this counterfactual constraint moves step by step inside the
+        learning system: first as an external linear program, then as a
+        differentiable regret penalty~\cite{Duetting2019}, then as an
         architectural guarantee, and finally as a verified institutional
         artifact. \emph{Where should incentive compatibility live in a neural
         mechanism?}
@@ -146,44 +250,66 @@ a policy in relation to other policies, users, protocols, and institutions.
 \begin{itemize}
   \item \textbf{Strategic evaluation (4.1).} When performance depends on the
         opponent, a scalar benchmark score stops being a meaningful measure of
-        competence. Game-theoretic notions such as exploitability,
-        population-level rankings, and Nash averaging~\cite{Balduzzi2018}
-        replace fixed test sets with opponent-relative evaluation. \emph{Can
-        strategic competence be judged without specifying against whom?}
+        competence. The evaluator occupies an intermediate regime: query access
+        to the policy under evaluation, but only a finite population standing
+        in for the opponents of deployment. Game-theoretic notions such as
+        exploitability, population-level rankings, and Nash
+        averaging~\cite{Balduzzi2018} replace fixed test sets with
+        opponent-relative evaluation. \emph{Can strategic competence be judged
+        without specifying against whom?}
   \item \textbf{Training and alignment (4.2).} When the alignment target cannot
         be reduced to a fixed scalar reward, for instance when it involves an
         adversary, a non-transitive preference, or a verifier weaker than the
         model~\cite{Christiano2017,Ouyang2022}, training becomes equilibrium
-        selection. We examine three game families: adversarial, preference, and
-        interactive-proof games. \emph{When alignment is a relation among
-        policies, what should training optimize?}
+        selection. The verification obstruction enters the training loop
+        itself: a bounded judge must certify a stronger model from finitely
+        many rounds of interaction. We examine three game families:
+        adversarial, preference, and interactive-proof games. \emph{When
+        alignment is a relation among policies, what should training optimize?}
   \item \textbf{Deployment governance (4.3).} Individually aligned agents can
         induce undesirable system-level equilibria when they interact through
-        markets, delegation chains, or pricing algorithms. No-regret learning
-        theory and calibrated-regret auditing provide tools for governing
-        strategic \emph{behavior} from the outside, without requiring inspection
-        of source code. \emph{What system-level equilibria emerge from locally
+        markets, delegation chains, or pricing algorithms. The regime is
+        observational in its pure form: the auditor holds behavioral records
+        alone and must certify an equilibrium-level property from finite
+        observation of deployed learners. No-regret learning theory and
+        calibrated-regret auditing provide tools for governing strategic
+        \emph{behavior} from the outside, without requiring inspection of
+        source code. \emph{What system-level equilibria emerge from locally
         aligned agents, and how can they be audited?}
 \end{itemize}
 
-\cmt[step]{(5) Co-evolution: ONE forward-pointing sentence only, then the
-roadmap. The full argument (``specifications become executable'' /
-``executions carry their own specifications'' / ``the two sides converge'')
-belongs in Section~5 --- migrate the two deleted co-evolution paragraphs there.}
-\cmt[todo]{When Section~5 is written, lift the original co-evolution paragraphs
-(``Read together, the six domains describe a co-evolution\dots'' and ``The two
-sides converge\dots'') into the conclusion and tighten them under the same
-house-style rules.}
-Read from both sides, these efforts point to a co-evolution that Section~5
-develops in full: as strategic AI grows more capable it demands richer
-specifications to remain legible and governable, and richer specifications in
-turn unlock the construction of still more capable systems. The remainder of the
-paper proceeds as follows. Section~2 reviews the game-theoretic concepts and AI
-methods the analysis requires. Section~3 studies \emph{AI for game theory}
-through constructive equilibrium (3.1), strategic inference (3.2), and neural
-mechanism design (3.3). Section~4 studies \emph{game theory for AI} through
-strategic evaluation (4.1), training and alignment (4.2), and deployment
-governance (4.3). Section~5 concludes with what this co-evolution implies for
-the design of AI systems, the governance of multi-agent environments, and the
-future of game theory itself.
+\cmt[step]{(5) Close on the loop (R2'+R4'), then the roadmap. The forward
+pointer now names the three-node circuit specification $\to$ construction
+$\to$ verification; the co-evolution argument itself still lives in Section~5.
+The fourth turn of the binding question appears exactly once, in corollary
+tone, carrying the one clause that keeps it distinct from the computational
+turn (the certified object is a deployed learning system, no longer an
+explicitly described game); the full differentiation is argued in Section~5
+against the arc of \ref{subsec:recap-gt}.}
+\cmt[todo]{Synchronize with conclusion.tex when it is revised under the same
+mapping: its step (2) should restate the loop with the two directions assigned
+to their dominant regimes (Part~I largely query, Part~II ending in pure
+observation), and its closing paragraph should carry the fourth-turn sentence
+with the explicit contrast to the third turn (R4'), so this corollary sentence
+and that paragraph stay one argument told twice at different lengths.}
+Read from both sides, these efforts close into a single circuit that
+Section~\ref{sec:synthesis} develops in full: strategic specifications become
+constructible; constructions, once deployed among adaptive others, generate the
+demand for new specifications; and the circuit closes through verification, the
+certification of a universal property from whatever access remains. One
+corollary of this circuit already frames the article's end. The binding
+question of game theory has turned several times, from whether an equilibrium
+exists, to how an institution should be designed, to what a solution costs to
+compute; the interface surveyed here turns it once more, to whether a strategic
+guarantee can be constructed and checked inside a deployed learning system, an
+object that no longer arrives as an explicitly described game. The remainder of
+the paper proceeds as follows. Section~2 reviews the game-theoretic concepts
+and AI methods the analysis requires. Section~3 studies \emph{AI for game
+theory} through constructive equilibrium (3.1), strategic inference (3.2), and
+neural mechanism design (3.3). Section~4 studies \emph{game theory for AI}
+through strategic evaluation (4.1), training and alignment (4.2), and
+deployment governance (4.3). Section~5 names the object the six domains pass
+back and forth, the checkable strategic certificate, and concludes with what
+its circulation implies for the design of AI systems, the governance of
+multi-agent environments, and the future of game theory itself.
 \end{drafting}
