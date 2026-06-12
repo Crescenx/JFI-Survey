@@ -35,10 +35,9 @@ R3$'$: the extensional capability table (Table~\ref{tab:capabilities}),
 supplied by 2.2's five movements, plus the row-mode LLM observation in
 artifact-agnostic wording; (6) research directions, former items 1 and 6
 merged under R2$'$; (7) close on the fourth turn (R4$'$) as a corollary of the
-certificate definition, explicitly distinguished from the third turn. This is
-the third and final occurrence of the merged R2$'$+R4$'$ claim; the Abstract
-and Section~\ref{sec:intro} carry the first two and must be revised in step.
-Keep the section shorter than the body sections.}
+certificate definition, explicitly distinguished from the third turn. The
+Abstract and Section~\ref{sec:intro} should remain synchronized with this merged
+R2$'$+R4$'$ claim. Keep the section shorter than the body sections.}
 
 \cmt[step]{(1) Synthesize. Restate the shared problem in the revised refrain
 (R1$'$), then assign each direction its access regime. Reuse Part~I's
@@ -100,7 +99,7 @@ Both journeys end at the same requirement, and meeting it is what answers the
 verification obstruction: the certificate must be \emph{checkable}, meaning its
 verification cost is decoupled from its construction cost. Finding an object
 that satisfies a universally quantified strategic property may be expensive;
-checking a proposed object against a stated trust model must be cheap.
+checking a proposed object under stated verification assumptions must be cheap.
 Section~\ref{subsec:recap-gt} closes on the prototype of this asymmetry: a Nash
 equilibrium is guaranteed to exist and appears intractable to find, yet a
 candidate profile is verified in polynomial
@@ -108,7 +107,7 @@ time~\cite{Papadimitriou1994,DaskalakisGoldbergPapadimitriou2009}. The six
 domains widen that asymmetry from a complexity class into an engineering
 discipline, and their material sorts into four classes of checkable strategic
 certificate, recorded with their quantified objects, access requirements, and
-trust models in Table~\ref{tab:certificates}: \emph{symbolic proof}, in which a
+verification assumptions in Table~\ref{tab:certificates}: \emph{symbolic proof}, in which a
 machine-checkable derivation accompanies the
 solution~\cite{PrimeNash2025,LegoNE2025}; \emph{structural guarantee}
 (\emph{construction-is-truth}), in which membership in a representation family
@@ -126,11 +125,11 @@ assumptions~\cite{HartlineLongZhang2024,HartlineWangZhang2025}.
 \caption{Four classes of checkable strategic certificate. Each class decouples
 verification cost from construction cost; they differ in what the certificate
 quantifies over, in the access the verifier needs to the certified object, and
-in what the verifier must trust.}
+in the assumptions under which verification is accepted.}
 \label{tab:certificates}
 \begin{tabular}{p{0.13\textwidth}p{0.21\textwidth}p{0.16\textwidth}p{0.21\textwidth}p{0.15\textwidth}}
 \hline
-Class & Quantifies over & Access to object & Verifier trusts & Evidence \\
+Class & Quantifies over & Access to object & Verification assumptions & Evidence \\
 \hline
 Symbolic proof & all deviations in an explicit game; all inputs of a
 synthesized algorithm & white-box (game or algorithm description) & a proof
@@ -150,11 +149,6 @@ Behavioral statistical test & all deviations available to the audited algorithm
 \hline
 \end{tabular}
 \end{table}
-\cmt[todo]{Table format: plain \texttt{hline} rules because the current
-preamble loads no \texttt{booktabs}; switch to
-\texttt{toprule/midrule/bottomrule} if the package is added. Confirm column
-wording of ``trust model'' with co-authors; the row order follows the order in
-which the survey introduces each class.}
 
 The four classes close the two directions into a circuit with three nodes. A
 specification is made constructible (Section~\ref{sec:ai4gt}); the construction
@@ -167,9 +161,9 @@ specification, and it keeps specification answerable to what can actually be
 built.
 
 \cmt[step]{(4) Co-evolution. Tightened descendants of the two paragraphs cut
-from the intro; the intro's \cmt[todo] points here. The circuit of movement (3)
-now carries the loop, and the closing sentence develops the intro's single
-forward-pointing sentence with the certificate as the enabling condition.}
+from the intro land here. The circuit of movement (3) now carries the loop, and
+the closing sentence develops the intro's single forward-pointing sentence with
+the certificate as the enabling condition.}
 Read through this circuit, the domains describe a co-evolution. On the
 specification-to-construction arc, strategic specifications become executable:
 a Nash equilibrium, an incentive-compatible mechanism, or a
@@ -192,7 +186,7 @@ unlock the construction of still more capable systems.
 \cmt[step]{(5) R3$'$. Where learning enters the circuit: the extensional
 capability table, whose rows are supplied by
 Section~\ref{subsec:recap-dl}'s arc, then the row-mode observation about
-symbolic generation. Guardrail (per review): do NOT claim LLMs are the first
+symbolic generation. Guardrail (per review): avoid claiming that LLMs are the first
 systems to be both constructor and subject --- self-play RL already was
 (AlphaStar is evaluated by the Nash of its own league). The claim is
 specification-side participation; its reason is the medium; the wording stays
@@ -280,8 +274,7 @@ whatever artifact currently hosts it.
 (both were ``learned construction + checkable certificate''); the remaining
 items keep their anchors in the body sections and are recast in the
 certificate/regime vocabulary where it sharpens them. All flagged tentative.}
-Several open problems follow from the synthesis; the list is a first pass, and
-each item is flagged tentative pending the authors' final scoping.
+Several open problems follow from the synthesis.
 \begin{itemize}
   \item \textbf{Learned construction with machine-checkable certificates beyond
         two-player zero-sum.} The complexity partition that organizes
@@ -323,21 +316,20 @@ each item is flagged tentative pending the authors' final scoping.
         and sample-complexity budget, is a direction for both theory and
         policy.
 \end{itemize}
-\cmt[tentative]{All five are first-pass candidates --- confirm scope and
-pruning with co-authors. Former items 1 and 6 are merged above per the review.
+\cmt[tentative]{Former items 1 and 6 are merged above per the review.
 The previously contemplated cross-cutting item (a common formal language for ``a
 counterfactual strategic property represented inside a computational system'')
 is no longer listed: the checkable-certificate definition and
 Table~\ref{tab:certificates} now supply exactly that language, so the item
-would duplicate movement (3). Decide whether the list stays prose-itemized or
-moves to a short table.}
+would duplicate movement (3). The list can remain prose-itemized or move to a
+short table in a later pass.}
 
 \cmt[step]{(7) Close on the future of game theory itself, matching the intro's
 promise. R4$'$: the fourth turn appears as a corollary of the certificate
 definition (its third occurrence after the Abstract and
 Section~\ref{sec:intro}), and the distinction from the third turn is written
 out so the turn does not collapse back into AGT for a TCS reader. The
-distinguishing data are already on the page: the access and trust columns of
+distinguishing data are already on the page: the access and verification columns of
 Table~\ref{tab:certificates}.}
 Game theory has turned its binding question three times: from whether an
 equilibrium exists, to how an institution should be designed, to what an
@@ -353,7 +345,7 @@ with it, and the open question is the cost of computation. The fourth turn
 certifies deployed learning systems and the empirical games they induce: the
 description is unavailable, and the test must start from structure (an
 architecture, a protocol) or from behavior (observed play), as the access and
-trust columns of Table~\ref{tab:certificates} record. Game theory thereby gains
+verification columns of Table~\ref{tab:certificates} record. Game theory thereby gains
 a constructive and a governance face alongside its analytic one, and the
 systems it governs gain a vocabulary precise enough to stay accountable as they
 grow more capable.
