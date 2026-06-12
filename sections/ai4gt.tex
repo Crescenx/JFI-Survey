@@ -9,6 +9,16 @@ certificate. The three subsections take this move in turn: constructive
 equilibrium (\ref{subsec:constructive-equilibrium}), strategic inference
 (\ref{subsec:strategic-inference}), and neural mechanism design
 (\ref{subsec:mechanism-design}).
+The access regime changes across the three cases. Constructive equilibrium and
+mechanism design mostly work under query access: a solver can evaluate a
+counterfactual deviation, residual, or misreport on demand, but the quantified
+space is too large to exhaust. Strategic inference instead works under
+observational access: the counterfactual play not observed cannot be queried at
+all, so the obstacle is identifying the latent game from behavior. The section
+is therefore narrower than generic multi-agent learning. Return-maximizing MARL
+or self-play enters the main line only when the objective, oracle, or stopping
+rule is itself tied to a strategic certificate such as exploitability, regret,
+or incentive-compatibility violation.
 \cmt[scope]{Selection rule for the whole section: a method enters the main text
 only if its objective or stopping condition drives a strategic certificate (Nash
 gap / exploitability / regret / IC violation) toward zero, or directly produces
@@ -27,12 +37,19 @@ enforced directly, what detour around it does each method take?}
 
 \textbf{Thesis.} The difficulty of equilibrium lies in one demand: a global
 no-profitable-deviation certificate. Search-space size is not the binding
-constraint; the certificate is. Modern AI methods form a spectrum of detours
-around it: preserve, residualize, relax in time, substitute the concept,
-approximate in space, online the certificate through state transformation, and
-re-prove. Across this spectrum, AI (scale, gradients, parameterization) buys
-approximation, while the Nash / convergence guarantee always re-enters through a
-classical layer (LP, no-regret, safe resolving, symbolic proof).
+constraint; the certificate is. The access regime is query access. A solver can
+ask for a counterfactual value, regret, best response, or simulator payoff, so
+the obstacle is not that deviations are invisible. The obstacle is computational:
+CFR can assign counterfactual regret to information sets not reached by current
+play, residual methods can query a regularized best-response map, and PSRO can
+search for profitable deviations with an oracle, but no finite procedure can
+query the whole deviation space in large games. Modern AI methods form a
+spectrum of detours around this universal certificate: preserve, residualize,
+relax in time, substitute the concept, approximate in space, online the
+certificate through state transformation, and re-prove. Across this spectrum, AI
+(scale, gradients, parameterization) buys approximation, while the Nash /
+convergence guarantee always re-enters through a classical layer (LP, no-regret,
+safe resolving, symbolic proof).
 
 \begin{itemize}
   \item \textbf{The constructive gap (pre-AI setup).} Existence is free
@@ -51,23 +68,30 @@ classical layer (LP, no-regret, safe resolving, symbolic proof).
         parameterization.}
   \item \textbf{Transform, residualization: differentiable / regularized
         methods.} The certificate becomes the vanishing residual of a
-        regularized best-response map, driven to zero by gradients. NashPG fixes
-        a large regularization strength and iteratively refines the reference
-        policy, yielding monotone improvement and convergence to exact Nash in
-        two-player zero-sum without a uniqueness assumption, and scaling to
-        domains such as No-Limit Texas Hold'em; QFR gives the first principled
-        policy-gradient method with provable best-iterate convergence to a
-        regularized Nash in two-player zero-sum imperfect-information EFGs while
-        avoiding importance sampling~\cite{NashPG2025,LiuFarinaOzdaglar2025}.
+        regularized best-response map, driven to zero by gradients. This is
+        still query access: the method can evaluate a local residual or
+        regularized response, but the global fixed-point certificate remains the
+        object being approximated. NashPG fixes a large regularization strength
+        and iteratively refines the reference policy, yielding monotone
+        improvement and convergence to exact Nash in two-player zero-sum without
+        a uniqueness assumption, and scaling to domains such as No-Limit Texas
+        Hold'em; QFR gives the first principled policy-gradient method with
+        provable best-iterate convergence to a regularized Nash in two-player
+        zero-sum imperfect-information EFGs while avoiding importance
+        sampling~\cite{NashPG2025,LiuFarinaOzdaglar2025}.
         \cmt[layer]{Purest contemporary AI template: parameterized policy +
         policy gradient + neural networks.}
   \item \textbf{Relax in time: regret minimization.} The one-shot universal
         deviation test relaxes into ``no long-run regret''; exploitability is the
         quantity directly minimized, and equilibrium is the limiting object of a
         learning trajectory. CFR supplies the tabular kernel through
-        information-set counterfactual regret; Deep CFR carries the same
-        no-regret relaxation into neural function approximation and large
-        domains~\cite{Zinkevich2007,BrownDeepCFR2019}.
+        information-set counterfactual regret, including at information sets not
+        reached by the current trajectory; Deep CFR carries the same no-regret
+        relaxation into neural function approximation and large
+        domains~\cite{Zinkevich2007,BrownDeepCFR2019}. For this reason, pure
+        return-maximizing self-play is not part of the main line here: when a
+        method optimizes return and treats equilibrium only as an emergent
+        by-product, it is not relocating the certificate.
         \cmt[guardrail]{Restrict to \emph{regret-minimizing} self-play. Pure
         return-maximizing RL self-play (AlphaZero/AlphaStar-type) is excluded:
         equilibrium is only an emergent by-product. The AI lives in the Deep CFR
@@ -89,8 +113,11 @@ classical layer (LP, no-regret, safe resolving, symbolic proof).
         using a parameterized deep-RL best-response oracle as the deviation
         search and ``oracle finds no profitable deviation''
         (restricted-game exploitability $\to 0$) as the stopping
-        condition~\cite{WellmanTuylsGreenwald2025,McAleerPipelinePSRO2020}. The
-        approximation is triple: strategy space, payoffs, and best response.
+        condition~\cite{WellmanTuylsGreenwald2025,McAleerPipelinePSRO2020}.
+        This is query access by simulation and oracle call: profitable deviations
+        can be searched for, but only inside a finite population and finite
+        sample of payoffs. The approximation is triple: strategy space, payoffs,
+        and best response.
         \cmt[guardrail]{MARL appears only as PSRO's best-response oracle /
         strategy generator, not as a stand-alone equilibrium-solving direction.}
   \item \textbf{Transform the state and re-prove online: public belief states
@@ -106,14 +133,16 @@ classical layer (LP, no-regret, safe resolving, symbolic proof).
         variants. Libratus (CFR+ blueprint + LP-based safe resolving, no neural
         net)~\cite{BrownSandholm2018} appears only as historical contrast;
         perfect-info RL+search is excluded (equilibrium is a by-product).}
-  \item \textbf{Re-prove: LLM symbolic solving and algorithm synthesis.}
-        Against the trend of lowering the certificate's cost, the LLM branch
-        restores it in full, across two layers. Instance solving plus proof:
-        PrimeNash derives closed-form Nash and emits machine-checkable proof
+  \item \textbf{Re-prove: specification-side symbolic generation.} Against the
+        trend of lowering the certificate's cost, the LLM branch restores it in
+        symbolic form. Instance solving plus proof: PrimeNash derives
+        closed-form Nash and emits machine-checkable proof
         objects~\cite{PrimeNash2025}. Algorithm synthesis: LegoNE compiles a
         Python-like algorithm into a constrained optimization whose solution is a
-        provable approximation bound~\cite{LegoNE2025}. AI acts as the engine
-        while the certificate is rebuilt symbolically.
+        provable approximation bound~\cite{LegoNE2025}. These are evidence for
+        the symbolic-proof class of checkable strategic certificates: AI proposes
+        the proof object or algorithmic artifact in the specification medium,
+        while verification remains a separate symbolic check.
         \cmt[guardrail]{Exclude LLM work where equilibrium is merely a tool
         (consensus-game decoding, LLM-as-players evaluation, NE-coordinated
         multi-agent systems).}
@@ -137,7 +166,12 @@ substituted, and re-verified, while leaving its rigor intact.
 \emph{Leading question: when observed strategic behavior can be rationalized by
 many latent games, what exactly has been identified?}
 
-\textbf{Thesis.} AI turns behavioral theories, game structures, and agent
+\textbf{Thesis.} The access regime here is observational access. The analyst
+sees realized play, not the counterfactual actions, beliefs, or types that would
+have appeared under other histories. Fit is therefore cheap and identification
+is hard: many latent games and reasoning rules can generate the same behavior,
+and the off-path part of the strategic certificate cannot be queried at all. AI
+turns behavioral theories, game structures, and agent
 simulations into trainable \emph{behavior generators} that can be
 \emph{constructed}, \emph{inverted}, and \emph{expanded}. Behavioral theory stays
 in the loop as the trainable object, so identification keeps its mechanistic
@@ -153,8 +187,11 @@ library.}
 \begin{itemize}
   \item \textbf{Fit is cheap, identification is hard.} Behavioral fit does not
         amount to mechanism identification. Two underidentification failures must
-        be kept apart. \emph{Falsifiability}: does the model restrict behavior at
-        all? QRE imposes no falsifiable restriction and can rationalize any
+        be kept apart. On-path observations are the whole evidentiary record; the
+        off-path behavior that would distinguish rival explanations is absent
+        from the record; computation alone cannot recover it.
+        \emph{Falsifiability}: does the model restrict behavior at all? QRE
+        imposes no falsifiable restriction and can rationalize any
         behavior, so its empirical content comes entirely from auxiliary
         assumptions. \emph{Recovery}: even a structured model may not pin down
         parameters, because the feasible reward set shows a single Nash
@@ -196,11 +233,14 @@ library.}
         enlarge the candidate family. MARL (MAGAIL) supplies executable
         multi-agent strategic dynamics through generalized inverse RL; LLMs
         (AutoBM) generate, evaluate, and refine interpretable symbolic behavioral
-        models from real human data, compiling natural-language specifications
-        into PyTorch, gradient-fitting tunable parameters, and selecting by
-        validation NLL through evolution plus LLM self-critique, and they
-        consistently beat hand-crafted models (QRE/IA/ERC) and LLM baselines on
-        ultimatum, repeated RPS, and continuous double
+        models from real human data. AutoBM is a specification-side object: the
+        output is a readable behavioral model, expressed in natural language and
+        code, whose parameters are then fit and whose empirical content is tested.
+        It compiles natural-language specifications into PyTorch,
+        gradient-fits tunable parameters, and selects by validation NLL through
+        evolution plus LLM self-critique; the resulting models consistently beat
+        hand-crafted models (QRE/IA/ERC) and LLM baselines on ultimatum,
+        repeated RPS, and continuous double
         auction~\cite{Song2018,AutoBM2026}.
         \cmt[caveat]{Asymmetric caveat: MARL rollouts are simulated trajectories
         that need grounding against real data; AutoBM's LLM hypotheses are not
@@ -232,7 +272,13 @@ constraint step by step inside the machine: first an external constraint, then a
 regret-based loss, then an architectural inductive bias, then a
 truthful-by-construction representation, and finally a verifiable, interpretable,
 compilable institutional object. Each step relocates IC closer to a structural
-guarantee and away from an optimized penalty.
+guarantee and away from an optimized penalty. The access regime is query access:
+inside training, a misreporter network or optimization loop can query candidate
+misreports against a mechanism, but the certificate still quantifies over every
+type and every possible misreport. This is the design-side counterpart of the
+deployment problem in Section~\ref{subsec:deployment-governance}: in both cases,
+the goal is to design rules under which self-interested AI behavior is good, and
+then to certify that the rule survives strategic response.
 
 \begin{itemize}
   \item \textbf{IC as the core obstacle (AMD as pre-history).} Mechanism design
@@ -251,8 +297,10 @@ guarantee and away from an optimized penalty.
   \item \textbf{IC as loss: RegretNet.} RegretNet parameterizes allocation and
         payment as a neural network that maximizes expected revenue while
         minimizing ex-post regret, trained by an augmented Lagrangian; IC is
-        rewritten as ``expected ex-post regret $=0$.'' This is the first time IC
-        enters a deep-learning pipeline as a differentiable
+        rewritten as ``expected ex-post regret $=0$.'' The training loop can
+        explicitly query profitable misreports, but the universal statement
+        $\forall$ type, $\forall$ misreport remains too large to exhaust. This is
+        the first time IC enters a deep-learning pipeline as a differentiable
         loss~\cite{Duetting2019}.
         \cmt[tension]{Low empirical regret does not equal exact
         strategy-proofness: this remains approximate IC, useful for benchmark
@@ -272,13 +320,16 @@ guarantee and away from an optimized penalty.
         violation'': still approximate, not yet a structural guarantee.}
   \item \textbf{IC by construction: menus and affine maximizers.} The search
         space is restricted to natively truthful families instead of penalizing
-        violations. Menu-based mechanisms (MenuNet / RochetNet) give
-        truthful-by-construction single-bidder mechanisms through bidder-optimal
-        menu selection; affine-maximizer auctions (AMenuNet) inherit DSIC and IR
-        from AMA structure while a neural network generates AMA parameters and
-        candidate allocations for scalability; GemNet pushes exact
-        strategy-proofness from single- to multi-bidder by defining and enforcing
-        \emph{menu compatibility} (training penalty plus post-hoc price
+        violations. This is the construction-is-truth class of certificate:
+        truthfulness follows from the representation or post-processing; a low
+        measured violation no longer carries the guarantee. Menu-based
+        mechanisms (MenuNet / RochetNet) give truthful-by-construction
+        single-bidder mechanisms through
+        bidder-optimal menu selection; affine-maximizer auctions (AMenuNet)
+        inherit DSIC and IR from AMA structure while a neural network generates
+        AMA parameters and candidate allocations for scalability; GemNet pushes
+        exact strategy-proofness from single- to multi-bidder by defining and
+        enforcing \emph{menu compatibility} (training penalty plus post-hoc price
         transformation, discretization, and Lipschitz reasoning over the whole
         type space)~\cite{Shen2019,Duetting2019,Duan2023,Duetting2024}.
         \cmt[insight]{The defining post-RegretNet trend is the return of economic
@@ -294,10 +345,11 @@ guarantee and away from an optimized penalty.
         ODE/flow-generated bundle distributions, scaling to hundreds of items;
         the discretization-free truthful-learning frontier learns truthful
         mechanisms over continuous outcome spaces via affine-maximizer structure;
-        and LLM-AMD reformulates mechanism design as code generation plus a
-        problem-specific fixing process for feasibility and strategy-proofness,
-        rediscovering Myerson and reserve-price/redistribution mechanisms and
-        explaining neural solutions by
+        and LLM-AMD reformulates mechanism design as mechanism-as-code: a
+        specification-side artifact produced by code generation plus a
+        problem-specific fixing process for feasibility and strategy-proofness.
+        It rediscovers Myerson and reserve-price/redistribution mechanisms and
+        explains neural solutions by
         programming-by-example~\cite{WangBundleFlow2025,TEDI2025,LiuGuoConitzer2025}.
         \cmt[insight]{The endpoint is a search + structure + verification +
         explanation pipeline, not a black-box neural auction. Position LLMs

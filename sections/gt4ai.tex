@@ -36,7 +36,13 @@ and strategy spaces, can it still be evaluated as a scalar model score?}
 means to evaluate competence when performance is opponent-relative, and, prior to
 that, whether the agent even holds a coherent utility for any such evaluation to
 be well-posed. The unit of evaluation shifts from an isolated model score to a
-policy under interaction.
+policy under interaction. In the article's refrain, strategic evaluation is an
+intermediate access regime: the evaluator can query the policy under test by
+running new interactions, but deployment opponents, protocols, and populations
+are represented only by a finite surrogate population. Exploitability is the
+cleanest example. It compresses a universally quantified certificate, the maximum
+gain available to any best-responding deviation, into a scalar gap that can only
+be approximated from finitely many queried opponents.
 
 \begin{itemize}
   \item \textbf{Step 1 --- static benchmarks fail under adaptive opponents.}
@@ -58,7 +64,10 @@ policy under interaction.
         ``get stronger but against whom is unclear''
         )~\cite{Balduzzi2019Open}; and Spinning Tops raises non-transitivity from
         a toy example to the generic geometry of real-world
-        games~\cite{Czarnecki2020}.
+        games~\cite{Czarnecki2020}. The common move is to replace a fixed test
+        set by a finite empirical population that stands in for the unbounded
+        opponent space against which the universal no-profitable-deviation claim
+        is meant to range.
         \cmt[caveat]{Flag $\alpha$-Rank's scalability limit (Yang et al.\ 2020,
         \cite{Yang2020}) at the point of mention.}
         \cmt[evidence]{Engineering evidence that opponent-relative robustness is
@@ -73,8 +82,11 @@ policy under interaction.
         cooperation and coordination are modulated by prompt, opponent, and
         interaction (GPT-4 is unforgiving in the Prisoner's Dilemma yet cannot
         coordinate with an alternating opponent in Battle of the
-        Sexes)~\cite{Akata2025}. LLM benchmarks are a downstream application of
-        the EGTA / $\alpha$-Rank tradition, not an island.
+        Sexes)~\cite{Akata2025}. These results are subject-side evidence: the
+        language model is the policy being evaluated as a strategic actor, and
+        its apparent competence changes with the game, opponent, and interaction
+        protocol. LLM benchmarks are a downstream application of the EGTA /
+        $\alpha$-Rank tradition, not an island.
   \item \textbf{Step 4 --- precondition: preference coherence is the ground
         floor.} Steps 1--3 assume the agent holds a well-defined utility to play
         from; equilibrium, best response, and payoff all presuppose it. When
@@ -106,7 +118,10 @@ scalar objective, because it is defined only against an adversary, only as a
 non-transitive preference, or only as what a bounded verifier can be brought to
 accept, what should training optimize instead?}
 
-\textbf{Thesis.} The unified answer replaces ``maximize a fixed scalar
+\textbf{Thesis.} The access regime is verification-dominated: the trainer can
+stage interactions with adversaries, preference models, or judges, but the
+property to be certified ranges over responses and arguments that finite
+training cannot enumerate. The unified answer replaces ``maximize a fixed scalar
 objective'' with ``select the equilibrium of a game.'' Two preliminaries set up
 the strands. First, self-play is the shared computational mechanism of all three
 strands, not a classification axis; its ``self-play $\to$ Nash'' foundation is
@@ -115,7 +130,10 @@ variants~\cite{Brown1951,Robinson1951,Heinrich2015,HeinrichSilver2016}. Second,
 the three strands are distinguished by \emph{what the equilibrium certifies}:
 robustness (Strand 2), preference (Strand 1), truth (Strand 3). We present them
 in the order 2 $\to$ 1 $\to$ 3, because GAN is the historical template for
-``training as equilibrium-seeking'' that the other two inherit.
+``training as equilibrium-seeking'' that the other two inherit. For LLM
+alignment, the learned model is the strategic subject being aligned: training
+builds games around its adversarial behavior, preference responses, or
+argumentative conduct.
 
 \textbf{Strand 2 --- Adversarial games (template + dynamics diagnosis).}
 \begin{itemize}
@@ -123,17 +141,22 @@ in the order 2 $\to$ 1 $\to$ 3, because GAN is the historical template for
         cannot distinguish real from generated data~\cite{Goodfellow2014}.
   \item Alignment instances: robust training as a saddle point~\cite{Madry2018};
         red-teaming as an attacker--defender game~\cite{Perez2022}.
-  \item Difficulty (empirical fact): first-order methods often fail to converge,
-        and GAN games may even lack a local Nash
+  \item Difficulty (empirical and conceptual): the fence drawn in
+        Section~\ref{subsec:recap-gt} matters here. Reciprocal consistency, even
+        in the local Nash sense, is a static certificate; dynamical stability and
+        stable fixed points are properties of a chosen update rule. First-order
+        methods can rotate around a local Nash in the last iterate, fail to
+        converge, or face GAN games with no local Nash
         equilibrium~\cite{FarniaOzdaglar2020}.
   \item \cmt[box]{Boxed supplement --- differential game dynamics: decompose the
         game Jacobian into symmetric (potential) and antisymmetric (Hamiltonian)
         parts and use it to design SGA toward stable fixed
         points~\cite{BalduzziSGA2018,Letcher2019}. Position it NOT as a Nash
         solver or core anchor but as the dynamical lens for \emph{why}
-        equilibrium-seeking training rotates / fails to converge; it distinguishes
-        stable fixed points from local Nash. Adjacent: \cite{Mescheder2017,
-        Daskalakis2017}.}
+        equilibrium-seeking training rotates / fails to converge; it
+        distinguishes reciprocal consistency / local Nash from dynamical
+        stability / stable fixed point, and explains last-iterate cycling.
+        Adjacent: \cite{Mescheder2017, Daskalakis2017}.}
 \end{itemize}
 
 \textbf{Strand 1 --- Preference games (template for ``preference is not scalar'').}
@@ -162,7 +185,10 @@ in the order 2 $\to$ 1 $\to$ 3, because GAN is the historical template for
 \textbf{Strand 3 --- Interactive-proof games (template for ``the judge is weaker
 than the model'').}
 \begin{itemize}
-  \item Complexity foundation: self-play on a zero-sum debate game with a
+  \item Complexity foundation: debate turns the verification obstruction into a
+        training game. The weak judge sees only a finite interaction, but the
+        guarantee quantifies over the full space of arguments a dishonest prover
+        might construct. Self-play on a zero-sum debate game with a
         polynomial-time judge can reach optimal play in PSPACE, isomorphic to
         IP$=$PSPACE~\cite{Irving2018}.
   \item Two canonical protocols: Debate (symmetric: two provers + judge); and
@@ -172,16 +198,18 @@ than the model'').}
         training~\cite{Kirchner2024}.
   \item Obstruction and refinement: obfuscated arguments let a dishonest prover
         construct claims that take exponential time to
-        refute~\cite{BarnesChristiano2020}; doubly-efficient debate guarantees
-        the honest prover a polynomial-time winning
-        strategy~\cite{BrownCohen2023}.
+        refute~\cite{BarnesChristiano2020}; doubly-efficient debate is the
+        checkable-certificate taxonomy's protocol-guarantee case, because the
+        protocol itself guarantees the honest prover a polynomial-time winning
+        strategy while keeping verification bounded~\cite{BrownCohen2023}.
   \item Empirical landing: with stronger expert debaters and weaker non-expert
         judges, debate consistently raises accuracy (76\%/88\% vs.\ 48\%/60\%
         baselines), and adversarial protocols beat non-adversarial
         ones~\cite{Khan2024}.
   \item \cmt[positioning]{Closing position: when the supervision signal is no
         longer reliable, an interactive-proof game designs the equilibrium to
-        \emph{certify truth}.}
+        \emph{certify truth}; the LLM remains the strong subject being aligned,
+        not a generic meta layer.}
 \end{itemize}
 \end{drafting}
 
@@ -199,7 +227,11 @@ system-level equilibria emerge when individually aligned agents interact, and ho
 those equilibria can be audited, reshaped, or governed. The question shifts from
 whether a single agent is aligned to what locally aligned agents induce in
 interaction. A single game-theoretic line makes the cut: the economics of
-no-regret learning plus calibrated-regret auditing.
+no-regret learning plus calibrated-regret auditing. This is observational access
+in its pure form. The auditor has behavioral data from deployed systems, not
+query access to every counterfactual deviation and not trusted source-code
+inspection, yet must certify an equilibrium-level universal property from finite
+observations. That is the governance face of the verification obstruction.
 
 \begin{itemize}
   \item \textbf{Step 1 --- delegation games: a conceptual decomposition for
@@ -222,10 +254,14 @@ no-regret learning plus calibrated-regret auditing.
         outcomes are fragile and exploitable by an optimizing
         opponent~\cite{denBoer2022}; and a Folk-Theorem-style result makes
         collusion only one of many reachable payoffs, not a
-        necessity~\cite{Cartea2025}. The governance target should therefore be
+        necessity~\cite{Cartea2025}. The governance target is
         \emph{whether observed strategic behavior satisfies an equilibrium-level
-        property}, rather than whether the algorithm ``is Q-learning,'' which
-        pushes governance from source-code inspection to behavioral audit.
+        property}; source-code labels such as ``Q-learning'' leave that target
+        unresolved. This shift pushes governance from source-code inspection to
+        behavioral audit. These
+        pricing and collusion studies are subject-side evidence for strategic
+        AI: the learning pricing policy is itself the strategic market actor
+        whose adaptive behavior changes the institutional outcome.
   \item \textbf{Step 3 --- calibrated-regret audit as the governance response
         (theoretical climax).} The ``for AI'' bridge is direct: classical
         algorithmic game theory predates AI agents, yet these AI learning agents
@@ -239,10 +275,18 @@ no-regret learning plus calibrated-regret auditing.
                 modern algorithms converge at near-optimal
                 rates~\cite{Syrgkanis2015,Anagnostides2022,Dagan2024}.
           \item Audit mechanism: instead of inspecting source code, test whether
-                a seller has vanishing (pessimistic) calibrated regret, which
-                proves that (i) any no-regret algorithm can be retrofit to pass,
-                (ii) passers cannot be manipulated into supra-competitive prices,
-                and (iii) a sample-complexity bound
+                a seller has vanishing (pessimistic) calibrated regret. The test
+                compares realized revenue with the best calibrated deviation
+                available after each observed history; small calibrated regret
+                means no such history-contingent deviation would have improved
+                the seller's payoff by much. This is the fourth class of
+                checkable strategic certificate: a behavioral statistical test,
+                black-box in its access model and weak in its trust assumptions,
+                whose target is still a universal no-profitable-deviation
+                property. Passing the test proves that
+                (i) any no-regret algorithm can be retrofit to pass, (ii) passers
+                cannot be manipulated into supra-competitive prices, and (iii) a
+                sample-complexity bound
                 holds~\cite{HartlineLongZhang2024,HartlineWangZhang2025}; a recent
                 survey proposes no-swap-regret as a rationality axiom for
                 algorithmic agents, bridging classical AGT to AI
@@ -251,9 +295,18 @@ no-regret learning plus calibrated-regret auditing.
                 classical no-regret theory, not an established field. Cite the two
                 CSLAW papers as primary; the 2026 survey as a programmatic
                 reference.}
-          \item \cmt[optional]{If space allows, extend to learning in mechanisms:
-                selling to a no-regret buyer~\cite{Braverman2018}; first-price bid
-                suppression~\cite{BanchioSkrzypacz2022}.}
+          \item Why calibrated regret is the right hinge: related mechanism
+                results show that the same problem appears whenever rules face
+                adaptive learners. A seller can exploit a no-regret buyer across
+                time~\cite{Braverman2018}, and first-price bid suppression shows
+                how learning dynamics can reshape bidding incentives
+                themselves~\cite{BanchioSkrzypacz2022}. The audit asks whether
+                such self-interested adaptation remains inside an acceptable
+                equilibrium-level envelope.
         \end{itemize}
+        This closes the line opened in Section~\ref{subsec:mechanism-design}.
+        There the problem is to design rules so self-interested AI behavior is
+        good by construction; here the problem is to audit deployed rules and
+        learners from behavior alone, under the weakest access regime.
 \end{itemize}
 \end{drafting}

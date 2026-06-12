@@ -1,3 +1,12 @@
+% conclusion.tex
+% Section 5: Synthesis and Outlook
+% Revised against review_r1.md (Section 5 row: R2' core, R4', R3', R1').
+% Same house style as the other sections: the body is wrapped in a `drafting`
+% block (see review.tex) that renders in blue under \reviewtrue and is hidden
+% under \reviewfalse. Writing plan / guardrails / positioning are marked \cmt.
+%
+% Requires the main preamble to contain \input{review}.
+
 \section{Synthesis and Outlook}
 \label{sec:synthesis}
 
@@ -5,130 +14,347 @@
 \textbf{Section framing.} The conclusion does the one thing the body could not:
 read the six domains as a single movement and say what that movement implies
 going forward. It closes the loop opened in Section~\ref{sec:intro} (the
-specification--construction gap) and Section~\ref{sec:recap} (game theory ending
-on computation, deep learning ending on construction at scale).
-\cmt[skeleton]{Five movements: (1) synthesize the two directions against the one
-shared problem, reusing the two spine sentences; (2) name the common movement
-(one counterfactual certificate crosses the specification$\leftrightarrow$%
-construction boundary in both directions); (3) co-evolution --- this is where the
-two paragraphs deleted from the intro land, tightened; (4) research directions,
-all flagged tentative; (5) close on the future of game theory itself. Keep it
-shorter than the body sections; ``\emph{can be simple for now}.''}
+universally quantified certificate confronting procedures with only finite
+access) and Section~\ref{sec:recap} (game theory ending on computation, deep
+learning ending on construction at scale).
+\cmt[skeleton]{Revised skeleton per the updated review mapping (R1$'$, R2$'$,
+R3$'$, R4$'$; R2$'$ is the main landing of the whole paper). Seven movements:
+(1) synthesis under the revised refrain --- restate the shared problem as
+``universal certificate vs.\ finite access'' and read
+Section~\ref{sec:ai4gt} as the query regime, Section~\ref{sec:gt4ai} as the
+observation regime, with 4.1/4.2 marked as the intermediate/verification cases;
+(2) the traveling object restated per R1$'$: what crosses the boundary is the
+universally quantified certificate, and the two directions of travel are the
+two access regimes; (3) R2$'$ MAIN LANDING: name and define the checkable
+strategic certificate (construction--verification cost decoupling), anchor it
+in 2.1's PPAD prototype, give the four-class taxonomy
+(Table~\ref{tab:certificates}), and close the three-node circuit specification
+$\to$ construction $\to$ verification; (4) co-evolution --- tightened
+descendants of the two intro paragraphs, now run through that circuit; (5)
+R3$'$: the extensional capability table (Table~\ref{tab:capabilities}),
+supplied by 2.2's five movements, plus the row-mode LLM observation in
+artifact-agnostic wording; (6) research directions, former items 1 and 6
+merged under R2$'$; (7) close on the fourth turn (R4$'$) as a corollary of the
+certificate definition, explicitly distinguished from the third turn. This is
+the third and final occurrence of the merged R2$'$+R4$'$ claim; the Abstract
+and Section~\ref{sec:intro} carry the first two and must be revised in step.
+Keep the section shorter than the body sections.}
 
-\cmt[step]{(1) Synthesize. Restate the shared problem, then what each direction
-did to it. Reuse Part~I's recurring-move sentence and Part~II's scalar$\to$object
-spine verbatim in substance.}
-The six domains answer one question from two sides: how can a strategic property
-defined over counterfactual interaction be represented inside a computational
-system? Section~\ref{sec:ai4gt} takes the property as given and makes it
-constructible. Across constructive equilibrium, strategic inference, and neural
-mechanism design, the recurring move relocates a game-theoretic constraint into a
-computational substrate (a differentiable residual, a no-regret trajectory, an
-architectural bias, or a checkable certificate), while the guarantee itself
-re-enters through a classical layer such as linear programming, no-regret theory,
-safe resolving, or symbolic proof. Section~\ref{sec:gt4ai} takes the construction
-as given and asks what it must satisfy. Across strategic evaluation, training, and
-deployment governance, each step replaces a scalar with a game-theoretic object:
-a benchmark score with exploitability, a fixed reward with the equilibrium of a
-game, source-code inspection with an equilibrium-level audit.
+\cmt[step]{(1) Synthesize. Restate the shared problem in the revised refrain
+(R1$'$), then assign each direction its access regime. Reuse Part~I's
+recurring-move sentence and Part~II's scalar$\to$object spine in substance; the
+regime language wraps them, it does not replace them. End on the verification
+obstruction so movement (3) is earned.}
+The six domains answer one question from two sides: how can a strategic
+property that quantifies universally over counterfactual interaction, over
+deviations not taken, types not reported, and opponents not encountered, be
+certified by a procedure that has only finite access to the game? The two parts
+of the survey differ in the form that finite access takes.
 
-\cmt[step]{(2) The common movement. The point is that it is the \emph{same}
-object traveling both ways; that observation is the synthesis, not a restatement
-of (1).}
-A single object travels in both directions: the counterfactual certificate that
-quantifies over deviations not taken, types not reported, and opponents not
-encountered. Section~\ref{sec:ai4gt} carries it from specification toward
-construction, building or approximating the certificate that classical theory
-could only define. Section~\ref{sec:gt4ai} carries it the other way, attaching a
-counterfactual specification to systems built before anyone asked what they
-should satisfy. The specification--construction gap named in
-Section~\ref{sec:intro} is therefore worked from both banks at once.
+Section~\ref{sec:ai4gt} operates in the \emph{query} regime. A counterfactual
+can be computed on demand: a deviation can be simulated, a misreport can be
+priced, a best response can be trained. Each query costs computation, and the
+quantified space outgrows any budget, so the obstruction is computational.
+Within this regime the recurring move relocates the game-theoretic constraint
+into a computational substrate (a differentiable residual, a no-regret
+trajectory, an architectural bias, or a checkable certificate), while the
+guarantee re-enters through a classical layer such as linear programming,
+no-regret theory, safe resolving, or symbolic proof.
 
-\cmt[step]{(3) Co-evolution. These two paragraphs are the tightened descendants
-of the two co-evolution paragraphs cut from the intro (``Read together \dots''
-and ``The two sides converge \dots''); the intro's \cmt[todo] points here. The
-last sentence of the second paragraph is the intro's single forward-pointing
-sentence, now developed.}
-Read from both sides, the domains describe a co-evolution. On the first side,
-strategic specifications become executable: a Nash equilibrium, an
-incentive-compatible mechanism, or a correlated-equilibrium bound stops being
-only an analytic object and becomes something a learning system can search for,
-approximate, and certify. The game-theoretic constraint acquires a constructive
-arm it lacked once the relevant games grew large.
+Section~\ref{sec:gt4ai} operates in the \emph{observation} regime. A
+counterfactual can no longer be queried: a deployed opponent, a human rater, or
+a rival's pricing algorithm reveals only the play it happens to produce, so the
+obstruction is epistemic. Two of its settings sit between the poles: strategic
+evaluation holds query access to the agent under test while a finite population
+stands in for the true opponents
+(Section~\ref{subsec:strategic-evaluation}), and debate-style training must
+certify a stronger model from finite interaction with a weaker judge
+(Section~\ref{subsec:training-alignment}). Within this regime the recurring
+move replaces a scalar with a game-theoretic object: a benchmark score with
+exploitability, a fixed reward with the equilibrium of a game, source-code
+inspection with an equilibrium-level audit. In both regimes the residual demand
+is the same, and it is the verification obstruction of
+Section~\ref{sec:intro}: a universal claim must be certified from finite
+access.
 
-On the second side, executions carry their own specifications. Once a trained
-system negotiates, prices, or persuades, its competence becomes opponent-relative
-and its alignment becomes a relation among policies, so the system itself
-generates the demand for a strategic property to evaluate and govern.
-Construction acquires a specification arm it lacked when behavior was scored
-against a fixed test set. The two sides close into a loop: as strategic AI grows
-more capable it demands richer specifications to stay legible and governable, and
-richer specifications unlock the construction of still more capable systems.
+\cmt[step]{(2) The common movement, restated per R1$'$. The traveling object is
+the universally quantified certificate; the two directions of travel are the
+two access regimes just distinguished. The observation is the synthesis, not a
+restatement of (1).}
+A single object makes both journeys: the universally quantified certificate.
+Section~\ref{sec:ai4gt} carries it from specification toward construction,
+building or approximating under query access the certificate that classical
+theory could only define. Section~\ref{sec:gt4ai} carries it the opposite way,
+attaching a counterfactual specification to systems built before anyone asked
+what they should satisfy, and testing that specification against the behavior
+the systems emit. The survey addresses the specification--construction gap named
+in Section~\ref{sec:intro} from both directions, using procedures whose finite
+access takes the two forms above.
 
-\cmt[step]{(4) Research directions. User asked for a few possible directions, all
-marked ``\emph{to be determined}.'' Each ties back to a tension the body already
-exposed, so they are openings of this survey's own argument, not a generic
-wish-list. Keep citations to keys already in ref.bib.}
-Several open problems follow from the synthesis; the list below is a first pass,
-and each item is flagged tentative pending the authors' final scoping.
+\cmt[step]{(3) R2$'$ main landing. Order is load-bearing: definition
+(construction--verification decoupling) $\to$ PPAD prototype from 2.1 $\to$
+taxonomy table $\to$ three-node circuit. Each later element presupposes the
+earlier one. Research-direction items 1 and 6 merge under this concept in
+movement (6).}
+Both journeys end at the same requirement, and meeting it is what answers the
+verification obstruction: the certificate must be \emph{checkable}, meaning its
+verification cost is decoupled from its construction cost. Finding an object
+that satisfies a universally quantified strategic property may be expensive;
+checking a proposed object against a stated trust model must be cheap.
+Section~\ref{subsec:recap-gt} closes on the prototype of this asymmetry: a Nash
+equilibrium is guaranteed to exist and appears intractable to find, yet a
+candidate profile is verified in polynomial
+time~\cite{Papadimitriou1994,DaskalakisGoldbergPapadimitriou2009}. The six
+domains widen that asymmetry from a complexity class into an engineering
+discipline, and their material sorts into four classes of checkable strategic
+certificate, recorded with their quantified objects, access requirements, and
+trust models in Table~\ref{tab:certificates}: \emph{symbolic proof}, in which a
+machine-checkable derivation accompanies the
+solution~\cite{PrimeNash2025,LegoNE2025}; \emph{structural guarantee}
+(\emph{construction-is-truth}), in which membership in a representation family
+makes the property hold by construction~\cite{Shen2019,Duan2023,Duetting2024};
+\emph{protocol guarantee},
+in which the rules of an interaction guarantee the honest party a winning
+strategy~\cite{Irving2018,BrownCohen2023}; and \emph{behavioral statistical
+test}, in which finite observed play bounds the counterfactual property under
+the weakest trust
+assumptions~\cite{HartlineLongZhang2024,HartlineWangZhang2025}.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Four classes of checkable strategic certificate. Each class decouples
+verification cost from construction cost; they differ in what the certificate
+quantifies over, in the access the verifier needs to the certified object, and
+in what the verifier must trust.}
+\label{tab:certificates}
+\begin{tabular}{p{0.13\textwidth}p{0.21\textwidth}p{0.16\textwidth}p{0.21\textwidth}p{0.15\textwidth}}
+\hline
+Class & Quantifies over & Access to object & Verifier trusts & Evidence \\
+\hline
+Symbolic proof & all deviations in an explicit game; all inputs of a
+synthesized algorithm & white-box (game or algorithm description) & a proof
+checker & \S\ref{subsec:constructive-equilibrium}:
+\cite{PrimeNash2025,LegoNE2025} \\
+Structural guarantee (construction-is-truth) & all types and all misreports & white-box (mechanism
+representation) & the representation family, plus post-hoc verification & \S\ref{subsec:mechanism-design}:
+\cite{Shen2019,Duan2023,Duetting2024} \\
+Protocol guarantee & all strategies of a dishonest prover & black-box model
+inside a white-box protocol & the protocol, its complexity assumptions, and the
+judge & \S\ref{subsec:training-alignment}:
+\cite{Irving2018,BrownCohen2023} \\
+Behavioral statistical test & all deviations available to the audited algorithm
+& black-box (observed play only) & a concentration bound on finite data
+(weakest) & \S\ref{subsec:deployment-governance}:
+\cite{HartlineLongZhang2024,HartlineWangZhang2025} \\
+\hline
+\end{tabular}
+\end{table}
+\cmt[todo]{Table format: plain \texttt{hline} rules because the current
+preamble loads no \texttt{booktabs}; switch to
+\texttt{toprule/midrule/bottomrule} if the package is added. Confirm column
+wording of ``trust model'' with co-authors; the row order follows the order in
+which the survey introduces each class.}
+
+The four classes close the two directions into a circuit with three nodes. A
+specification is made constructible (Section~\ref{sec:ai4gt}); the construction
+is checked against its specification through one of the four certificate
+classes; and what the check reveals (an exploitability gap, an incoherent
+preference, a failed regret test) becomes the revised specification that the
+next construction must meet (Section~\ref{sec:gt4ai}). Verification is the node
+at which the other two trust each other: it keeps construction accountable to
+specification, and it keeps specification answerable to what can actually be
+built.
+
+\cmt[step]{(4) Co-evolution. Tightened descendants of the two paragraphs cut
+from the intro; the intro's \cmt[todo] points here. The circuit of movement (3)
+now carries the loop, and the closing sentence develops the intro's single
+forward-pointing sentence with the certificate as the enabling condition.}
+Read through this circuit, the domains describe a co-evolution. On the
+specification-to-construction arc, strategic specifications become executable:
+a Nash equilibrium, an incentive-compatible mechanism, or a
+correlated-equilibrium bound stops being only an analytic object and becomes
+something a learning system can search for, approximate, and certify. The
+game-theoretic constraint acquires a constructive arm it lacked once the
+relevant games grew large.
+
+On the construction-to-specification arc, executions generate their own demand
+for specification. Once a trained system negotiates, prices, or persuades, its
+competence becomes opponent-relative and its alignment becomes a relation among
+policies, so the system itself calls for a strategic property to evaluate and
+govern. Construction acquires a specification arm it lacked when behavior was
+scored against a fixed test set. The loop announced in
+Section~\ref{sec:intro} therefore runs through the verification node: more
+capable strategic AI demands richer specifications to stay legible and
+governable, and richer specifications, once their certificates are checkable,
+unlock the construction of still more capable systems.
+
+\cmt[step]{(5) R3$'$. Where learning enters the circuit: the extensional
+capability table, whose rows are supplied by
+Section~\ref{subsec:recap-dl}'s arc, then the row-mode observation about
+symbolic generation. Guardrail (per review): do NOT claim LLMs are the first
+systems to be both constructor and subject --- self-play RL already was
+(AlphaStar is evaluated by the Nash of its own league). The claim is
+specification-side participation; its reason is the medium; the wording stays
+artifact-agnostic (``learners that work in the written medium of
+specifications''), with LLMs named as the current instance.}
+Learning enters this circuit through four capabilities, each traceable to the
+arc of Section~\ref{subsec:recap-dl} and each load-bearing in specific cells of
+the survey (Table~\ref{tab:capabilities}): \emph{gradient residualization},
+which rewrites a fixed-point condition as a loss; \emph{no-regret dynamics},
+which relax a one-shot universal test into a property of a learning trajectory;
+\emph{population search}, which approximates an intractable strategy space by a
+growing empirical one; and \emph{symbolic generation}, which emits programs,
+models, and proofs in the notation the theory itself uses. The first three
+capabilities construct or approximate, and in every cell they occupy the
+certificate is restored by a classical layer: linear programming and no-regret
+theory in Section~\ref{subsec:constructive-equilibrium}, mechanism-theoretic
+structure in Section~\ref{subsec:mechanism-design}, protocol design and
+statistical testing in Sections~\ref{subsec:training-alignment}
+and~\ref{subsec:deployment-governance}.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Where the four learning capabilities bear load across the six domains.
+Rows originate in the developmental arc of Section~\ref{subsec:recap-dl};
+cells name the instantiation that carries the argument in each part.}
+\label{tab:capabilities}
+\begin{tabular}{p{0.14\textwidth}p{0.20\textwidth}p{0.27\textwidth}p{0.25\textwidth}}
+\hline
+Capability & Origin (\S\ref{subsec:recap-dl}) & Specification $\to$
+construction (\S\ref{sec:ai4gt}) & Construction $\to$ specification
+(\S\ref{sec:gt4ai}) \\
+\hline
+Gradient residualization & the network as a differentiable parameterized map &
+regularized best-response residuals
+(\S\ref{subsec:constructive-equilibrium})~\cite{NashPG2025,LiuFarinaOzdaglar2025};
+differentiable equilibrium layers
+(\S\ref{subsec:strategic-inference})~\cite{Ling2018}; regret-as-loss
+(\S\ref{subsec:mechanism-design})~\cite{Duetting2019} & saddle-point
+adversarial training
+(\S\ref{subsec:training-alignment})~\cite{Goodfellow2014,Madry2018} \\
+No-regret dynamics & training as an iterative update trajectory & CFR and Deep
+CFR
+(\S\ref{subsec:constructive-equilibrium})~\cite{Zinkevich2007,BrownDeepCFR2019}
+& preference-equilibrium alignment
+(\S\ref{subsec:training-alignment})~\cite{Munos2024,Zhang2025INPO}; the audited
+rationality property
+(\S\ref{subsec:deployment-governance})~\cite{Hartline2026} \\
+Population search & scale and self-play & EGTA and PSRO
+(\S\ref{subsec:constructive-equilibrium})~\cite{WellmanTuylsGreenwald2025,McAleerPipelinePSRO2020}
+& Nash averaging, $\alpha$-Rank, league evaluation
+(\S\ref{subsec:strategic-evaluation})~\cite{Balduzzi2018,Omidshafiei2019,Vinyals2019} \\
+Symbolic generation & code and structured text generated at scale & equilibrium
+proofs and algorithm synthesis
+(\S\ref{subsec:constructive-equilibrium})~\cite{PrimeNash2025,LegoNE2025};
+interpretable behavior models
+(\S\ref{subsec:strategic-inference})~\cite{AutoBM2026}; mechanism-as-code
+(\S\ref{subsec:mechanism-design})~\cite{LiuGuoConitzer2025} & the subject under
+evaluation, alignment, and governance
+(\S\ref{subsec:strategic-evaluation}--\ref{subsec:deployment-governance})~\cite{GTBench2024,Akata2025} \\
+\hline
+\end{tabular}
+\end{table}
+
+The fourth row behaves differently, and the difference shows when the row is
+read as a whole. Its Section~\ref{sec:ai4gt} cells return specification-side
+objects: a machine-checkable equilibrium proof~\cite{PrimeNash2025}, a
+synthesized algorithm with a provable approximation bound~\cite{LegoNE2025}, an
+interpretable symbolic model of human play~\cite{AutoBM2026}, a mechanism
+delivered as code with its incentive properties repaired and
+explained~\cite{LiuGuoConitzer2025}. These are the cells in which the
+certificate re-enters whole; every other row leaves its restoration to a
+classical layer. The same systems appear throughout Section~\ref{sec:gt4ai}
+purely as subjects, evaluated, aligned, and
+governed~\cite{GTBench2024,Akata2025}. Self-play systems already occupied both
+of those roles: AlphaStar constructs a league and is evaluated by the Nash of
+that league~\cite{Vinyals2019}, so the pairing of constructor and subject
+predates this row. What the row adds is operation on a third side, the
+specification itself: these learners produce and consume the proofs,
+mechanisms, and audit rules, because they work in the written medium in which
+specifications are expressed. The observation attaches to that capability,
+whatever artifact currently hosts it.
+
+\cmt[step]{(6) Research directions. Former items 1 and 6 merge under R2$'$
+(both were ``learned construction + checkable certificate''); the remaining
+items keep their anchors in the body sections and are recast in the
+certificate/regime vocabulary where it sharpens them. All flagged tentative.}
+Several open problems follow from the synthesis; the list is a first pass, and
+each item is flagged tentative pending the authors' final scoping.
 \begin{itemize}
-  \item \textbf{Certified equilibrium beyond two-player zero-sum.} The complexity
-        partition that organizes Section~\ref{subsec:constructive-equilibrium}
-        (linear-programming tractability in zero-sum, PPAD-hardness in
-        general-sum) still bounds what learned solvers can guarantee; methods that
-        scale retreat to (C)CE and lose the exact certificate. A learned solver
-        whose output carries a machine-checkable Nash guarantee in general-sum
-        games would close the gap from the construction side.
+  \item \textbf{Learned construction with machine-checkable certificates beyond
+        two-player zero-sum.} The complexity partition that organizes
+        Section~\ref{subsec:constructive-equilibrium} (linear-programming
+        tractability in zero-sum, PPAD-hardness in general-sum) still bounds
+        what learned solvers can guarantee, and the methods that scale retreat
+        to (C)CE and lose the exact certificate. Symbolic generation restores
+        the full certificate, so far on instances and algorithm families of
+        modest size~\cite{PrimeNash2025,LegoNE2025,LiuGuoConitzer2025}. Whether
+        a learned constructor can emit general-sum solutions whose certificates
+        are machine-checkable at scale, and under what verification the emitted
+        certificates deserve trust, is a single question that joins the
+        survey's construction frontier to its certification frontier.
   \item \textbf{An identifiability theory for neural behavior generators.}
-        Section~\ref{subsec:strategic-inference} showed that fit is cheap and
-        identification hard, with recovery guaranteed only under auxiliary
-        assumptions such as entropy regularization. When the latent strategic
-        state is recoverable from observed behavior, and relative to which assumed
-        response map, remains open.
+        Section~\ref{subsec:strategic-inference} is the observation regime at
+        its purest: fit is cheap and identification hard, with recovery
+        guaranteed only under auxiliary assumptions such as entropy
+        regularization~\cite{FreihautRamponi2025}. When the latent strategic
+        state is recoverable from observed behavior, and relative to which
+        assumed response map, remains open.
   \item \textbf{Exact incentive compatibility at deployment scale.}
-        Section~\ref{subsec:mechanism-design} reached verifiable institutional
-        artifacts, but exact strategy-proofness over multi-bidder, combinatorial,
+        Section~\ref{subsec:mechanism-design} reached the structural-guarantee
+        class, but exact strategy-proofness over multi-bidder, combinatorial,
         or continuous type spaces is enforced only
-        partially~\cite{Duetting2024,WangBundleFlow2025}. Mechanisms that are
-        truthful by construction and verified end-to-end at scale are still to be
-        built.
+        partially~\cite{Duetting2024,WangBundleFlow2025,TEDI2025}. Mechanisms
+        that are truthful by construction and verified end-to-end at scale are
+        still to be built.
   \item \textbf{Preference coherence as a precondition for alignment.}
         Section~\ref{subsec:strategic-evaluation} noted that exploitability and
-        rankings presuppose a coherent utility whose existence is itself uncertain
-        for current models~\cite{RossKimLo2024,Mazeika2025}. Auditing whether the
-        utility exists and selecting the equilibrium it should play are treated
-        separately by current pipelines.
+        rankings presuppose a coherent utility whose existence is itself
+        uncertain for current models~\cite{RossKimLo2024,Mazeika2025}. Auditing
+        whether the utility exists and selecting the equilibrium it should play
+        are treated separately by current pipelines.
   \item \textbf{Equilibrium-level governance standards.}
-        Section~\ref{subsec:deployment-governance} framed calibrated-regret
-        auditing as a recent program~\cite{HartlineWangZhang2025,Hartline2026}.
-        Turning it into a deployable standard, with an agreed equilibrium-level
-        property, test, and sample-complexity budget, is a direction for both
-        theory and policy.
-  \item \textbf{Language models as certificate engines.} LLMs appeared in
-        Section~\ref{subsec:constructive-equilibrium} and
-        Section~\ref{subsec:mechanism-design} as symbolic solvers and
-        institutional compilers that restore the certificate in
-        full~\cite{PrimeNash2025,LegoNE2025,LiuGuoConitzer2025}. Whether they can
-        reliably emit machine-checkable strategic certificates, and under what
-        verification, is unsettled.
+        Section~\ref{subsec:deployment-governance} presented calibrated-regret
+        auditing as a recent program in the behavioral-test
+        class~\cite{HartlineWangZhang2025,Hartline2026}. Turning it into a
+        deployable standard, with an agreed equilibrium-level property, test,
+        and sample-complexity budget, is a direction for both theory and
+        policy.
 \end{itemize}
-\cmt[tentative]{All six are first-pass candidates --- confirm scope and pruning
-with co-authors. Likely merges: items~1 and~6 are both ``learned construction +
-checkable certificate.'' Likely addition: a cross-cutting item on a common formal
-language for ``a counterfactual strategic property represented inside a
-computational system,'' once Section~\ref{sec:intro}'s framing is final. Decide
-whether the list stays prose-itemized here or moves to a short table.}
+\cmt[tentative]{All five are first-pass candidates --- confirm scope and
+pruning with co-authors. Former items 1 and 6 are merged above per the review.
+The previously contemplated cross-cutting item (a common formal language for ``a
+counterfactual strategic property represented inside a computational system'')
+is no longer listed: the checkable-certificate definition and
+Table~\ref{tab:certificates} now supply exactly that language, so the item
+would duplicate movement (3). Decide whether the list stays prose-itemized or
+moves to a short table.}
 
-\cmt[step]{(5) Close on the future of game theory itself, matching the intro's
-promise (``\dots the future of game theory itself''). One paragraph; land on the
-fourth turn of the field's binding question.}
-Game theory has turned its binding question several times: from whether an
+\cmt[step]{(7) Close on the future of game theory itself, matching the intro's
+promise. R4$'$: the fourth turn appears as a corollary of the certificate
+definition (its third occurrence after the Abstract and
+Section~\ref{sec:intro}), and the distinction from the third turn is written
+out so the turn does not collapse back into AGT for a TCS reader. The
+distinguishing data are already on the page: the access and trust columns of
+Table~\ref{tab:certificates}.}
+Game theory has turned its binding question three times: from whether an
 equilibrium exists, to how an institution should be designed, to what an
-equilibrium costs to compute (Section~\ref{sec:recap}). The interface with AI adds
-another turn. The objects of the theory, equilibria, incentive-compatible
-mechanisms, and regret-bounded dynamics, are increasingly built, learned, and
-audited inside computational systems, where earlier they were characterized on
-paper. Game theory thereby gains a constructive and a governance face alongside
-its analytic one, and the systems it governs gain a vocabulary precise enough to
-stay accountable as they grow more capable.
+equilibrium costs to compute (Section~\ref{sec:recap}). The certificate
+definition makes a fourth turn a corollary. Once strategic guarantees are
+required to be checkable, and once the systems that must carry them are
+learning systems with finite access, the binding question becomes whether a
+strategic guarantee can be constructed and verified inside a deployed learning
+system. The fourth turn differs from the third in its certified object and in
+its starting data. Algorithmic game theory certifies properties of an
+explicitly given game: the description is the input, full query access comes
+with it, and the open question is the cost of computation. The fourth turn
+certifies deployed learning systems and the empirical games they induce: the
+description is unavailable, and the test must start from structure (an
+architecture, a protocol) or from behavior (observed play), as the access and
+trust columns of Table~\ref{tab:certificates} record. Game theory thereby gains
+a constructive and a governance face alongside its analytic one, and the
+systems it governs gain a vocabulary precise enough to stay accountable as they
+grow more capable.
 \end{drafting}
