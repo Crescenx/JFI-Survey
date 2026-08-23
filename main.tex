@@ -1,0 +1,180 @@
+%% 
+%% Copyright 2019-2024 Elsevier Ltd
+%% 
+%% Version 2.4
+%% 
+%% This file is part of the 'CAS Bundle'.
+%% --------------------------------------
+%% 
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% The list of all files belonging to the 'CAS Bundle' is
+%% given in the file `manifest.txt'.
+%% 
+%% Template article for cas-sc documentclass for 
+%% single column output.
+
+%\documentclass[a4paper,fleqn,longmktitle]{cas-sc}
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{calc}
+\usepackage{etoolbox}
+\usepackage{xcolor}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\makeatletter
+\newlength{\hb@colwidth}
+\def\makeheaderbox{
+	\noindent\textcolor{black}{\rule{\textwidth}{1pt}}
+	\par\vskip2pt\noindent
+	\begin{minipage}{\textwidth}
+		\centering
+		\setlength{\tabcolsep}{0pt}
+		\setlength{\extrarowheight}{0pt}
+		\setlength{\hb@colwidth}{0.16666667\textwidth}
+		\renewcommand{\arraystretch}{2}
+		\begin{tabular}{
+				p{\hb@colwidth}
+				>{\columncolor[gray]{0.95}}p{4\hb@colwidth}
+				p{\hb@colwidth}
+			}
+			\parbox[c][\hb@colwidth][c]{\hb@colwidth}{
+				\centering
+				\includegraphics[height=0.9\hb@colwidth, keepaspectratio]{publisher-logo}
+			} & 
+			\parbox[c][\hb@colwidth][c]{4\hb@colwidth}{
+				\centering
+				{\fontsize{8}{10}\selectfont Contents lists available at \href{https://www.elsevier.com/locate/fi}{ScienceDirect}}\par
+				\vspace{15pt}
+				{\fontsize{16}{18}\selectfont Journal of the Franklin Institute}\par
+				\vspace{12pt}
+				{\fontsize{8}{10}\selectfont journal homepage: \href{https://www.elsevier.com/locate/fi}{www.elsevier.com/locate/fi}}
+			} & 
+			\parbox[c][\hb@colwidth][c]{\hb@colwidth}{
+				\centering
+				\includegraphics[height=\hb@colwidth, keepaspectratio]{journal-logo}
+			} \\
+		\end{tabular}
+	\end{minipage}
+	\par\vskip2pt
+	\noindent\textcolor{black}{\rule{\textwidth}{3pt}}
+	\par\vskip18pt
+}
+
+\let\originalmaketitle\maketitle
+\def\maketitle{
+	\makeheaderbox
+	\vspace{2pt}
+	\begin{center}{\Large\bfseries \emph{Bicentennial Special Issue Invited Paper}}
+    \end{center}\par
+	\vspace{10pt}
+	\originalmaketitle
+}
+\makeatother
+
+
+\usepackage[numbers]{natbib}
+%\usepackage[authoryear]{natbib}
+%\usepackage[authoryear,longnamesfirst]{natbib}
+
+%%%Author macros
+\def\tsc#1{\csdef{#1}{\textsc{\lowercase{#1}}\xspace}}
+\tsc{WGM}
+\tsc{QE}
+\tsc{EP}
+\tsc{PMS}
+\tsc{BEC}
+\tsc{DE}
+%%%
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+\shorttitle{Learning and Strategic Guarantees}
+\shortauthors{X. Xie et~al.}
+%\begin{frontmatter}
+
+\title [mode = title]{Learning and Strategic Guarantees:
+AI and Game Theory}
+
+\author[1]{Xiaohan Xie}
+\author[2]{Wenxuan Liu}
+\author[1]{Junhua Zhao}
+\author[3]{Biying Shou}
+\author[1]{Jianwei Huang}
+\cormark[1]
+\ead{jianweihuang@cuhk.edu.cn}
+
+\affiliation[1]{organization={School of Science and Engineering, The Chinese University of Hong Kong, Shenzhen},
+                city={Shenzhen},
+                country={China}}
+\affiliation[2]{organization={TODO: affiliation for Wenxuan Liu},
+                city={TODO}, country={TODO}}
+\affiliation[3]{organization={TODO: affiliation for Biying Shou},
+                city={TODO}, country={TODO}}
+
+\cortext[cor1]{Corresponding author}
+
+\begin{abstract}
+Learning now enters game theory in two roles: as a computational tool and as a
+source of strategic behavior. Training can amortize work across related games,
+but a learned strategy or rule remains a candidate until the method establishes
+the relevant game-theoretic property. Deviation-based properties can quantify
+over alternatives that finite search does not examine. With observational data,
+distinct strategic models may remain indistinguishable. A designed game raises a separate
+question: whether its model of interaction adequately represents the external
+objective. We use these two questions to compare six areas, from equilibrium
+computation to algorithmic-pricing governance. In each area, we distinguish the
+immediate output from the argument needed to extend finite evaluation to the
+target claim. We also consider deployments in which participants respond to a
+learned rule and thereby alter the cases encountered after deployment.
+\end{abstract}
+
+%\begin{graphicalabstract}
+%\includegraphics{figs/cas-grabs.pdf}
+%\end{graphicalabstract}
+
+%\begin{highlights}
+%\item Research highlights item 1
+%\item Research highlights item 2
+%\item Research highlights item 3
+%\end{highlights}
+
+\begin{keywords}
+learning in games \sep equilibrium computation \sep strategic inference \sep
+automated mechanism design \sep strategic evaluation \sep algorithmic pricing
+\end{keywords}
+
+
+\maketitle
+
+\input{sections/intro}
+\input{sections/recap}
+\input{sections/ai4gt}
+\input{sections/gt4ai}
+\input{sections/conclusion}
+
+\printcredits
+
+\section*{Acknowledgments}
+
+%% Loading bibliography style file
+\bibliographystyle{elsarticle-num}
+
+% Loading bibliography database
+\bibliography{ref}
+
+\end{document}

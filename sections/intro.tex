@@ -1,0 +1,201 @@
+% intro.tex
+% Section 1: Introduction
+
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{Three Recurring Questions}
+\label{sec:intro:eras}
+
+Game theory first asks whether a solution exists. Von Neumann showed that every
+finite two-person zero-sum game has a value together with a pair of optimal
+mixed strategies~\cite{Neumann1928}, and von Neumann and Morgenstern placed that
+result inside a general theory of economic behavior~\cite{vNM1944}. Nash
+extended equilibrium existence to finite games with any finite number of players
+and general payoff interactions~\cite{Nash1951}, well beyond strictly
+competitive play.
+
+Mechanism design makes the rules themselves the object of choice. In
+the standard quasilinear setting, the Vickrey--Clarke--Groves family showed how
+to make truthful reporting a dominant strategy by charging each participant for
+the externality it imposes~\cite{Vickrey1961,Clarke1971,Groves1973}, and
+Myerson characterized the
+revenue-maximizing auction for the single-item Bayesian
+setting~\cite{Myerson1981}. Impossibility results identify combinations of
+domain restrictions and desiderata that cannot be satisfied
+simultaneously~\cite{Arrow1951,Gibbard1973,Satterthwaite1975}.
+Together, such results frame mechanism design as the selection of rules under
+explicit incentive and feasibility constraints.
+
+Existence and characterization results leave a computational question: how can
+the solution be found? Algorithmic game theory studies this question for
+different game representations and solution concepts
+~\cite{NisanRoughgardenTardosVazirani2007}. Computing a Nash
+equilibrium is PPAD-complete in general, and remains so with only two
+players~\cite{DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}. Even
+classical constructive procedures can follow exponentially long
+paths~\cite{LemkeHowson1964,SavaniVonStengel2006}. Established approaches weaken
+the solution concept or exploit a restricted game's structure, often while
+accepting approximation.
+
+\subsection{How Learning Changes Computation}
+\label{sec:intro:change}
+
+Learning can redistribute computation across related instances. A system is
+trained on many related cases and reuses the resulting conditional rule when a
+new case arrives. This is the familiar structure of amortized optimization and
+inference~\cite{Amos2022Amortized,KingmaWelling2014}, and in strategic settings
+it has produced strong empirical systems. Neural counterfactual values and
+continual re-solving produced expert-level play in heads-up no-limit
+poker~\cite{Moravcik2017,BrownSandholm2018,BrownReBeL2020}. Self-play with
+learned policy and value networks mastered board games from their rules, and
+league training produced a StarCraft II agent at grandmaster
+level~\cite{Silver2018,Vinyals2019}. Neural networks now also search spaces of
+auction mechanisms that no analyst could
+enumerate~\cite{Duetting2019,Duan2023,Duetting2024}.
+
+In these examples, training is part of the solver: it shares work across related
+instances and can reduce the cost of each later one. Learned systems also
+participate in the interactions being studied. Pricing algorithms interact in
+real markets~\cite{Calvano2020,Assad2024}. Language models negotiate and
+coordinate~\cite{Bianchi2024NegotiationArena,Akata2025}, while alignment
+procedures train one model against the responses of another
+~\cite{Christiano2017,Ouyang2022}.
+In each case the system's outputs can change what other participants do and
+which situations the system later faces. Performance on a fixed set of cases
+does not by itself establish performance after those responses. Game-theoretic
+deviation tests provide one relevant standard: whether a participant can gain
+by deviating within a specified class.
+
+\subsection{Construction and Validity}
+\label{sec:intro:cost}
+
+Learned strategic methods are typically assessed through finite search or test
+populations. RegretNet reports the largest gain found by gradient search over
+sampled valuation profiles. Poker systems report performance against a test
+population, while pricing audits estimate regret against alternatives
+recoverable from deployment logs. Each result provides evidence for sampled cases and
+accessible alternatives. Some target properties quantify over a larger
+deviation class. For example, they require that no deviation in the specified
+class be profitable or that truthful reporting yield at least as much utility as
+every admissible misreport for every type. For such
+deviation-defined properties, one profitable deviation refutes the claim.
+Failure to find one supports the full claim only if the search covers the target
+class or an additional argument controls what the search omitted.
+
+We distinguish two forms of validity.
+
+\begin{description}
+\item[Output validity.] Does the learned output have the claimed strategic
+property? The answer depends on how the game and candidate can be queried or
+checked.
+
+\item[System validity.] Does a property established inside a designed game
+support the objective that the game was designed to serve? For an alignment procedure, oversight protocol,
+or market institution, this depends on how the designed interaction represents
+both the participants and the objective.
+\end{description}
+
+The available access determines what further argument is possible. When each
+alternative can be evaluated through an explicit model or simulator, the main
+obstacle may be the size of the class. We call this a coverage limit. Broader
+search or a bound derived from structure may address it.
+With observational data, distinct strategic models can instead generate the
+same realized behavior. This identification limit cannot be resolved by more
+data from the same observational regime. It requires informative variation,
+intervention, or maintained restrictions~\cite{HaileHortacsuKosenok2008}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{figure/fig1-preservation-gaps.pdf}
+\caption{The two validity questions. \emph{Output validity} concerns the
+strategic property of a learned output. \emph{System validity} concerns whether
+a property established inside a designed game supports the game's external
+objective. Section~\ref{sec:synthesis} gives the conditions for composing the
+two implications.}
+\label{fig:validity-gates}
+\end{figure}
+
+\subsection{Why the Distinction Matters}
+\label{sec:intro:why}
+
+The distinction becomes consequential when learned strategic systems leave a
+fixed benchmark. Field evidence from retail gasoline markets links algorithmic
+pricing to higher margins~\cite{Assad2024}. In oligopoly experiments,
+language-model agents reach supra-competitive prices without
+instruction~\cite{FishGonczarowskiShorrer2024}. Language models also propose
+executable mechanisms and equilibrium derivations
+~\cite{PrimeNash2025,LegoNE2025,LiuGuoConitzer2025}. These outputs can be
+checked mechanically against a formal specification. Executability alone does
+not supply that specification or establish the strategic claim.
+
+The same evidentiary question appears in proposals to regulate algorithmic
+collusion. These proposals ask whether a firm can produce evidence that its
+pricing algorithm was not exploiting its rivals, with the burden of producing
+that evidence assigned by
+rule~\cite{HartlineLongZhang2024,HartlineWangZhang2025,Harrington2018}. When a
+statistical property of a deployment log is offered as a legal defense, the
+scope of the claim supported by that finite evidence becomes part of the
+proposed regulatory design.
+
+\subsection{Scope and How to Read This Survey}
+\label{sec:intro:scope}
+
+\paragraph{Scope.} We study systems that learn strategic rules from data or
+interaction. A high-dimensional trained rule may require empirical queries
+and statistical bounds, whereas executable code or membership in a structured
+family may permit direct checking. The appropriate analysis therefore depends
+on the representation and the property being claimed.
+
+\paragraph{Related surveys and exclusions.} Stackelberg
+and security games, mean-field games, multi-agent reinforcement learning beyond
+its use as a response oracle, autobidding, and incentive design for federated
+learning fall outside our selected domains. Wellman et al.\ and Curry et al.\ give
+denser accounts of empirical game-theoretic analysis and automated mechanism
+design, respectively~\cite{WellmanTuylsGreenwald2025,CurryAMDSurvey2025}. Sun et
+al.\ survey the game theory--LLM intersection with the language model as the focal
+technology~\cite{SunWuChengChu2025}. Podimata surveys incentive-aware machine
+learning, where individuals adapt their inputs to a deployed decision
+rule~\cite{Podimata2025}. Each of these surveys organizes the literature around
+its object of study. We organize by the relation between a computation, the claim attached
+to it, and the evidence available for that claim.
+
+\paragraph{Organization.} Section~\ref{sec:recap} introduces the computational
+background. Sections~\ref{sec:ai4gt} and~\ref{sec:gt4ai} organize six application
+areas around the two validity questions. Section~\ref{sec:synthesis} states when
+the two can be combined. Figure~\ref{fig:survey-route} maps the two main parts
+of the survey to the six application areas.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{figure/fig2-survey-route.pdf}
+\caption{Survey structure and the interaction link. Section~3 studies learned
+strategic objects across related cases. Section~4 studies learned systems in
+interactions where participant responses can change the relevant cases. The
+six labels identify the corresponding subsections and need not be disjoint.}
+\label{fig:survey-route}
+\end{figure}
+
+\paragraph{Strategic response after deployment.} Both validity questions range
+over a set of cases. After deployment, participants' responses can change the
+inputs and counterparties represented in the observed data. Related
+distributional feedback is formalized in performative
+prediction~\cite{Perdomo2020Performative}. Generalization under strategic
+response concerns whether the relevant property remains valid over cases
+selected partly by those responses. A
+guarantee on a fixed evaluation distribution need not extend to this deployment
+distribution. The relevant response process and case domain must therefore be
+part of the claim.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{figure/fig4-candidate-counterexample.pdf}
+\caption{Finite evaluation of a deviation-defined property. A method proposes a
+candidate and searches for a profitable deviation in an accessible class. A
+discovered deviation refutes the candidate. If the search finds none, a claim
+over the target class requires a theorem, bound, or structural argument that
+controls the alternatives not searched. Identification and system-validity
+claims require different arguments.}
+\label{fig:candidate-counterexample}
+\end{figure}
+\FloatBarrier

@@ -1,0 +1,147 @@
+% recap.tex
+% Section 2: Background
+
+\section{Background}
+\label{sec:recap}
+
+\subsection{From Equilibrium to Its Cost}
+\label{subsec:recap-gt}
+
+\subsubsection{Equilibrium and its deviation class}
+
+Von Neumann's minimax theorem establishes that every finite two-player zero-sum
+game has a value and a pair of optimal mixed
+strategies~\cite{Neumann1928,vNM1944}. In that setting a player's equilibrium
+strategy is also its worst-case-optimal strategy, so equilibrium and robustness
+coincide. This coincidence is specific to strictly competitive play and does not
+extend to general games.
+
+Nash's equilibrium is a profile in which no player gains by deviating
+alone~\cite{Nash1951}. The condition can be quantified through each player's
+best unilateral gain. For a profile $s$ and a class $\mathcal{D}_i$ of
+deviations available to player $i$, write the aggregate gap
+\[
+  \mathrm{Gap}_{\mathcal{D}}(s)
+  \;=\;
+  \sum_i \Bigl[\, \sup_{s_i' \in \mathcal{D}_i} u_i(s_i', s_{-i}) - u_i(s) \,\Bigr].
+\]
+Assume that $\mathcal{D}_i$ includes the player's current strategy. When each
+$\mathcal{D}_i$ is the player's whole strategy set, this sum is commonly called
+NashConv; closely related normalizations are called exploitability. It is zero
+exactly at a Nash equilibrium. In other applications $\mathcal{D}_i$ may be a
+restricted class, in which case the gap describes only deviations in that class.
+
+The deviation inequalities can be evaluated one player at a time while holding
+the opponents' strategies fixed, but every player's inequality must hold for
+the same joint profile. The condition is static and does not describe whether an
+adaptive process reaches such a profile. That requires a convergence analysis of
+the process itself.
+
+Extensive-form games represent the order of play and the information available
+to each player, and Kuhn's
+theorem established that under perfect recall mixed and behavioral strategies
+induce the same outcome distributions~\cite{Kuhn1953}. Selten's refinements
+imposed rationality at contingencies the equilibrium path never
+reaches~\cite{Selten1975}. Harsanyi handled private information by making a
+player's payoff-relevant characteristics a \emph{type}, converting incomplete
+information into a Bayesian game~\cite{Harsanyi1968}. In each case the
+comparison with counterfactual alternatives remains the content of the concept,
+with the refinements changing the set of alternatives being compared.
+
+In a correlated equilibrium, a mediator draws a joint action profile and
+privately recommends one action to each player. No player gains by deviating as
+a function of the recommendation received~\cite{Aumann1974}. Quantal response
+equilibrium replaces exact best response with a smooth choice rule in which
+better actions are more likely but mistakes persist~\cite{McKelveyPalfrey1995}.
+
+\subsubsection{Design and deviation-based incentive constraints}
+
+Mechanism design chooses rules under which participants' incentives produce a
+desired outcome.
+Impossibility results identify restrictions on what particular classes of
+rules can achieve~\cite{Arrow1951,Gibbard1973,Satterthwaite1975}. Under the
+conditions of the revelation principle, the design problem can be posed over
+direct mechanisms in which agents report types and truthful reporting is an
+equilibrium.
+
+Incentive compatibility is likewise defined by deviations: for every relevant
+type, truthful reporting must do at least as well as \emph{every} admissible
+alternative report. Here the deviation class is the misreport space, with its
+scope determined by the equilibrium concept and the mechanism's domain. The
+Vickrey--Clarke--Groves family achieves efficient allocation in dominant
+strategies~\cite{Vickrey1961,Clarke1971,Groves1973}, and Myerson characterized
+the revenue-optimal single-item Bayesian
+auction~\cite{Myerson1981}.
+
+\subsubsection{Construction and checking}
+
+The PPAD-completeness results summarized in Section~\ref{sec:intro:eras} concern
+total search problems: a solution exists, although finding one may be
+intractable~\cite{Papadimitriou1994}. The asymmetry between construction and
+checking also depends on the representation and the property. Given an explicit finite game and a rational profile,
+evaluating a specified deviation is direct. Finding one profitable deviation
+refutes the equilibrium claim. Establishing that no profitable deviation exists
+over a large or implicitly represented class can require an optimization or
+structural result. Mechanism design faces the
+same computational pressure because optimization over contingent rules is
+itself a hard search problem~\cite{ConitzerSandholm2002}.
+
+\subsubsection{Established ways to reduce computational demands}
+
+Tractability can be recovered by weakening the solution concept or restricting
+the game class, often while accepting a bounded residual gain. For example, correlated
+and coarse correlated equilibria in explicitly represented finite games admit
+linear descriptions and are computable in polynomial time. They can also arise
+from decentralized learning: when every player in a repeated game
+drives external regret to zero, the empirical distribution of play approaches
+the coarse correlated set, and stronger regret notions reach the correlated
+set~\cite{Hannan1957,HartMasColell2000,BlumMansour2007}. The deviation class is
+explicit in this result: the equilibrium notion obtained depends on which
+deviations the regret criterion compares against~\cite{GordonGreenwaldMarks2008}.
+Each modification changes the claim for which a deductive guarantee is
+available. Learning can be combined with any of them by fitting a conditional
+rule across related games and reusing it on later instances.
+
+\subsection{What Training Does}
+\label{subsec:recap-dl}
+
+\subsubsection{Amortization: sharing computation across instances}
+
+A per-instance solver is invoked on a specified game. An amortized system fits
+a conditional rule across a family of related cases and later evaluates that
+rule on a new case. Total computation includes training and later evaluations.
+The potential advantage comes from sharing the trained rule across cases. This
+is the structure of amortized optimization and
+inference~\cite{Amos2022Amortized,KingmaWelling2014}. Different architectures
+encode different forms of sharing across states or instances.
+
+Reinforcement learning adds the dependence that matters for strategic settings:
+an action changes the data the learner will next
+observe~\cite{SuttonBarto2018,Williams1992,SuttonPolicyGradient2000,Mnih2015}.
+When the rules are known, self-play can generate new training games as the
+policy changes, an approach used to train policy and value networks in board-game
+systems~\cite{Silver2018}. When behavior is observed
+but the objective is hidden, inverse reinforcement learning estimates which
+objectives are consistent with that behavior~\cite{NgRussell2000,HoErmon2016}.
+
+Preference-based fine-tuning turns
+comparisons between outputs into a training signal, making the learning target
+itself something another party
+supplies~\cite{Christiano2017,Ouyang2022}. Large language models generate
+general-purpose text~\cite{BrownGPT3_2020}. Code models and tool-using agents
+also produce executable programs or action traces
+~\cite{ChenCodex2021,YaoReAct2023,SchickToolformer2023}.
+
+\subsubsection{What must still be accounted for}
+
+Amortization changes where the computation occurs. Data generation and parameter
+optimization can dominate the time saved at inference, so a cost comparison
+should include training as well as later evaluations. The strategic property of
+the output then depends on the analytic or post-training check used by the
+method.
+
+Validation also depends on access. A high-dimensional rule may be available only
+through queries, and finite tests cover sampled instances and representable
+alternatives. Extending such results to a larger deviation class requires a bound
+or structural argument. Executable code and rules constrained to a known family
+may instead permit symbolic checking or a direct theorem.

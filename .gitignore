@@ -1,0 +1,26 @@
+# Local archives
+/.local-archive/
+
+# LaTeX build products
+/build/
+/output/
+main.pdf
+*.abs
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.cut
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Editor and platform metadata
+.DS_Store
+*.Zone.Identifier

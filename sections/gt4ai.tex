@@ -1,0 +1,584 @@
+% gt4ai.tex
+% Section 4: Game Theory for Strategic AI
+
+\section{Game Theory for AI}
+\label{sec:gt4ai}
+
+Evaluation places a learned policy against either an opponent population or an attack class, which
+fixes the scope of the result. A game designed for training must also represent
+the external objective it is meant to serve. In deployed markets, participants'
+responses can change the cases encountered, and the institution determines
+whose outcomes count.
+
+\subsection{Strategic Evaluation against Opponent Populations}
+\label{sec:gt4ai:evaluation}
+
+A competence score is defined relative to an opponent population and an
+interaction protocol, including the strategy space available to each player. A
+fixed benchmark applies the same cases to every model, whereas an adaptive
+opponent helps determine the effective test distribution. The evaluator can
+query the tested policy in new interactions but must use a finite population as
+a surrogate for future opponents. A policy may therefore perform well against
+one population and fail against another that exploits it.
+
+Externally assigned payoffs support comparisons within the represented
+population and deviation class. If the model's choices are instead interpreted
+as evidence of its own utility, they must also support a stable preference
+representation. This additional requirement is unnecessary when the evaluator
+stipulates the payoffs.
+
+\subsubsection{Empirical strategic populations}
+The dependence on the opponent can be expressed directly. Let \(\pi\) denote the policy under evaluation, let \(\sigma\) denote an opponent policy, and let \(u(\pi,\sigma)\) be the expected payoff to \(\pi\) under a specified interaction protocol. A conventional evaluation score against an opponent distribution \(q\) has the form
+\[
+S(\pi;q)
+=
+\mathbb{E}_{\sigma\sim q}
+\left[
+u(\pi,\sigma)
+\right].
+\]
+Changing \(q\) can alter both the magnitude of the score and the ranking of the evaluated policies. A benchmark containing many strategically similar opponents can overweight one region of the strategy space, while omission of an exploiting opponent can inflate average performance.
+
+Balduzzi et al.\ identify this dependence in reinforcement-learning evaluation,
+where a growing collection of environments and baselines can fragment the
+resulting evidence~\cite{Balduzzi2018}. Different opponent selections can reverse
+the apparent ranking of two agents. A game-theoretic scalar summary derives its
+meaning from a population game: the evaluator specifies the included policies
+and sampling procedure, then chooses a solution concept that aggregates the
+payoff relations.
+
+Empirical game-theoretic analysis provides the basic representation. Given a
+finite population \(\Pi=\{\pi_m,\; m\in\mathcal{M}\}\) of policies indexed by
+\(\mathcal{M}\), the evaluator estimates the payoff associated with each relevant
+joint policy profile through simulation or recorded interactions. These estimates define an
+empirical game in which each policy in \(\Pi\) is a strategy~\cite{Wellman2006}.
+For a symmetric two-player setting, the empirical payoff matrix may be written as
+\[
+\widehat{A}_{ij}
+=
+\widehat{\mathbb{E}}
+\left[
+u(\pi_i,\pi_j)
+\right].
+\]
+The matrix preserves pairwise strategic relationships that an average benchmark
+score would suppress. Within the selected population, it can reveal dominance
+relations, cycles, and local strengths, subject to sampling error in its entries.
+
+\subsubsection{Coverage of deviations}
+Exploitability makes this dependence explicit. For a strategy profile \(s\), a deviation-class-specific Nash-convergence measure can be written as
+\[
+\operatorname{NashConv}_{\mathcal{D}}(s)
+=
+\sum_i
+\left[
+\sup_{s_i'\in\mathcal{D}_i}
+u_i(s_i',s_{-i})
+-
+u_i(s)
+\right],
+\]
+where \(\mathcal{D}_i\) is the class of deviations available to player \(i\)
+and is assumed to include the current strategy. The quantity is zero when no
+player can improve within the specified class. If \(\mathcal{D}_i\) contains
+every feasible strategy, the expression recovers the full
+no-profitable-deviation condition. In empirical evaluation, the supremum is
+usually replaced by a maximum over a finite policy population or by the output
+of an approximate best-response procedure. The reported value is then
+restricted exploitability: it measures the largest gain available among the
+deviations that the evaluator was able to represent and query.
+
+Restricted exploitability tests whether the represented class contains a
+profitable counterstrategy, whereas win rate averages outcomes under a specified
+opponent distribution. A low restricted value is weaker evidence than a low
+full-game exploitability bound: the evaluator may omit the relevant
+deviation, or an approximate best-response learner may fail to discover it.
+
+Policy-space response oracles update the population iteratively. PSRO
+alternates between solving the empirical meta-game and training approximate best
+responses to its current meta-strategy~\cite{Lanctot2017}. Each response query
+attempts to expose a strategic weakness in the existing population. A successful
+response expands the population and updates the empirical game. The current
+population defines the test, while the tested profile determines which opponent
+should be generated next.
+
+A policy can overfit its training opponents, scoring well under the training
+distribution yet failing under a different mixture or against a response absent
+from that population. Adaptive population updates reduce this risk to the extent
+that the response learner can search an adequate policy class.
+
+\subsubsection{Verdicts within the represented population}
+Once an empirical game has been constructed, different solution concepts induce
+different evaluation verdicts. Nash averaging computes a maximum-entropy Nash
+distribution and evaluates policies against that strategically selected
+mixture~\cite{Balduzzi2018}. Redundant opponents and policies exploitable by the
+equilibrium population receive less weight. The resulting score is tied to
+best-response conditions in the represented population, so adding a
+strategically relevant policy can change both the equilibrium mixture and the
+resulting ordering.
+
+A further difficulty is non-transitivity. In a transitive population, policies can be arranged approximately along a single strength dimension: stronger policies tend to defeat weaker ones. Conventional rating systems are useful in this setting. In a non-transitive population, pairwise performance may instead form a cycle,
+\[
+\pi_A \succ \pi_B,\qquad
+\pi_B \succ \pi_C,\qquad
+\pi_C \succ \pi_A.
+\]
+No scalar ordering preserves all three relations. Reporting only average performance can make the ranking depend on the frequency assigned to each opponent, while selecting one policy as universally strongest discards the strategic structure that determines its vulnerabilities.
+
+\(\alpha\)-Rank addresses this setting through an evolutionary model over strategy profiles~\cite{Omidshafiei2019}. It constructs a Markov chain in which transitions represent the fixation of strategically advantageous mutations and uses the stationary distribution to rank policies or joint profiles. Because the method operates on the directed response structure of the empirical game, it can represent cycles and recurrent strategic components that a transitive rating would collapse. Its output remains population-relative, and the state space grows rapidly with the number of agents and strategies. The stochastic-optimization approach of \(\alpha^{\alpha}\)-Rank addresses this scalability problem in large empirical games~\cite{Yang2020}.
+
+Open-ended learning provides another account of the same structure. Balduzzi et al. separate transitive progress from non-transitive strategic diversity in symmetric zero-sum games~\cite{Balduzzi2019Open}. Along the transitive component, one policy can improve in a way that generalizes across much of the population. Along a non-transitive component, improvement is meaningful only relative to the opponents currently represented. A learner may discover a policy that defeats the incumbent without being globally stronger, because another existing or future policy defeats the new response.
+
+The spinning-top model extends this observation beyond simple cyclic examples. Czarnecki et al. argue that many real-world games combine a broad transitive direction with substantial non-transitive variation around policies of similar overall strength~\cite{Czarnecki2020}. Weak policies may be defeated by many alternatives, while increasingly capable policies enter a wider region containing diverse specialists and counterstrategies. Evaluation near the frontier therefore requires both progress along the transitive dimension and coverage of the surrounding non-transitive population. A single champion policy or scalar rating can conceal this strategic diversity.
+
+\subsubsection{Game-playing systems and language models as evaluated policies}
+These population-level ideas already shape deployed game-playing systems.
+AlphaStar's final strategic output is a Nash-weighted mixture of selected league
+agents, intended to reduce exploitability across that
+population~\cite{Vinyals2019}. Its robustness depends on the complementary
+policies in the mixture. Imperfect-information poker systems use a related
+evaluation standard.
+DeepStack reports local best-response measurements to estimate how much an
+opponent could gain by exploiting its strategy~\cite{Moravcik2017}. Libratus and
+Pluribus combine performance against strong human players with game-theoretic
+analysis of their strategies and abstractions~\cite{BrownSandholm2018,Brown2019Pluribus}.
+Match results establish practical strength against the encountered opponents.
+Exploitability or local-best-response analysis asks whether a strategically
+selected counterpolicy could obtain a systematic advantage.
+
+The same evaluation vocabulary applies when the strategic subject is a language
+model. A model engaged in a strategic exchange defines a conditional policy
+over messages and actions. Its behavior depends on both the problem statement
+and the interaction history, including the counterparty and protocol. A
+benchmark that aggregates outcomes across games may produce a convenient
+summary, but that summary does not identify which strategic structures the
+model handles successfully.
+
+GTBench evaluates language models across game-theoretic settings and reports
+that their strategic reasoning varies with the structure of the
+game~\cite{GTBench2024}. Its results identify task-specific capabilities and
+failure modes rather than a general level of game-theoretic competence.
+Repeated-game experiments make the opponent dependence more direct. Akata et
+al. show that language-model cooperation and coordination vary with the prompt,
+opponent, and interaction history~\cite{Akata2025}. In their experiments, GPT-4
+behaves unforgivingly in the Prisoner's Dilemma but fails to coordinate reliably
+with an alternating opponent in Battle of the Sexes. Neither observation is
+captured by simply calling the model cooperative or rational. Its apparent
+strategic character changes with the interaction rule and the behavior to which
+it must respond.
+
+These studies treat the language model as a policy and measure its competence
+through play. Strong performance supports competence within the benchmark, and
+a failure can refute a broader claim. Claims about other interactions require
+separate evidence.
+
+\subsubsection{Preference interpretation when utility is inferred}
+When an evaluation assigns payoffs externally, best response, regret, and
+exploitability are defined relative to those payoffs without making a claim
+about the agent's own preferences. A separate question arises when model
+choices are interpreted as evidence of an internal utility or preference. If
+those choices reverse under strategically irrelevant changes in wording or
+framing, there may be no stable preference representation to recover.
+Preference-coherence tests determine whether observed choices support this
+interpretation.
+
+Classical utility representation relies on conditions such as completeness and transitivity. Completeness requires the agent to compare the relevant alternatives, while transitivity excludes unresolved cycles. A random-utility model can separate a persistent latent ordering from noisy observations, so stochastic choice need not violate either condition. Repeated choices must nevertheless admit a stable deterministic or stochastic representation that transfers across elicitation settings.
+
+Before choices can be read as revealing a utility, they must be stable enough to
+reveal anything. Ross, Kim, and Lo test language models for behavioral patterns associated with inequity aversion, risk and loss attitudes, and time discounting~\cite{RossKimLo2024}. The models studied are neither uniformly human-like nor uniformly consistent with the benchmark of an idealized economic agent. Their measured consistency changes across decisions and settings. The study also applies a competence screen before interpreting the economic tests and analyzes only models that pass it. This procedure makes the two-stage structure explicit: an evaluator first determines whether a model understands and can execute the decision task, and then asks whether its choices support a coherent utility interpretation.
+
+Utility Engineering fits Thurstonian random-utility models directly to AI
+preference data~\cite{Mazeika2025}. The framework tests whether observed
+comparisons admit complete and transitive latent preferences while allowing
+stochastic choice. The reported association between model scale and preference
+coherence supports utility-based analysis for the evaluated models and settings.
+
+Behavioral-economics comparisons provide related but distinct evidence. Mei et al. compare chatbot behavior with human behavior across classic experiments and report that GPT-4 is statistically difficult to distinguish from humans in the settings studied. When it does differ, its behavior tends to be more cooperative~\cite{Mei2024}. Other work uses language models as simulated economic agents or as populations intended to reproduce human-subject studies~\cite{Horton2023,Aher2023}. Behavioral similarity can support particular simulation uses, but it does not establish preference coherence by itself. A model may reproduce an aggregate human response distribution while changing its choices across equivalent framings, and a coherent model may hold preferences that differ systematically from those of humans.
+
+Preference-coherence tests concern a stable utility representation. Empirical
+game metrics evaluate a policy under stipulated payoffs and an opponent
+population. Win rate, Nash averaging, \(\alpha\)-Rank, and exploitability
+aggregate that population differently.
+
+Some of these diagnostics can be moved into training. An adversary can search
+for exploitable responses, and an interactive protocol can expose answers that a
+fixed output score cannot judge. The next subsection studies such designed
+games.
+
+
+\subsubsection{Adversarial robustness}
+
+An attack set serves the same evaluative role as an opponent population: it
+defines the class against which robustness is measured. GANs provide one
+game-theoretic example: a generator and a discriminator play a zero-sum minimax
+game whose intended Nash point leaves the discriminator unable to separate
+generated from real data~\cite{Goodfellow2014}. The attacker's feasible actions
+differ across applications.
+Madry et al.\ fix a bounded perturbation set in advance and approximate the
+resulting constrained inner maximization with projected gradient descent
+~\cite{Madry2018}. LLM red teaming uses a language model to search a wider space
+of attacks~\cite{Perez2022}. Multi-round variants
+allow newly discovered attacks to shape the next defense by co-evolving attacker
+and defender populations~\cite{MaYang2024RTG}.
+
+An $\ell_p$ guarantee covers perturbations inside the specified ball. A learned
+red-team population has an analogous scope, determined by the deviations its
+policy class can represent and its optimization procedure can discover. PSRO
+makes the adaptive search explicit by adding approximate best responses and
+solving the resulting meta-game~\cite{Lanctot2017}. Its meta-strategy is a distribution over distinct
+policies or networks, whereas a stochastic LLM policy directly represents a
+conditional distribution over responses. At LLM scale, the former may require
+several sets of weights or a later distillation step.
+
+Even a rich attacker population leaves the equilibrium dynamics unresolved.
+Farnia and Ozdaglar construct parameterized GAN games with no local Nash
+equilibrium and give first-order dynamics that fail to converge in the last
+iterate~\cite{FarniaOzdaglar2020}. Their construction is specific to GANs, yet
+it is enough to rule out any general inference from minimax form alone:
+equilibrium existence and convergence of first-order dynamics require separate
+arguments.
+
+Certified defenses make explicit the distinction between what is covered and what is claimed
+by returning a radius within which no perturbation can change the
+prediction~\cite{CohenRosenfeldKolter2019}. In evidentiary terms, the certificate
+plays a role analogous to a duality bound in
+Section~\ref{sec:ai4gt:equilibrium}: it supplies a theorem-backed guarantee over
+a stated class.
+
+\medskip
+\noindent
+In each setting, adaptive search can broaden the tested class. A claim about the
+full target still requires either exhaustive coverage or an argument controlling
+unsearched alternatives.
+
+
+\subsection{Designed Games as Evidence}
+\label{sec:gt4ai:training}
+
+Training and oversight objectives are often defined relative to another
+participant. Robustness uses an attack set, preference learning uses comparisons
+between responses, and an oversight protocol uses a judge with specified
+capabilities. The modeled counterparty and its information therefore determine
+which failures the game can expose. We examine preference games, which aggregate
+pairwise comparisons, and interactive-proof games, which use a bounded verifier.
+
+Finite training covers only part of the modeled participants' behavior, and
+deployment may elicit responses absent from the training game. The game's
+strategy spaces and information structure determine its target equilibrium,
+while the learning dynamics determine which policy is reached. A system-level
+claim requires both the relevant participant class and the external objective to
+be represented adequately.
+
+\subsubsection{Preference games: what the aggregation certifies}
+
+Consider three responses whose pairwise
+majority relation satisfies
+$A \succ B$, $B \succ C$, and $C \succ A$. No scalar ranking preserves all
+three comparisons. Bradley--Terry models cannot represent this cycle in the
+induced majority relation because latent scalar scores impose a transitive
+ordering, although stable cycles arise in psychological, social-choice, and
+online-comparison
+settings~\cite{BradleyTerry1952,May1954,Tversky1969,Dudik2015}. A preference
+game retains the pairwise relation and lets the solution concept perform the
+aggregation. Nash learning from human feedback (NLHF) takes this route. It
+represents the learned comparison model as a symmetric
+two-player game and adds KL regularization relative to a reference
+policy~\cite{Munos2024}. With tabular policies, the last iterate of Nash-MD
+converges to the unique regularized Nash equilibrium at an $O(1/T)$ rate in KL
+divergence. The equilibrium balances pairwise payoff against the cost of moving
+away from the reference policy. A competitor may beat it under the raw
+comparison matrix and still fail to improve the regularized objective.
+
+The KL term changes the target and the dynamics. In a zero-sum game without a
+payoff-level KL term, regularized-learning and mirror-type dynamics may converge
+in time average while their last iterates cycle~\cite{Mertikopoulos2018}. Nash-MD
+instead solves a preference game whose payoff already includes the KL penalty.
+Optimistic mirror descent and extragradient-style updates obtain last-iterate
+guarantees under different assumptions~\cite{Mertikopoulos2019}. These results
+concern different games and different iterates. A convergence claim has to name
+both.
+
+Recent LLM methods preserve the equilibrium perspective while changing the
+optimization. These differ in optimizer rather than in target: INPO packages no-regret self-play
+into a single loss, DNO uses an
+iterative direct-preference update, and SPPO applies Hedge to a constant-sum
+comparison game~\cite{Zhang2025INPO,Rosset2024DNO,Wu2024SPPO}.
+SPO/Minimaximalist changes the solution target by adopting the social-choice
+Minimax Winner. It constructs instances in which the standard reward-based pipelines --- reinforcement
+learning from human feedback (RLHF) and direct preference optimization (DPO) ---
+do not recover that solution~\cite{Swamy2024SPO}. Its experiments are in
+continuous control, so they do not directly establish the same failure in
+LLM fine-tuning. The choice of target remains substantive. Minimax Winners and
+regularized Nash equilibria aggregate preferences differently, and successful
+optimization does not decide which aggregation is normatively appropriate.
+
+\subsubsection{Interactive-proof games: what a bounded judge can establish}
+
+A weak judge may be able to check
+one disputed step even when the full proof lies beyond its competence. Debate
+and Prover--Verifier Games exploit this gap by arranging an interaction that
+brings locally checkable claims before the judge. Recursive reward modeling,
+iterated amplification, and process supervision pursue the same oversight goal
+through other decompositions.
+
+Complexity theory explains why the interaction can add power. Irving,
+Christiano, and Amodei use the
+\textsc{Debate}$=$\textsc{Pspace} analogy: with optimal play and polynomially
+many alternating rounds, a polynomial-time judge can decide \textsc{Pspace}
+problems, while direct checking of a polynomial-length static witness
+corresponds to \textsc{NP}~\cite{Irving2018}. The statement differs from the
+single-prover identity \textsc{IP}$=$\textsc{Pspace}. Alternating debate
+relativizes to oracle access, which supplies the complexity-theoretic reason for
+a second prover when the human judge is available only as a black-box oracle.
+
+Anil et al.\ show that this promise depends on turn order. In their
+prover-leading sequential game, an optimal prover can make its message
+uninformative about the true label. A verifier-leading protocol can recover
+desirable completeness and soundness properties under the prescribed
+information order, whereas the simultaneous game may admit equilibria in which
+the verifier ignores the prover~\cite{Anil2021}. The failure is information
+suppression: the prover removes label information from its message instead of
+overwhelming the verifier with additional evidence.
+
+Kirchner et al.\ turn checkability into a training objective by teaching LLM
+provers to produce reasoning that weaker verifiers can assess~\cite{Kirchner2024}.
+Their experiments also exhibit a legibility tax: gains in checkability can come
+with lower answer accuracy than under correctness-only training.
+A more severe problem arises when an incorrect argument is easy to state and
+computationally expensive to refute~\cite{BarnesChristiano2020}.
+Doubly-efficient debate controls the cost on both sides under a restricted
+problem model: the honest strategy uses only polynomially more computation than
+solving the task requires, and the verifier makes a fixed number of human-judgment
+queries~\cite{BrownCohen2023}. The result assumes a polynomial-length record
+that a human could verify through extensive reflection, with additional
+regularity conditions in the stochastic setting. Prover-estimator debate
+addresses obfuscation more directly. Under stability assumptions, it gives the
+honest participant a strategy whose computational efficiency is comparable to
+that of its opponent~\cite{BrownCohen2025ProverEstimator}.
+
+The theoretical result makes an empirical prediction about current models. Khan
+et al.\ test it using inference-time best-of-$N$ and critique-and-refine. They find that stronger
+debaters improve the accuracy of both model and human judges on difficult
+reading-comprehension questions~\cite{Khan2024}. The consultancy control makes the result
+interpretable: increasing a consultant's persuasiveness reduces judge accuracy,
+whereas competition between opposing debaters improves it.
+
+Two later studies narrow the empirical claim. Single-turn debate-style
+explanations do not improve human accuracy in the setting studied by Parrish et
+al.~\cite{Parrish2022}. Across a wider task set, Kenton et al.\ find that debate
+consistently outperforms assigned-role consultancy, while comparisons with
+direct question answering are mixed outside extractive question answering with
+information asymmetry~\cite{Kenton2024}. Debate works under identifiable
+conditions in these studies: the judge must benefit from information revealed
+by the interaction, and the task must admit a useful decomposition.
+
+A learner may optimize the objective defined by the game while producing behavior the
+designer did not want because the game misstated what counts as success. Even an appropriate
+game can fail when its learning dynamics do not reach the intended solution. For
+interactive-proof games, the evaluator's observations and verification capacity
+further limit what the protocol can establish.
+
+Practical value also depends on cost. Population methods must train and
+maintain several models. Preference self-play and debate add repeated
+generations and evaluator calls. The practical question is whether the
+resulting gains in coverage or checkability justify the additional computation.
+
+In markets and delegation chains, the interaction is an external institution
+shared by multiple autonomous actors rather than a training component for one
+model.
+
+
+\subsection{Deployment Governance: From Local Objectives to System Outcomes}
+\label{sec:gt4ai:governance}
+
+An agent can faithfully implement its principal's objective while the system in
+which it acts remains misaligned. Algorithmic pricing makes this possibility
+concrete: even when each agent maximizes its firm's profit and adapts
+successfully to its rivals, their interaction can sustain supra-competitive
+prices and reduce consumer surplus. No individual principal--agent relationship
+need have failed. The failure appears only when the locally successful agents
+are evaluated together.
+
+Governance must therefore specify a system objective and decide whose outcomes
+count. It can alter learning rules and information before deployment or audit
+realized behavior afterward. Recent proposals use seller data to construct
+statistical tests of algorithmic pricing and state conditions under which an
+algorithm passes~\cite{HartlineLongZhang2024,HartlineWangZhang2025}. Harrington
+separately proposes making collusion by autonomous pricing agents unlawful
+~\cite{Harrington2018}. In each proposal, the audit or legal standard defines the
+admissible alternatives and the evidentiary burden. That choice in turn
+determines what data are required.
+
+\subsubsection{System objective and affected parties}
+A local equilibrium or regret guarantee states a property inside the specified
+interaction. A system-level claim additionally requires an argument about the
+affected parties and the institutional objective.
+
+Delegation games locate this compositional problem within principal--agent
+relations. Sourbut et al.\ distinguish control failures from cooperation
+failures and decompose each into alignment and capability components, taking
+principal welfare as the evaluative object~\cite{Sourbut2024}. Because
+principal welfare depends on both individual control and collective
+cooperation, a property established for one principal--agent pair leaves the
+collective component unconstrained. Pricing adds an affected group outside this
+accounting: consumers are third parties beyond the principals represented in the
+delegation game.
+Coordination among profit-aligned pricing agents can consequently be a
+cooperation success for the firms and a system failure once consumer welfare
+enters the objective.
+
+\subsubsection{Ex ante design of learning and information}
+The algorithmic-pricing literature shows how strongly market outcomes depend on
+the learning protocol. Calvano et al.\ find that Q-learning agents in repeated
+differentiated-product Bertrand competition with logit demand learn
+supra-competitive prices without direct communication. In their simulations,
+the learned strategies exhibit punishment phases followed by a return to high
+prices, although the analysis does not establish a general convergence theorem
+for Q-learning~\cite{Calvano2020}. Asker et al.\ isolate one source of this
+design sensitivity. When the algorithms place no positive weight on future
+profits, perfect synchronous updating (which computes counterfactual returns
+for unchosen prices) produces competitive pricing in their baseline
+environment, whereas asynchronous updating can produce prices near the monopoly
+level. Giving positive weight to future profits also permits supra-competitive
+prices under synchronous updating, although the effect is smaller than under
+asynchronous updating~\cite{Asker2022}. Banchio and Skrzypacz study the same
+sensitivity in a repeated auction with two bidders, equal normalized values, and
+a discrete bid grid. Without additional feedback, first-price auctions sustain
+bids below the model's competitive benchmark. Information about the lowest
+winning bid increases competitiveness~\cite{BanchioSkrzypacz2022}.
+
+Cartea et al.\ give a theoretical result for a restricted class. They establish a
+Folk-theorem-style result for boundedly rational learners using finite-memory
+strategies in repeated potential games, so the result does not transfer
+directly to general differentiated Bertrand
+competition~\cite{Cartea2025}. Fish et al.\ study LLM agents:
+in their oligopoly experiments, the agents quickly and autonomously reach
+supra-competitive prices, and seemingly innocuous prompt changes alter the
+degree of supra-competitive pricing~\cite{FishGonczarowskiShorrer2024}. Assad et
+al.\ add field evidence from non-monopoly German retail gasoline markets.
+Using headquarters-level adoption as an instrument, they estimate that
+algorithmic pricing raises margins. In duopoly and triopoly markets, margins
+rise when all competing stations adopt~\cite{Assad2024}.
+
+The algorithm label alone does not determine the market behavior to be
+evaluated. The update and information rules give ex ante standards concrete
+design targets. Ex post audits test whether the resulting deployment satisfies
+the relevant behavioral standard.
+
+\subsubsection{Ex post standards and deviation classes}
+The deviation class determines what a behavioral audit can exclude.
+External regret compares realized utility with the utility from using one fixed
+action throughout. Internal regret evaluates the counterfactual replacement of
+a chosen action $i$ by another action $j$, while swap regret permits a separate
+replacement for every chosen action.
+For a finite price set $\mathcal{P}$, calibrated regret specializes swap regret
+to posted prices. It is the maximum average gain over all remappings
+$\sigma:\mathcal{P}\rightarrow\mathcal{P}$, where each posted price $p$ is
+replaced by $\sigma(p)$ while the demand environment for that round is held
+fixed~\cite{HartlineLongZhang2024}. Low calibrated regret therefore rules out
+a profitable price-contingent remapping.
+
+When every player has vanishing internal regret, the empirical joint-action
+distribution approaches the set of correlated equilibria of the stage
+game~\cite{FosterVohra1997,HartMasColell2000,BlumMansour2007}. This theorem
+restricts conditional incentives in the empirical distribution. It contains no
+welfare or legal criterion. Calling the resulting distribution competitive
+therefore requires a benchmark external to the equilibrium theorem.
+
+Hartline, Long, and Zhang supply such a benchmark by defining unilateral
+non-collusion through calibrated best response~\cite{HartlineLongZhang2024}.
+Conditional on the information revealed by a seller's price, that price must
+approximately maximize the seller's expected profit in the induced demand
+environment. The conditioning matters because variation in posted prices can
+reveal information on which the seller acts. Low calibrated regret is the
+dynamic analogue of this condition over a deployment history, and when every
+seller satisfies calibrated best response, the joint price distribution forms
+a correlated equilibrium of the stage pricing game. Hartline's subsequent
+account designates stage-game equilibrium prices as competitive and additional
+repeated-game equilibria as non-competitive~\cite{Hartline2026}. This
+convention gives the deviation condition an operational interpretation. The
+correlated-equilibrium result itself has no general implication for consumer
+surplus. Market assumptions and the welfare or legal benchmark remain separate
+inputs.
+
+The implications of a no-regret guarantee depend on its deviation class.
+Braverman et al.\ show that a seller facing a buyer who uses EXP3 or another
+mean-based no-regret algorithm can extract nearly the buyer's full welfare. The
+same paper constructs a different no-regret algorithm for which repeatedly
+posting the Myerson reserve is optimal for the seller~\cite{Braverman2018}.
+Thus two algorithms can both have low external
+regret while exposing the buyer to very different strategic losses. Hartline,
+Wang, and Zhang show similarly that
+algorithms satisfying only best-in-hindsight regret can be manipulated into
+posting supra-competitive prices even when neither seller has side
+information~\cite{HartlineWangZhang2025}. External regret can miss this
+vulnerability because it compares the realized sequence only with a single
+fixed action used throughout. A profitable deviation may instead be
+conditional---replacing a price $p$ by $q$ only on rounds when $p$ was
+posted---without any single fixed price improving the overall average.
+Calibrated regret tests these price-contingent replacements rather than only
+fixed-price deviations. Each seller can satisfy this property unilaterally,
+regardless of its rivals' algorithms.
+
+\subsubsection{Auditability from deployment records}
+Hartline, Long, and Zhang estimate this property from a deployment transcript
+containing the posted price, realized demand at that price, and the randomized
+price distribution for each round~\cite{HartlineLongZhang2024}. An
+inverse-propensity estimator uses the logged action probabilities to estimate
+counterfactual demand, and its sample complexity grows as the minimum
+probability assigned to a price decreases. A pricing algorithm can therefore
+add exploration and logging so that a competitive deployment becomes
+auditable. The estimator operates without source-code access and depends on
+credible internal records of randomization and outcomes. This is a logged
+black-box audit whose validity depends on the provenance and integrity of the
+transcript.
+
+When the record is incomplete, the available conclusion may be a bound rather
+than a point verdict. Pessimistic calibrated regret relaxes the original full-support
+requirement~\cite{HartlineWangZhang2025}. When the transcript leaves some
+counterfactual outcomes unidentified, the refined method takes the highest
+calibrated regret over all outcome completions compatible with the observed
+data. A low pessimistic value certifies low regret for every compatible
+completion, whereas a high value may reflect either a genuine profitable
+deviation or the missing information itself. The authors interpret failure to
+supply a low-regret certificate as a violation of a proposed per se
+rule, thereby placing the evidentiary burden on the seller. That allocation of
+burden is a legal choice.
+
+Unknown costs create another identification boundary.
+If the auditor permits marginal cost to lie in a set $C$, a seller passes the
+plausible-non-collusion test whenever some $c\in C$ makes the observed behavior
+exhibit low regret, even if the true cost would imply high regret. Higher
+imputed costs can thus rationalize supra-competitive prices generated under a
+lower true cost, and the test becomes less informative as $C$ expands. The
+available cost evidence and governing legal standard determine how wide that
+rationalizing set may be.
+
+\subsubsection{From individual evidence to market-level conclusions}
+Arunachaleswaran et al.\ study sequential deployment in which
+the first seller commits to any no-regret algorithm and the second seller
+optimizes in the induced environment. Supra-competitive prices arise whenever
+the second seller obtains at least the payoff of random pricing, including when
+it optimizes only over non-responsive price distributions. They also construct
+an algorithm-space Nash equilibrium with near-monopoly prices and no explicitly
+encoded threats~\cite{Arunachaleswaran2025}. Hartline classifies this outcome as
+non-competitive while rejecting the collusion label: one seller learns a best
+response, whereas the other uses the non-competitive static
+strategy~\cite{HartlineClarification2026}. The outcome violates the stage-game
+competitive benchmark, yet the evidence falls short of establishing joint
+collusion. Low calibrated regret is an individual-level condition. The
+market-level correlated-equilibrium conclusion follows only when every seller
+satisfies it. If one seller fails, that market-level conclusion no
+longer follows. Whether antitrust law should prohibit high-regret or naively
+non-optimizing pricing when agreement is unproven remains a policy choice. By
+itself, a failed audit does not establish an agreement among
+sellers~\cite{Harrington2018}.
+
+Mechanism design changes the update or information structure before deployment,
+whereas regret auditing evaluates realized behavior afterward. When every seller has
+low calibrated regret, the data impose a stage-game equilibrium restriction on
+the market outcome. That restriction does not determine whether the outcome is
+socially or legally acceptable. Evaluating system alignment requires an explicit
+objective for each agent and a separate criterion for the market outcome. A
+seller can optimize its assigned objective even when the resulting market fails
+that criterion.
