@@ -44,8 +44,23 @@ An upper bound on $g_\Gamma$ requires a guarantee on the search itself: if
 $\Delta_\Gamma(x,\widehat d)\ge g_\Gamma(x)-\epsilon$, then observing
 $\Delta_\Gamma(x,\widehat d)\le\eta$ yields $g_\Gamma(x)\le\eta+\epsilon$.
 Without such a guarantee, the observation controls only the searched class.
+Figure~\ref{fig:candidate-counterexample} summarizes this asymmetry between
+finite counterexample search and a claim over the full deviation class.
+
 Identification claims instead use observations and maintained assumptions to
 define an identified set. They need not involve a searched deviation class.
+
+\begin{figure}[pos=h]
+\centering
+\includegraphics[width=\textwidth]{figure/fig4-candidate-counterexample.pdf}
+\caption{Finite evaluation of a deviation-defined property. A method proposes a
+candidate and searches for a profitable deviation in an accessible class. A
+discovered deviation refutes the candidate. If the search finds none, a claim
+over the target class requires a theorem, bound, or structural argument that
+controls the alternatives not searched. Identification and system-validity
+claims require different arguments.}
+\label{fig:candidate-counterexample}
+\end{figure}
 
 \subsection{What Each Domain Contributes}
 \label{sec:synthesis:map}
