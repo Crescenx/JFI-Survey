@@ -74,7 +74,29 @@ exploration, and logging can reveal otherwise unobserved counterfactuals.
 Pessimistic completion converts counterfactuals that remain unidentified into
 conservative bounds.
 
-\begin{table}[htbp]
+\subsection{Research Priorities}
+\label{sec:synthesis:open}
+
+For each empirical estimate of strategic performance, reproducible comparisons
+require authors to identify the alternative class and explain how it relates to
+the target claim. Cost comparisons should report training and evaluation as
+well as per-instance inference.
+
+Strategic inference should make greater use of partial identification. When
+several latent explanations fit observed play, the relevant question is which
+counterfactual conclusions hold across the identified set. Pessimistic
+completion in deployment auditing provides one example of this approach.
+
+Claims about training and oversight protocols should state the modeled resource
+and information bounds on every participant. These assumptions determine what
+the designed game establishes and should appear in the main statement of the
+result.
+
+Deployment studies also need evaluation domains that account for participant
+responses. This requires a model or audit of how those responses select the
+post-deployment cases to which the property is claimed to extend.
+
+\begin{table}[pos=h]
 \centering
 \caption{The six domains, the question each makes concrete, and what connects
 finite evidence to the target claim.}
@@ -112,7 +134,7 @@ Deployment governance (\S\ref{sec:gt4ai:governance})
 \end{tabularx}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[pos=h]
 \centering
 \caption{Four forms of evidence used in the surveyed domains, together with the
 claims and assumptions associated with each. A system may combine several
@@ -177,25 +199,3 @@ cost \cite{HartlineLongZhang2024,HartlineWangZhang2025}
 \end{tabularx}
 \end{table}
 \FloatBarrier
-
-\subsection{Research Priorities}
-\label{sec:synthesis:open}
-
-For each empirical estimate of strategic performance, reproducible comparisons
-require authors to identify the alternative class and explain how it relates to
-the target claim. Cost comparisons should report training and evaluation as
-well as per-instance inference.
-
-Strategic inference should make greater use of partial identification. When
-several latent explanations fit observed play, the relevant question is which
-counterfactual conclusions hold across the identified set. Pessimistic
-completion in deployment auditing provides one example of this approach.
-
-Claims about training and oversight protocols should state the modeled resource
-and information bounds on every participant. These assumptions determine what
-the designed game establishes and should appear in the main statement of the
-result.
-
-Deployment studies also need evaluation domains that account for participant
-responses. This requires a model or audit of how those responses select the
-post-deployment cases to which the property is claimed to extend.
