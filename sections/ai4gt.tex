@@ -39,29 +39,29 @@ is not adapted from a training distribution. In a finite bimatrix game, support
 enumeration searches over possible supports and solves the associated
 indifference and inequality conditions. The Lemke--Howson algorithm expresses
 equilibrium as a linear complementarity problem and follows a
-complementary-pivoting path to a fully labeled solution~\cite{LemkeHowson1964}.
+complementary-pivoting path to a fully labeled solution~\citep{LemkeHowson1964}.
 Homotopy methods embed the game in a parameterized family and follow an
 equilibrium path from an easier auxiliary problem. Gambit implements several of
-these representations and algorithms~\cite{gambit}. These algorithms require
+these representations and algorithms~\citep{gambit}. These algorithms require
 finite, fully represented games, and their worst-case cost remains substantial:
-Lemke--Howson can follow an exponentially long path~\cite{SavaniVonStengel2006}.
+Lemke--Howson can follow an exponentially long path~\citep{SavaniVonStengel2006}.
 
 \subsubsection{Learned quantities within equilibrium procedures}
 Differentiable equilibrium methods construct a regularized response map and
 minimize the residual between the current strategy and its regularized best
 response. Smoothing permits policy-gradient updates and neural function
 approximation, but it changes the target and introduces regularization bias.
-Yu et al.\ analyze an idealized iterative refinement procedure that fixes the
+\citet{NashPG2025} analyze an idealized iterative refinement procedure that fixes the
 regularization strength within each round and updates the reference policy
-between rounds~\cite{NashPG2025}. For this procedure, they prove that each
+between rounds. For this procedure, they prove that each
 refinement step strictly reduces the Bregman divergence to any Nash equilibrium
 and that the procedure converges in two-player zero-sum extensive-form games.
 Building on this framework, they derive NashPG as a practical sample-based
 policy-gradient method and evaluate it in large imperfect-information domains,
 including Battleship and No-Limit Texas Hold'em. The theorem applies to the
 idealized procedure rather than directly to the sampled NashPG implementation.
-Liu, Farina, and Ozdaglar take a related policy-gradient route for two-player zero-sum
-imperfect-information extensive-form games~\cite{LiuFarinaOzdaglar2025}.
+\citet{LiuFarinaOzdaglar2025} take a related policy-gradient route for two-player
+zero-sum imperfect-information extensive-form games.
 Their method optimizes a regularized objective and establishes best-iterate
 convergence to a regularized Nash equilibrium while avoiding the
 importance-sampling step used by some policy-gradient estimators. The paper
@@ -76,7 +76,7 @@ hindsight. In a two-player zero-sum game, duality bounds the exploitability of
 the average strategies by the players' average regrets. Averaging the learning
 trajectory produces the equilibrium approximation in this setting.
 Counterfactual regret minimization (CFR) applies the same idea to extensive-form games by
-decomposing overall regret across information sets~\cite{Zinkevich2007}. At an
+decomposing overall regret across information sets~\citep{Zinkevich2007}. At an
 information set, counterfactual regret compares the selected action with its
 alternatives, with the comparison weighted by the reach contribution of the
 other players and chance. This assigns an update signal even when the player's current strategy
@@ -86,7 +86,7 @@ zero-sum games, the regret decomposition bounds the exploitability of the
 averaged strategy.
 
 Deep CFR replaces the tabular regrets with neural approximations in domains
-where explicit storage is impractical~\cite{BrownDeepCFR2019}. It samples game
+where explicit storage is impractical~\citep{BrownDeepCFR2019}. It samples game
 trees through external-sampling traversals, stores regret and strategy
 observations in replay memories, and trains neural networks to approximate the
 corresponding functions. Neural approximation shares information across related
@@ -111,7 +111,7 @@ equilibrium does not solve the original Nash problem. The no-regret theorem and
 the selected deviation class determine the result. Meta-learned CFR trains a
 parameterized regret minimizer with a strategy-correlation meta-objective that
 moves coarse-correlated-equilibrium learning toward lower Nash
-exploitability~\cite{Sychrovsky2025}. Its meta-loss measures the remaining
+exploitability~\citep{Sychrovsky2025}. Its meta-loss measures the remaining
 distance to the stronger Nash condition.
 
 \subsubsection{Learned responses for empirical games}
@@ -119,17 +119,17 @@ Empirical game-theoretic analysis approximates the strategic problem through a
 finite policy population. When the underlying game is defined by a simulator,
 its complete normal form may be too large to enumerate. The analyst selects a
 strategy set, estimates its payoff profiles, and solves the resulting empirical
-game~\cite{WellmanTuylsGreenwald2025}.
+game~\citep{WellmanTuylsGreenwald2025}.
 PSRO makes the population adaptive. It solves the current empirical game,
 trains an approximate response to its meta-strategy, adds that policy to the
-population, and estimates the new payoff entries~\cite{Lanctot2017}. Pipeline
+population, and estimates the new payoff entries~\citep{Lanctot2017}. Pipeline
 PSRO runs several response processes and empirical-game updates concurrently
-to improve scalability~\cite{McAleerPipelinePSRO2020}.
+to improve scalability~\citep{McAleerPipelinePSRO2020}.
 Multi-agent reinforcement learning supplies the response oracle, while the
 empirical-game solver coordinates policies already found.
 
 JPSRO retains this population structure and uses correlated-equilibrium
-meta-solvers~\cite{Marris2021}. At each iteration, a deep reinforcement-learning
+meta-solvers~\citep{Marris2021}. At each iteration, a deep reinforcement-learning
 oracle searches for responses to a distribution derived from the empirical
 game. Max-Gini selection chooses a high-entropy correlated or coarse correlated
 equilibrium among the available solutions. The output is a CE or CCE of the
@@ -142,17 +142,17 @@ depends on the response oracle.
 Large imperfect-information games can defer some computation until play reaches
 a subgame. A solver constructs a blueprint and refines it online, with value
 bounds or resolving constraints controlling the additional exploitability at
-the subgame boundary. DeepStack demonstrated this architecture in heads-up no-limit poker~\cite{Moravcik2017}. It continually re-solves the public portion of the
+the subgame boundary. DeepStack demonstrated this architecture in heads-up no-limit poker~\citep{Moravcik2017}. It continually re-solves the public portion of the
 game and uses a neural counterfactual-value function beyond a limited lookahead.
 The network compresses continuation computation across public states;
 continual re-solving and counterfactual-value bounds control additional
 exploitability. Libratus combines a CFR-based blueprint with nested safe subgame
 solving and endgame refinement, without neural function approximation in its
-safe-resolving component~\cite{BrownSandholm2018}. Both systems explicitly
+safe-resolving component~\citep{BrownSandholm2018}. Both systems explicitly
 control the exploitability introduced by local re-solving.
 
 ReBeL represents an imperfect-information game through public belief states
-~\cite{BrownReBeL2020}. Each state combines public information with a distribution
+~\citep{BrownReBeL2020}. Each state combines public information with a distribution
 over the players' private states, producing a continuous-state
 perfect-information formulation on which reinforcement learning and search can
 operate. ReBeL trains policy and value networks through self-play and uses them
@@ -167,7 +167,7 @@ individual game. A formal or computational component must then check feasibility
 relevant deviation conditions. Subject to the soundness of its encoding and
 checker, this mechanical test can establish the property independently of how
 the proposal was generated. PrimeNash follows this division of labor
-for analytical equilibrium characterization~\cite{PrimeNash2025}. Its agents generate candidate strategies
+for analytical equilibrium characterization~\citep{PrimeNash2025}. Its agents generate candidate strategies
 and symbolic derivations, then use executable tools to manipulate and test the
 expressions. The target is an instance-specific symbolic characterization,
 including parameter regions and boundary cases. Explicit best-response
@@ -175,7 +175,7 @@ conditions and machine-executable checks support the claimed equilibrium.
 
 The same division applies one level up, where the object generated is an
 algorithm rather than a solution. LegoNE applies language-model generation to
-the synthesis of equilibrium algorithms~\cite{LegoNE2025}. Expert proof strategies are represented in a
+the synthesis of equilibrium algorithms~\citep{LegoNE2025}. Expert proof strategies are represented in a
 domain-specific language, and each generated algorithm is compiled into a
 finite constrained optimization problem. Solving that problem determines a
 worst-case approximation guarantee for the encoded game class and objective.
@@ -194,21 +194,21 @@ approximation should be reported as exploitability or regret.
 Strategic inference starts with realized histories and actions rather than a
 known game. Counterfactual behavior may be unidentified: two latent games can
 induce the same distribution along the realized paths. Additional data from that
-regime cannot separate them. Haile, Hortaçsu, and Kosenok show a
+regime cannot separate them. \citet{HaileHortacsuKosenok2008} show a
 more basic falsifiability problem. Even strong prior restrictions on unobserved
 payoff disturbances leave a general quantal-response specification able to
 rationalize any distribution of behavior in a single normal-form
-game~\cite{HaileHortacsuKosenok2008}. QRE acquires empirical content only through
+game. QRE acquires empirical content only through
 further maintained assumptions, such as restrictions stable across games or a
 more specific response function.
 
 Even a falsifiable model may be only partially recoverable from the data. In
 multi-agent inverse reinforcement learning, a single observed equilibrium is
 typically consistent with many reward functions. Within the entropy-regularized
-class they study, Freihaut and Ramponi show that a
+class they study, \citet{FreihautRamponi2025} show that a
 given reward induces a unique quantal response equilibrium, which removes the
 equilibrium-selection ambiguity without making the feasible reward set a
-singleton~\cite{FreihautRamponi2025}. The resulting object is an identified set
+singleton. The resulting object is an identified set
 whose width records the remaining ambiguity. Informative variation can shrink
 this set. Cross-game or within-participant variation may separate explanations
 that coincide along one realized path. The model restrictions determine which
@@ -220,16 +220,16 @@ stages of the analysis. Some supply the response model itself. GameNet learns a 
 normal-form payoff matrix to a distribution over actions, with an architecture
 that is equivariant to action relabeling and contains layers intended to
 represent level-$0$ behavior and finitely many levels of iterated
-response~\cite{Hartford2016}. ElementaryNet exposes an ambiguity in that
+response~\citep{Hartford2016}. ElementaryNet exposes an ambiguity in that
 interpretation. GameNet's nominal level-$0$ component can itself express
 strategic responses. ElementaryNet replaces it with one formally unable to do
 so and, after adding explicit higher-level modules, recovers statistically
-indistinguishable predictive performance~\cite{DEon2026ElementaryNet}. The
+indistinguishable predictive performance~\citep{DEon2026ElementaryNet}. The
 comparable predictive performance does
 not validate the behavioral interpretation originally assigned to GameNet's
 internal modules. Related work supplies theory through the training data by
 pretraining on synthetic choices from cognitive models before fine-tuning on
-human observations~\cite{Bourgin2019}.
+human observations~\citep{Bourgin2019}.
 
 Others fix a response model and estimate the latent quantities inside it. Let
 $D$ denote the observed games, histories, and actions, distributed as
@@ -238,15 +238,15 @@ parameters, or relations among agents, and $\phi$ the remaining parameters of
 the response model. Inference may return a
 point estimate, feasible set, or posterior. A differentiable
 regularized-equilibrium layer can pass prediction error back to game
-parameters~\cite{Ling2018}. In auction data, dominance restrictions turn
+parameters~\citep{Ling2018}. In auction data, dominance restrictions turn
 observed offers into feasible valuation intervals that enter the loss of a
-learned history-dependent response model~\cite{CuiYu2023}. A generative theory of
+learned history-dependent response model~\citep{CuiYu2023}. A generative theory of
 social relations instead permits Bayesian inverse planning over latent
-relationships~\cite{Shum2019}.
+relationships~\citep{Shum2019}.
 
 A third group searches over symbolic response models. AutoBM proposes them in
 natural language and code, compiles and fits them, and uses held-out likelihood
-for selection~\cite{AutoBM2026}. Because selection still relies on observed fit,
+for selection~\citep{AutoBM2026}. Because selection still relies on observed fit,
 models that predict the same observations remain indistinguishable. Downstream
 decisions should then account for the compatible set rather than treat the
 selected model as identified.
@@ -307,7 +307,7 @@ Automated mechanism design provides the computational baseline. In a finite
 type space, a designer can introduce allocation and payment variables for each
 reported type profile and optimize expected revenue or social welfare.
 Feasibility, individual rationality, and incentive compatibility appear as
-explicit linear or mixed-integer constraints~\cite{ConitzerSandholm2002,CurryAMDSurvey2025}.
+explicit linear or mixed-integer constraints~\citep{ConitzerSandholm2002,CurryAMDSurvey2025}.
 
 The direct formulation also exposes its scaling limit. The number of allocation
 and payment variables grows with the cardinality of the agents' joint type space, while
@@ -319,7 +319,7 @@ increasing the program size.
 
 \subsubsection{Guarantees from searched violations: incentive compatibility as a loss}
 
-Neural mechanism design replaces the table of type-contingent outcomes with parameterized allocation and payment functions. RegretNet is the central instance of this move~\cite{Duetting2019}. Given a reported valuation profile, one network outputs an allocation and another determines payments. The parameters are trained to maximize expected revenue while controlling violations of incentive compatibility and individual rationality. For bidder \(i\), ex-post regret at a valuation profile can be written as
+Neural mechanism design replaces the table of type-contingent outcomes with parameterized allocation and payment functions. RegretNet is the central instance of this move~\citep{Duetting2019}. Given a reported valuation profile, one network outputs an allocation and another determines payments. The parameters are trained to maximize expected revenue while controlling violations of incentive compatibility and individual rationality. For bidder \(i\), ex-post regret at a valuation profile can be written as
 \[
 r_i(v)
 =
@@ -335,23 +335,23 @@ The mechanism is incentive compatible when this quantity is zero for every bidde
 The mechanism network proposes allocations and payments, and the inner search
 returns profitable misreports as both violations and training signals. ALGNet
 replaces this inner optimization with a learned misreporter and evaluates regret
-over deviations that the misreporter can represent and find~\cite{Rahme2021Auction}.
+over deviations that the misreporter can represent and find~\citep{Rahme2021Auction}.
 In the resulting two-player game, the auctioneer changes the mechanism to
 increase revenue while the misreporter searches for reports that increase an
 agent's utility.
 
 Other methods retain empirical regret while changing the architecture or design
 objective. RegretFormer adds attention and an explicit regret budget
-~\cite{Ivanov2022}, giving the admissible empirical regret a direct role in the
+~\citep{Ivanov2022}, giving the admissible empirical regret a direct role in the
 objective.
 EquivariantNet uses bidder and item permutation symmetries to share computation
-across relabeled auction instances~\cite{Rahme2021Equivariant}.
+across relabeled auction instances~\citep{Rahme2021Equivariant}.
 CITransNet extends the transformer formulation to contextual and variable-scale
-auction environments~\cite{Duan2022}. Its permutation-equivariant architecture
+auction environments~\citep{Duan2022}. Its permutation-equivariant architecture
 can accommodate changes in the numbers and attributes of market participants.
 PreferenceNet changes the design objective by learning constraints associated
 with fairness and allocation diversity from representative
-examples~\cite{Peri2021}. None of these architectural changes establishes
+examples~\citep{Peri2021}. None of these architectural changes establishes
 incentive compatibility for unseen reports. The supporting evidence remains
 empirical: regret is evaluated on sampled types and searched misreports.
 Table~\ref{tab:ic_location_mechanism_design} compares this basis with methods
@@ -387,7 +387,7 @@ that place incentive properties in the representation or post-training analysis.
 
 External constraints
 &
-Classical automated mechanism design~\cite{ConitzerSandholm2002,CurryAMDSurvey2025}
+Classical automated mechanism design~\citep{ConitzerSandholm2002,CurryAMDSurvey2025}
 &
 Explicit incentive-compatibility, individual-rationality, and feasibility constraints in a linear or mixed-integer optimization problem
 &
@@ -400,7 +400,7 @@ The number of variables and constraints grows rapidly with the type space; conti
 
 Differentiable loss
 &
-RegretNet~\cite{Duetting2019}, ALGNet~\cite{Rahme2021Auction}, and RegretFormer~\cite{Ivanov2022}
+RegretNet~\citep{Duetting2019}, ALGNet~\citep{Rahme2021Auction}, and RegretFormer~\citep{Ivanov2022}
 &
 Empirical ex-post regret evaluated against misreports found through gradient-based optimization or a learned misreporter
 &
@@ -413,7 +413,7 @@ Low empirical regret is limited to the sampled types and the misreports found by
 
 Architectural inductive bias
 &
-EquivariantNet~\cite{Rahme2021Equivariant}, CITransNet~\cite{Duan2022}, and PreferenceNet~\cite{Peri2021}
+EquivariantNet~\citep{Rahme2021Equivariant}, CITransNet~\citep{Duan2022}, and PreferenceNet~\citep{Peri2021}
 &
 Permutation equivariance, attention-based contextual representations, or learned auxiliary design constraints, combined with empirical regret evaluation
 &
@@ -426,7 +426,7 @@ Architectural structure alone leaves incentive compatibility unproved for unseen
 
 Truthful representation
 &
-MenuNet and RochetNet~\cite{Shen2019,Duetting2019}, and AMenuNet~\cite{Duan2023}
+MenuNet~\citep{Shen2019}, RochetNet~\citep{Duetting2019}, and AMenuNet~\citep{Duan2023}
 &
 Bidder-optimal menu selection or the dominant-strategy incentive compatibility of an affine-maximizer mechanism
 &
@@ -439,7 +439,7 @@ Restricting the mechanism to a structured family may exclude better-performing m
 
 Structure and verification
 &
-GemNet~\cite{Duetting2024}, BundleFlow~\cite{WangBundleFlow2025}, truthful mechanisms without discretization~\cite{TEDI2025}, and LLM-AMD~\cite{LiuGuoConitzer2025}
+GemNet~\citep{Duetting2024}, BundleFlow~\citep{WangBundleFlow2025}, truthful mechanisms without discretization~\citep{TEDI2025}, and LLM-AMD~\citep{LiuGuoConitzer2025}
 &
 Menu-compatibility conditions, post-processing, regularity bounds, truthful pricing architectures, or verification of executable mechanism code
 &
@@ -460,29 +460,30 @@ approach. A menu specifies a collection of allocation--payment pairs, and a
 bidder selects the option that maximizes its utility under its true valuation.
 The designer therefore need not learn a separate outcome for every possible
 report. MenuNet searches over such menus for single-bidder auction
-environments~\cite{Shen2019}. RochetNet similarly parameterizes a utility or menu
+environments~\citep{Shen2019}. RochetNet similarly parameterizes a utility or menu
 representation designed around the characterization of truthful single-bidder
-mechanisms~\cite{Duetting2019}. In these systems, the network optimizes the
+mechanisms~\citep{Duetting2019}. In these systems, the network optimizes the
 quality of the menu, while bidder-optimal selection provides the economic basis
 for truthfulness. Approximation may affect how close the learned mechanism's
 revenue is to the optimum, but the source of the incentive guarantee differs from an
 empirical regret penalty.
+\FloatBarrier
 
-Affine-maximizer auctions provide a related structural family for multiple bidders. An affine maximizer selects an allocation by maximizing a weighted sum of reported valuations together with allocation-specific offsets. With the corresponding payment rule, the mechanism inherits dominant-strategy incentive compatibility and individual rationality from the affine-maximizer construction. AMenuNet learns the weights, offsets, and a scalable set of candidate allocations instead of searching unrestricted allocation and payment functions~\cite{Duan2023}. The neural model enlarges the practical search over affine-maximizer mechanisms, while the classical mechanism class determines the strategic property. Restricting the representation may exclude the unconstrained revenue-optimal mechanism, but a candidate inside the class does not need empirical regret minimization to obtain its basic truthfulness result.
+Affine-maximizer auctions provide a related structural family for multiple bidders. An affine maximizer selects an allocation by maximizing a weighted sum of reported valuations together with allocation-specific offsets. With the corresponding payment rule, the mechanism inherits dominant-strategy incentive compatibility and individual rationality from the affine-maximizer construction. AMenuNet learns the weights, offsets, and a scalable set of candidate allocations instead of searching unrestricted allocation and payment functions~\citep{Duan2023}. The neural model enlarges the practical search over affine-maximizer mechanisms, while the classical mechanism class determines the strategic property. Restricting the representation may exclude the unconstrained revenue-optimal mechanism, but a candidate inside the class does not need empirical regret minimization to obtain its basic truthfulness result.
 
-Moving from single-bidder auctions or restricted affine-maximizer families to general multi-bidder auctions introduces a compatibility problem. Each bidder can be viewed as facing a menu conditional on the other bidders' reports, but these menus must jointly correspond to a feasible allocation and payment rule. GemNet formalizes this menu-compatibility requirement for multi-bidder auctions~\cite{Duetting2024}. Its training procedure penalizes violations of compatibility, and its post-training construction modifies prices so that the learned menus define a strategy-proof mechanism. Lipschitz regularity then bounds the error introduced by checking only a finite valuation grid.
+Moving from single-bidder auctions or restricted affine-maximizer families to general multi-bidder auctions introduces a compatibility problem. Each bidder can be viewed as facing a menu conditional on the other bidders' reports, but these menus must jointly correspond to a feasible allocation and payment rule. GemNet formalizes this menu-compatibility requirement for multi-bidder auctions~\citep{Duetting2024}. Its training procedure penalizes violations of compatibility, and its post-training construction modifies prices so that the learned menus define a strategy-proof mechanism. Lipschitz regularity then bounds the error introduced by checking only a finite valuation grid.
 
 \FloatBarrier
 BundleFlow extends menu learning to combinatorial auctions with substantially
-larger item spaces~\cite{WangBundleFlow2025}. An unrestricted menu is
+larger item spaces~\citep{WangBundleFlow2025}. An unrestricted menu is
 exponentially large because every subset of items can define a distinct option.
 BundleFlow uses a learned flow or diffusion-based procedure to generate relevant
 bundles and their menu entries without enumerating the complete bundle space.
 Bidder-optimal selection keeps the generated menu truthful, while omitted
 bundles and learned prices determine its approximation error.
 
-A different frontier removes discretization from the outcome space. Ma et al.\ parameterize
-pricing rules with Partial GroupMax Networks~\cite{TEDI2025}. The architecture admits only rules
+A different frontier removes discretization from the outcome space.
+\citet{TEDI2025} parameterize pricing rules with Partial GroupMax Networks. The architecture admits only rules
 that satisfy the stated truthfulness conditions over continuous outcomes;
 training selects among them.
 
@@ -490,7 +491,7 @@ training selects among them.
 
 A deployable mechanism must specify a rule whose feasibility and incentive
 properties can be analyzed. LLM-AMD formulates automated mechanism design as the
-generation of mechanism code~\cite{LiuGuoConitzer2025}. A language model
+generation of mechanism code~\citep{LiuGuoConitzer2025}. A language model
 proposes an executable rule from a natural-language description of the
 environment and design objective. A problem-specific fixing process then
 revises the candidate to address feasibility and strategy-proofness violations.
