@@ -4,8 +4,19 @@
 \section{Background}
 \label{sec:recap}
 
-\subsection{From Equilibrium to Its Cost}
+Equilibrium and incentive compatibility are both defined by deviations.
+Computing an equilibrium, or verifying incentive compatibility for a candidate
+mechanism, can be costly. Learning can share computation across related
+instances, but it does not itself establish the relevant guarantee. A learned
+output therefore still needs a check or bound specific to the claimed property.
+
+\subsection{Equilibrium Conditions and Computational Demands}
 \label{subsec:recap-gt}
+
+For both concepts, the relevant deviation class determines what must be checked.
+We first state the corresponding deviation conditions, then separate
+constructing a candidate from verifying it. The final subsection reviews
+standard restrictions and relaxations that recover tractability.
 
 \subsubsection{Equilibrium and its deviation class}
 
@@ -52,7 +63,7 @@ In a correlated equilibrium, a mediator draws a joint action profile and
 privately recommends one action to each player. No player gains by deviating as
 a function of the recommendation received~\cite{Aumann1974}. Quantal response
 equilibrium replaces exact best response with a smooth choice rule in which
-better actions are more likely but mistakes persist~\cite{McKelveyPalfrey1995}.
+better actions are more likely, but mistakes persist~\cite{McKelveyPalfrey1995}.
 
 \subsubsection{Design and deviation-based incentive constraints}
 
@@ -75,7 +86,7 @@ auction~\cite{Myerson1981}.
 
 \subsubsection{Construction and checking}
 
-The PPAD-completeness results summarized in Section~\ref{sec:intro:eras} concern
+The PPAD-completeness results noted at the start of the introduction concern
 total search problems: a solution exists, although finding one may be
 intractable~\cite{Papadimitriou1994}. The asymmetry between construction and
 checking also depends on the representation and the property. Given an explicit finite game and a rational profile,
@@ -86,7 +97,7 @@ structural result. Mechanism design faces the
 same computational pressure because optimization over contingent rules is
 itself a hard search problem~\cite{ConitzerSandholm2002}.
 
-\subsubsection{Established ways to reduce computational demands}
+\subsubsection{Standard routes to tractability}
 
 Tractability can be recovered by weakening the solution concept or restricting
 the game class, often while accepting a bounded residual gain. For example, correlated
@@ -104,6 +115,10 @@ rule across related games and reusing it on later instances.
 
 \subsection{What Training Does}
 \label{subsec:recap-dl}
+
+Section~\ref{subsec:recap-dl} first explains how training amortizes computation
+across instances, then turns to training cost and the guarantees that must still
+be established after training.
 
 \subsubsection{Amortization: sharing computation across instances}
 
@@ -145,3 +160,9 @@ through queries, and finite tests cover sampled instances and representable
 alternatives. Extending such results to a larger deviation class requires a bound
 or structural argument. Executable code and rules constrained to a known family
 may instead permit symbolic checking or a direct theorem.
+
+Construction and validation impose separate costs. Learning can amortize
+construction across related instances, but it does not by itself establish the
+target property over the full deviation class. Sections~\ref{sec:ai4gt}
+and~\ref{sec:gt4ai} identify the additional argument required in each
+application domain.

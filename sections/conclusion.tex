@@ -4,6 +4,10 @@
 \section{Synthesis and Outlook}
 \label{sec:synthesis}
 
+Both output and system validity are needed to connect a learned output to a
+system-level claim. This section derives the combined condition, compares the
+evidentiary demands across the six domains, and identifies research priorities.
+
 \subsection{Combining Output and System Validity}
 \label{sec:synthesis:compose}
 
@@ -101,11 +105,15 @@ post-deployment cases to which the property is claimed to extend.
 \caption{The six domains, the question each makes concrete, and what connects
 finite evidence to the target claim.}
 \label{tab:domain-map}
-\begin{tabularx}{\textwidth}{@{}p{2.6cm} p{2.1cm} p{2.0cm} Y@{}}
+\begin{tabularx}{\textwidth}{@{}
+>{\raggedright\arraybackslash}p{2.6cm}
+>{\raggedright\arraybackslash}p{2.1cm}
+>{\raggedright\arraybackslash}p{2.0cm}
+Y@{}}
 \toprule
 \textbf{Domain} & \textbf{Question} & \textbf{Primary limit} & \textbf{Additional argument} \\
 \midrule
-Constructive equilibrium (\S\ref{sec:ai4gt:equilibrium})
+Equilibrium computation (\S\ref{sec:ai4gt:equilibrium})
 & Output validity & Coverage
 & Duality in the zero-sum case; the regret decomposition; safe-resolving bounds; an executable derivation \\
 \addlinespace
@@ -123,7 +131,7 @@ Strategic evaluation (\S\ref{sec:gt4ai:evaluation})
 & Output validity under response & Coverage
 & Response-oracle expansion over a stated policy class, or a certified robustness radius \\
 \addlinespace
-Designed games as evidence (\S\ref{sec:gt4ai:training})
+Games for training and oversight (\S\ref{sec:gt4ai:training})
 & System validity & Designed-game scope
 & Protocol theorems with stated bounds on adversary and judge; an argument that the constructed objective is the intended one \\
 \addlinespace

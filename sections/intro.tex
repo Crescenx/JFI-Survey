@@ -4,18 +4,15 @@
 \section{Introduction}
 \label{sec:intro}
 
-\subsection{Three Recurring Questions}
-\label{sec:intro:eras}
-
 Game theory first asks whether a solution exists. Von Neumann showed that every
 finite two-person zero-sum game has a value together with a pair of optimal
-mixed strategies~\cite{Neumann1928}, and von Neumann and Morgenstern placed that
-result inside a general theory of economic behavior~\cite{vNM1944}. Nash
+mixed strategies~\cite{Neumann1928}, and von Neumann and Morgenstern incorporated
+this result into a general theory of economic behavior~\cite{vNM1944}. Nash
 extended equilibrium existence to finite games with any finite number of players
 and general payoff interactions~\cite{Nash1951}, well beyond strictly
 competitive play.
 
-Mechanism design makes the rules themselves the object of choice. In
+Mechanism design asks how the rules of interaction should be chosen. In
 the standard quasilinear setting, the Vickrey--Clarke--Groves family showed how
 to make truthful reporting a dominant strategy by charging each participant for
 the externality it imposes~\cite{Vickrey1961,Clarke1971,Groves1973}, and
@@ -27,9 +24,9 @@ simultaneously~\cite{Arrow1951,Gibbard1973,Satterthwaite1975}.
 Together, such results frame mechanism design as the selection of rules under
 explicit incentive and feasibility constraints.
 
-Existence and characterization results leave a computational question: how can
-the solution be found? Algorithmic game theory studies this question for
-different game representations and solution concepts
+Once a solution concept has been defined and its existence established, the
+next question is how to compute a solution. Algorithmic game theory studies
+this question for different game representations and solution concepts
 ~\cite{NisanRoughgardenTardosVazirani2007}. Computing a Nash
 equilibrium is PPAD-complete in general, and remains so with only two
 players~\cite{DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}. Even
@@ -41,26 +38,27 @@ accepting approximation.
 \subsection{How Learning Changes Computation}
 \label{sec:intro:change}
 
-Learning can redistribute computation across related instances. A system is
-trained on many related cases and reuses the resulting conditional rule when a
-new case arrives. This is the familiar structure of amortized optimization and
-inference~\cite{Amos2022Amortized,KingmaWelling2014}, and in strategic settings
-it has produced strong empirical systems. Neural counterfactual values and
-continual re-solving produced expert-level play in heads-up no-limit
-poker~\cite{Moravcik2017,BrownSandholm2018,BrownReBeL2020}. Self-play with
+Learning can amortize computation across related instances. An amortized method
+trains a conditional rule on a family of related cases and reuses that rule on
+new cases. This is the standard setup in amortized optimization and
+inference~\cite{Amos2022Amortized,KingmaWelling2014}, and it has also been used
+in strategic systems. In heads-up no-limit poker, learned counterfactual values
+and continual re-solving are among the methods that have produced expert-level
+play~\cite{Moravcik2017,BrownSandholm2018,BrownReBeL2020}. Self-play with
 learned policy and value networks mastered board games from their rules, and
 league training produced a StarCraft II agent at grandmaster
 level~\cite{Silver2018,Vinyals2019}. Neural networks now also search spaces of
 auction mechanisms that no analyst could
 enumerate~\cite{Duetting2019,Duan2023,Duetting2024}.
 
-In these examples, training is part of the solver: it shares work across related
-instances and can reduce the cost of each later one. Learned systems also
-participate in the interactions being studied. Pricing algorithms interact in
-real markets~\cite{Calvano2020,Assad2024}. Language models negotiate and
-coordinate~\cite{Bianchi2024NegotiationArena,Akata2025}, while alignment
-procedures train one model against the responses of another
-~\cite{Christiano2017,Ouyang2022}.
+In these examples, learning is used as part of the solver: training shares
+computation across related instances and can reduce the cost of solving later
+ones. A learned system can also participate in the interaction being studied.
+Pricing algorithms operate in real
+markets~\cite{Calvano2020,Assad2024}. Language models negotiate and
+coordinate~\cite{Bianchi2024NegotiationArena,Akata2025}, while preference-based
+training procedures use human feedback on model outputs to train policies,
+often via learned reward models~\cite{Christiano2017,Ouyang2022}.
 In each case the system's outputs can change what other participants do and
 which situations the system later faces. Performance on a fixed set of cases
 does not by itself establish performance after those responses. Game-theoretic
@@ -70,18 +68,21 @@ by deviating within a specified class.
 \subsection{Construction and Validity}
 \label{sec:intro:cost}
 
-Learned strategic methods are typically assessed through finite search or test
-populations. RegretNet reports the largest gain found by gradient search over
-sampled valuation profiles. Poker systems report performance against a test
-population, while pricing audits estimate regret against alternatives
-recoverable from deployment logs. Each result provides evidence for sampled cases and
-accessible alternatives. Some target properties quantify over a larger
-deviation class. For example, they require that no deviation in the specified
-class be profitable or that truthful reporting yield at least as much utility as
-every admissible misreport for every type. For such
-deviation-defined properties, one profitable deviation refutes the claim.
-Failure to find one supports the full claim only if the search covers the target
-class or an additional argument controls what the search omitted.
+Evidence for learning-based strategic methods typically comes from finite
+searches or test populations. RegretNet reports the largest gain found by
+gradient search over sampled valuation profiles~\cite{Duetting2019}. Poker
+systems report performance against a test population
+~\cite{Moravcik2017,BrownSandholm2018,BrownReBeL2020}, while pricing audits
+estimate regret against alternatives recoverable from deployment logs. Each
+result provides evidence for sampled cases and accessible alternatives. Some
+target properties are defined over a larger deviation class than the evaluation
+examines. For example, they require that no deviation in the specified class be
+profitable or that truthful reporting yield at least as much utility as every
+admissible misreport for every type. For such deviation-defined properties, one
+profitable deviation refutes the claim. A search that finds no profitable
+deviation supports a claim over the full target class only if it covers that
+class, or if a separate argument bounds the gain available from deviations
+outside the search space.
 
 We distinguish two forms of validity.
 
@@ -103,8 +104,9 @@ search or a bound derived from structure may address it.
 With observational data, distinct strategic models can instead generate the
 same realized behavior. This identification limit cannot be resolved by more
 data from the same observational regime. It requires informative variation,
-intervention, or maintained restrictions~\cite{HaileHortacsuKosenok2008}. Figure~\ref{fig:validity-gates} summarizes these two validity questions and
-the implication that must hold in each case.
+intervention, or maintained restrictions~\cite{HaileHortacsuKosenok2008}.
+Figure~\ref{fig:validity-gates} summarizes these two validity questions and the
+implication that must hold in each case.
 
 \begin{figure}
 \centering
@@ -120,7 +122,7 @@ two implications.}
 \subsection{Why the Distinction Matters}
 \label{sec:intro:why}
 
-The distinction becomes consequential when learned strategic systems leave a
+The distinction matters when learned strategic systems are evaluated beyond a
 fixed benchmark. Field evidence from retail gasoline markets links algorithmic
 pricing to higher margins~\cite{Assad2024}. In oligopoly experiments,
 language-model agents reach supra-competitive prices without
@@ -151,9 +153,10 @@ on the representation and the property being claimed.
 \paragraph{Related surveys and exclusions.} Stackelberg
 and security games, mean-field games, multi-agent reinforcement learning beyond
 its use as a response oracle, autobidding, and incentive design for federated
-learning fall outside our selected domains. Wellman et al.\ and Curry et al.\ give
-denser accounts of empirical game-theoretic analysis and automated mechanism
-design, respectively~\cite{WellmanTuylsGreenwald2025,CurryAMDSurvey2025}. Sun et
+learning fall outside our selected domains. Wellman et al.\ and Curry et al.\
+provide focused reviews of empirical game-theoretic analysis and automated
+mechanism design, respectively
+~\cite{WellmanTuylsGreenwald2025,CurryAMDSurvey2025}. Sun et
 al.\ survey the game theory--LLM intersection with the language model as the focal
 technology~\cite{SunWuChengChu2025}. Podimata surveys incentive-aware machine
 learning, where individuals adapt their inputs to a deployed decision
@@ -163,29 +166,22 @@ to it, and the evidence available for that claim.
 
 \paragraph{Organization.} Section~\ref{sec:recap} introduces the computational
 background. Sections~\ref{sec:ai4gt} and~\ref{sec:gt4ai} organize six application
-areas around the two validity questions. Section~\ref{sec:synthesis} states when
-the two can be combined. Figure~\ref{fig:survey-route} maps the two main parts
-of the survey to the six application areas.
+areas around the two validity questions, as illustrated in
+Figure~\ref{fig:survey-route}. Section~\ref{sec:synthesis} states when the two
+can be combined. After deployment, participants' responses can alter the inputs
+and counterparties that the system encounters. Performative prediction
+provides one formalization of such feedback~\cite{Perdomo2020Performative}. The
+relevant response process and case domain must therefore be specified as part
+of the claim.
 
-\begin{figure}
+\begin{figure}[pos=ht]
 \centering
-\includegraphics[width=\textwidth]{figure/fig2-survey-route.pdf}
+\includegraphics[width=0.9\textwidth]{figure/fig2-survey-route.pdf}
 \caption{Survey structure and the interaction link. Section~3 studies learned
 strategic objects across related cases. Section~4 studies learned systems in
 interactions where participant responses can change the relevant cases. The
 six labels identify the corresponding subsections and need not be disjoint.}
 \label{fig:survey-route}
 \end{figure}
-
-\paragraph{Strategic response after deployment.} Both validity questions range
-over a set of cases. After deployment, participants' responses can change the
-inputs and counterparties represented in the observed data. Related
-distributional feedback is formalized in performative
-prediction~\cite{Perdomo2020Performative}. Generalization under strategic
-response concerns whether the relevant property remains valid over cases
-selected partly by those responses. A
-guarantee on a fixed evaluation distribution need not extend to this deployment
-distribution. The relevant response process and case domain must therefore be
-part of the claim.
 
 \FloatBarrier

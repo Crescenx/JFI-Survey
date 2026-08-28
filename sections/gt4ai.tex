@@ -10,6 +10,13 @@ the external objective it is meant to serve. In deployed markets, participants'
 responses can change the cases encountered, and the institution determines
 whose outcomes count.
 
+Section~\ref{sec:gt4ai:evaluation} examines how the opponent population and the
+solution concept jointly determine an evaluation verdict.
+Section~\ref{sec:gt4ai:training} asks what a designed game can establish about
+training or oversight given a specified counterparty and protocol.
+Section~\ref{sec:gt4ai:governance} turns to deployment, where governance must
+specify a system objective and decide whose outcomes count.
+
 \subsection{Strategic Evaluation against Opponent Populations}
 \label{sec:gt4ai:evaluation}
 
@@ -27,7 +34,12 @@ as evidence of its own utility, they must also support a stable preference
 representation. This additional requirement is unnecessary when the evaluator
 stipulates the payoffs.
 
-\subsubsection{Empirical strategic populations}
+We begin with empirical games over policy populations, then examine the
+deviation classes they cover and how different solution concepts affect the
+resulting evaluation. We then turn to game-playing and language-model policies,
+preference interpretation, and adversarial robustness.
+
+\subsubsection{Empirical games over policy populations}
 The dependence on the opponent can be expressed directly. Let \(\pi\) denote the policy under evaluation, let \(\sigma\) denote an opponent policy, and let \(u(\pi,\sigma)\) be the expected payoff to \(\pi\) under a specified interaction protocol. A conventional evaluation score against an opponent distribution \(q\) has the form
 \[
 S(\pi;q)
@@ -132,7 +144,8 @@ Open-ended learning provides another account of the same structure. Balduzzi et 
 The spinning-top model extends this observation beyond simple cyclic examples. Czarnecki et al. argue that many real-world games combine a broad transitive direction with substantial non-transitive variation around policies of similar overall strength~\cite{Czarnecki2020}. Weak policies may be defeated by many alternatives, while increasingly capable policies enter a wider region containing diverse specialists and counterstrategies. Evaluation near the frontier therefore requires both progress along the transitive dimension and coverage of the surrounding non-transitive population. A single champion policy or scalar rating can conceal this strategic diversity.
 
 \subsubsection{Game-playing systems and language models as evaluated policies}
-These population-level ideas already shape deployed game-playing systems.
+Population-based training and evaluation already inform deployed game-playing
+systems.
 AlphaStar's final strategic output is a Nash-weighted mixture of selected league
 agents, intended to reduce exploitability across that
 population~\cite{Vinyals2019}. Its robustness depends on the complementary
@@ -252,7 +265,7 @@ full target still requires either exhaustive coverage or an argument controlling
 unsearched alternatives.
 
 
-\subsection{Designed Games as Evidence}
+\subsection{Games for Training and Oversight}
 \label{sec:gt4ai:training}
 
 Training and oversight objectives are often defined relative to another
@@ -356,14 +369,15 @@ addresses obfuscation more directly. Under stability assumptions, it gives the
 honest participant a strategy whose computational efficiency is comparable to
 that of its opponent~\cite{BrownCohen2025ProverEstimator}.
 
-The theoretical result makes an empirical prediction about current models. Khan
-et al.\ test it using inference-time best-of-$N$ and critique-and-refine. They find that stronger
+An empirical question is whether stronger debaters improve the accuracy of model
+and human judges. Khan et al.\ study this question using inference-time
+best-of-$N$ and critique-and-refine. They find that stronger
 debaters improve the accuracy of both model and human judges on difficult
 reading-comprehension questions~\cite{Khan2024}. The consultancy control makes the result
 interpretable: increasing a consultant's persuasiveness reduces judge accuracy,
 whereas competition between opposing debaters improves it.
 
-Two later studies narrow the empirical claim. Single-turn debate-style
+Other studies qualify the empirical evidence. Single-turn debate-style
 explanations do not improve human accuracy in the setting studied by Parrish et
 al.~\cite{Parrish2022}. Across a wider task set, Kenton et al.\ find that debate
 consistently outperforms assigned-role consultancy, while comparisons with
@@ -408,6 +422,10 @@ separately proposes making collusion by autonomous pricing agents unlawful
 ~\cite{Harrington2018}. In each proposal, the audit or legal standard defines the
 admissible alternatives and the evidentiary burden. That choice in turn
 determines what data are required.
+
+We move from the system objective to ex ante design and ex post standards, then
+ask what records are required for a deployment audit and when individual-level
+evidence supports a market-level conclusion.
 
 \subsubsection{System objective and affected parties}
 A local equilibrium or regret guarantee states a property inside the specified
@@ -506,7 +524,7 @@ Braverman et al.\ show that a seller facing a buyer who uses EXP3 or another
 mean-based no-regret algorithm can extract nearly the buyer's full welfare. The
 same paper constructs a different no-regret algorithm for which repeatedly
 posting the Myerson reserve is optimal for the seller~\cite{Braverman2018}.
-Thus two algorithms can both have low external
+Thus, two algorithms can both have low external
 regret while exposing the buyer to very different strategic losses. Hartline,
 Wang, and Zhang show similarly that
 algorithms satisfying only best-in-hindsight regret can be manipulated into
