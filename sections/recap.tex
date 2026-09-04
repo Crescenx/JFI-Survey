@@ -4,165 +4,173 @@
 \section{Background}
 \label{sec:recap}
 
-Equilibrium and incentive compatibility are both defined by deviations.
-Computing an equilibrium, or verifying incentive compatibility for a candidate
-mechanism, can be costly. Learning can share computation across related
-instances, but it does not itself establish the relevant guarantee. A learned
-output therefore still needs a check or bound specific to the claimed property.
+Equilibrium analysis asks whether any player in a game could have done better by
+doing something else. An equilibrium is the case where the answer is no: no player gains by changing
+only its own action. Incentive compatibility puts the same question to truthful
+reporting: no participant does better by misreporting its type than by reporting
+it truthfully. That ``something else'' is a \emph{deviation}, and the set of deviations one insists on checking against (every alternative
+action, or only a restricted family) is the \emph{deviation class}. It is the object this survey is built around, and it returns in every section that follows.
+
+Two facts about it set the background. Checking is not free: establishing that
+\emph{no} profitable deviation exists, over a large or implicitly described
+class, can require solving a computationally hard optimization or search problem. And learning does not by itself answer it: training a rule across many related
+games can produce a strong candidate cheaply, but a candidate is not a
+guarantee. A learned output still needs a check or bound tied to the specific
+property claimed for it.
 
 \subsection{Equilibrium Conditions and Computational Demands}
 \label{subsec:recap-gt}
 
-For both concepts, the relevant deviation class determines what must be checked.
-We first state the corresponding deviation conditions, then separate
-constructing a candidate from verifying it. The final subsection reviews
-standard restrictions and relaxations that recover tractability.
+For both equilibrium and incentive compatibility, the deviation class
+determines what must be checked. This subsection states the two
+deviation conditions in turn, separates constructing a candidate from verifying
+it, and closes with the standard restrictions and relaxations that recover
+tractability.
 
 \subsubsection{Equilibrium and its deviation class}
 
-The minimax theorem establishes that every finite two-player zero-sum
-game has a value and a pair of optimal mixed
-strategies~\citep{Neumann1928,vNM1944}. In that setting a player's equilibrium
-strategy is also its worst-case-optimal strategy, so equilibrium and robustness
-coincide. This coincidence is specific to strictly competitive play and does not
-extend to general games.
+The simplest case is also the oldest. The minimax theorem establishes that every
+finite two-player zero-sum game has a value and a pair of optimal mixed
+strategies~\citep{Neumann1928,vNM1944}. Rock-paper-scissors is the textbook example:
+throwing each option a third of the time is unbeatable in expectation, and the value
+is a tie. In such games a player's equilibrium strategy is also its worst-case-optimal
+strategy, so equilibrium and robustness coincide, a coincidence special to strictly
+competitive play that does not extend to general games.
 
 A Nash equilibrium is a profile in which no player gains by deviating
-alone~\citep{Nash1951}. The condition can be quantified through each player's
-best unilateral gain. For a profile $s$ and a class $\mathcal{D}_i$ of
-deviations available to player $i$, write the aggregate gap
+alone~\citep{Nash1951}. To make ``gains'' precise, measure each player's best
+unilateral improvement: for a profile $s$ and a class $\mathcal{D}_i$ of
+deviations available to player $i$, the aggregate gap is
 \[
   \mathrm{Gap}_{\mathcal{D}}(s)
   \;=\;
   \sum_i \Bigl[\, \sup_{s_i' \in \mathcal{D}_i} u_i(s_i', s_{-i}) - u_i(s) \,\Bigr].
 \]
-Assume that $\mathcal{D}_i$ includes the player's current strategy. When each
-$\mathcal{D}_i$ is the player's whole strategy set, this sum is commonly called
-NashConv; closely related normalizations are called exploitability. It is zero
-exactly at a Nash equilibrium. In other applications $\mathcal{D}_i$ may be a
-restricted class, in which case the gap describes only deviations in that class.
+Take each $\mathcal{D}_i$ to include the player's current strategy. When
+$\mathcal{D}_i$ is the whole strategy set, this sum is commonly called NashConv,
+and closely related normalizations are called exploitability; it is zero exactly
+at a Nash equilibrium. Shrink $\mathcal{D}_i$ to a restricted class and the gap reports only on deviations in that class: the same formula, a narrower
+claim.
 
-The deviation inequalities can be evaluated one player at a time while holding
-the opponents' strategies fixed, but every player's inequality must hold for
-the same joint profile. The condition is static and does not describe whether an
-adaptive process reaches such a profile. That requires a convergence analysis of
-the process itself.
+Two warnings come with this condition. The inequalities can be checked one player
+at a time, holding the opponents fixed, but every player's inequality must hold at
+the same joint profile. And the condition is static: it says nothing about
+whether an adaptive process ever reaches such a profile, which is a separate
+question of convergence.
 
-Extensive-form games represent the order of play and the information available
-to each player, and \citet{Kuhn1953}
-established that under perfect recall mixed and behavioral strategies
-induce the same outcome distributions. \citet{Selten1975} imposed refinements
-at contingencies the equilibrium path never
-reaches. \citet{Harsanyi1968} handled private information by making a
-player's payoff-relevant characteristics a \emph{type}, converting incomplete
-information into a Bayesian game. In each case the
-comparison with counterfactual alternatives remains the content of the concept,
-with the refinements changing the set of alternatives being compared.
-
-In a correlated equilibrium, a mediator draws a joint action profile and
-privately recommends one action to each player. No player gains by deviating as
-a function of the recommendation received~\citep{Aumann1974}. Quantal response
-equilibrium replaces exact best response with a smooth choice rule in which
-better actions are more likely, but mistakes persist~\citep{McKelveyPalfrey1995}.
+Richer game forms enlarge the set of alternatives being compared, but never
+change what the comparison is about. Extensive-form games represent the order of
+play and each player's information; \citet{Kuhn1953} showed that under perfect
+recall, mixed and behavioral strategies induce the same outcome distributions.
+\citet{Selten1975} added refinements at contingencies the equilibrium path never
+reaches, and \citet{Harsanyi1968} handled private information by making a player's
+payoff-relevant characteristics a \emph{type}, turning incomplete information into
+a Bayesian game. In each, the refinement changes the counterfactual alternatives,
+while comparison against those alternatives remains the content of the concept. A
+correlated equilibrium broadens the setting differently: a mediator draws a joint
+action profile and privately recommends one action to each player, and no player
+gains by deviating as a function of the recommendation it
+receives~\citep{Aumann1974}. Quantal response equilibrium (QRE) relaxes the comparison
+itself, replacing exact best response with a smooth rule under which better
+actions are merely more likely, so mistakes persist~\citep{McKelveyPalfrey1995}.
 
 \subsubsection{Design and deviation-based incentive constraints}
 
-Mechanism design chooses rules under which participants' incentives produce a
-desired outcome.
-Impossibility results identify restrictions on what particular classes of
-rules can achieve~\citep{Arrow1951,Gibbard1973,Satterthwaite1975}. Under the
-conditions of the revelation principle, the design problem can be posed over
-direct mechanisms in which agents report types and truthful reporting is an
-equilibrium.
+If equilibrium takes the game as given, mechanism design reverses the
+question: it chooses the rules so that participants' incentives produce a desired
+outcome. Impossibility results bound what any choice of rules can
+achieve~\citep{Arrow1951,Gibbard1973,Satterthwaite1975}. Within those bounds, the
+revelation principle lets the designer work with direct mechanisms, in which
+agents report types and truthful reporting is an equilibrium.
 
-Incentive compatibility is likewise defined by deviations: for every relevant
-type, truthful reporting must do at least as well as \emph{every} admissible
-alternative report. Here the deviation class is the misreport space, with its
-scope determined by the equilibrium concept and the mechanism's domain. The
-Vickrey--Clarke--Groves family achieves efficient allocation in dominant
-strategies~\citep{Vickrey1961,Clarke1971,Groves1973}, and \citet{Myerson1981} characterized
-the revenue-optimal single-item Bayesian
-auction.
+Incentive compatibility is, once again, a statement about deviations: for every
+relevant type, truthful reporting must do at least as well as \emph{every}
+admissible alternative report. The deviation class is now the misreport space,
+its scope set by the equilibrium concept and the mechanism's domain. Two classical results are central to the design side. The Vickrey--Clarke--Groves family
+achieves efficient allocation in dominant
+strategies~\citep{Vickrey1961,Clarke1971,Groves1973}, and \citet{Myerson1981}
+characterized the revenue-optimal single-item Bayesian auction.
 
 \subsubsection{Construction and checking}
 
-The PPAD-completeness results noted at the start of the introduction concern
-total search problems: a solution exists, although finding one may be
-intractable~\citep{Papadimitriou1994}. The asymmetry between construction and
-checking also depends on the representation and the property. Given an explicit finite game and a rational profile,
-evaluating a specified deviation is direct. Finding one profitable deviation
-refutes the equilibrium claim. Establishing that no profitable deviation exists
-over a large or implicitly represented class can require an optimization or
-structural result. Mechanism design faces the
-same computational pressure because optimization over contingent rules is
+Both conditions (equilibrium and incentive compatibility) are ultimately
+verified by ruling out profitable deviations, and verifying is not the same
+problem as constructing. That gap is where the difficulty lies. The PPAD-completeness results noted at
+the start of the introduction concern total search problems: a solution is
+guaranteed to exist, yet finding one may be
+intractable~\citep{Papadimitriou1994}. Checking has an asymmetry that comes from the
+deviation class. Given an explicit finite game and a rational profile, evaluating
+one specified deviation is direct, and a single profitable deviation refutes the
+equilibrium claim immediately. Establishing that \emph{no} profitable deviation
+exists, over a large or implicitly represented class, is the harder direction, and
+can require an optimization or a structural result. Mechanism design faces the
+same difficulty, because optimizing over contingent rules is
 itself a hard search problem~\citep{ConitzerSandholm2002}.
 
 \subsubsection{Standard routes to tractability}
 
-Tractability can be recovered by weakening the solution concept or restricting
-the game class, often while accepting a bounded residual gain. For example, correlated
-and coarse correlated equilibria in explicitly represented finite games admit
-linear descriptions and are computable in polynomial time. They can also arise
-from decentralized learning: when every player in a repeated game
-drives external regret to zero, the empirical distribution of play approaches
-the coarse correlated set, and stronger regret notions reach the correlated
-set~\citep{Hannan1957,HartMasColell2000,BlumMansour2007}. The deviation class is
-explicit in this result: the equilibrium notion obtained depends on which
-deviations the regret criterion compares against~\citep{GordonGreenwaldMarks2008}.
-Each modification changes the claim for which a deductive guarantee is
-available. Learning can be combined with any of them by fitting a conditional
-rule across related games and reusing it on later instances.
+When the exact problem is too hard, two strategies recover tractability: weaken the
+solution concept, or restrict the game class, usually while accepting a bounded residual gain. Correlated and coarse correlated equilibria illustrate the first
+strategy. In explicitly represented finite games they admit linear descriptions and are
+computable in polynomial time. They also arise from decentralized learning:
+when every player in a repeated game drives external regret to zero, the
+empirical distribution of play approaches the coarse correlated set, and
+stronger regret notions reach the correlated
+set~\citep{Hannan1957,HartMasColell2000,BlumMansour2007}. The deviation class is explicit in this result. The equilibrium notion one
+obtains depends on which deviations the regret criterion compares
+against~\citep{GordonGreenwaldMarks2008}. Each relaxation therefore changes
+the claim for which a deductive guarantee is available. Learning composes with any of these
+strategies, by fitting a conditional rule across related games and reusing it on later
+instances.
 
 \subsection{What Training Does}
 \label{subsec:recap-dl}
 
-Section~\ref{subsec:recap-dl} first explains how training amortizes computation
-across instances, then turns to training cost and the guarantees that must still
-be established after training.
+The previous subsection fixed what must be checked and how costly checking can
+be; this one turns to what training contributes. Learning helps because of one basic trade-off: it moves work off the per-instance solver and onto a
+training phase whose cost is paid once and shared. This subsection first makes that trade-off precise, then names what training does \emph{not} provide: the guarantees that still
+have to be established once training is done.
 
 \subsubsection{Amortization: sharing computation across instances}
 
-A per-instance solver is invoked on a specified game. An amortized system fits
-a conditional rule across a family of related cases and later evaluates that
-rule on a new case. Total computation includes training and later evaluations.
-The potential advantage comes from sharing the trained rule across cases. This
-is the structure of amortized optimization and
-inference~\citep{Amos2022Amortized,KingmaWelling2014}. Different architectures
-encode different forms of sharing across states or instances.
+A per-instance solver is invoked afresh on each game. An amortized system instead fits a conditional rule across a family of related
+cases and later evaluates that rule on a new case. Its total computation
+includes both the training and the later evaluations, so its potential
+advantage comes entirely from sharing the trained rule across cases. This is the structure of amortized optimization and
+inference~\citep{Amos2022Amortized,KingmaWelling2014}, with different
+architectures encoding different forms of sharing across states or instances.
 
 Reinforcement learning adds the dependence that matters for strategic settings:
 an action changes the data the learner will next
 observe~\citep{SuttonBarto2018,Williams1992,SuttonPolicyGradient2000,Mnih2015}.
-When the rules are known, self-play can generate new training games as the
-policy changes, an approach used to train policy and value networks in board-game
-systems~\citep{Silver2018}. When behavior is observed
-but the objective is hidden, inverse reinforcement learning estimates which
-objectives are consistent with that behavior~\citep{NgRussell2000,HoErmon2016}.
-
-Preference-based fine-tuning turns
-comparisons between outputs into a training signal, making the learning target
-itself something another party
+When the rules are known, self-play can create fresh training games as the
+policy changes, the route used to train the policy and value networks in
+board-game systems~\citep{Silver2018}. When behavior is observed but the objective
+is hidden, inverse reinforcement learning estimates which objectives are
+consistent with that behavior~\citep{NgRussell2000,HoErmon2016}. Preference-based
+fine-tuning turns comparisons between outputs into the training signal, making the
+learning target itself something another party
 supplies~\citep{Christiano2017,Ouyang2022}. Large language models generate
-general-purpose text~\citep{BrownGPT3_2020}. Code models and tool-using agents
-also produce executable programs or action traces
-~\citep{ChenCodex2021,YaoReAct2023,SchickToolformer2023}.
+general-purpose text~\citep{BrownGPT3_2020}, and code models and tool-using agents
+also emit executable programs or action
+traces~\citep{ChenCodex2021,YaoReAct2023,SchickToolformer2023}.
 
 \subsubsection{What must still be accounted for}
 
-Amortization changes where the computation occurs. Data generation and parameter
-optimization can dominate the time saved at inference, so a cost comparison
-should include training as well as later evaluations. The strategic property of
-the output then depends on the analytic or post-training check used by the
-method.
+Amortization changes where the computation happens, not whether it must be done.
+Data generation and parameter optimization can outweigh the time saved at inference,
+so a complete cost comparison counts training alongside later evaluations. And the
+strategic property of the output still rests on whatever analytic or post-training check the method applies: amortization
+moves the work, but the guarantee is a separate cost.
 
-Validation also depends on access. A high-dimensional rule may be available only
-through queries, and finite tests cover sampled instances and representable
-alternatives. Extending such results to a larger deviation class requires a bound
-or structural argument. Executable code and rules constrained to a known family
-may instead permit symbolic checking or a direct theorem.
+That guarantee, in turn, depends on access. A high-dimensional rule may be
+reachable only through queries, where finite tests cover sampled instances and
+representable alternatives; extending such results to a larger deviation class
+requires a bound or a structural argument. Executable code, or a rule confined to
+a known family, may instead admit symbolic checking or a direct theorem.
 
-Construction and validation impose separate costs. Learning can amortize
-construction across related instances, but it does not by itself establish the
-target property over the full deviation class. Sections~\ref{sec:ai4gt}
-and~\ref{sec:gt4ai} identify the additional argument required in each
-application domain.
+In short, construction and checking are separate costs. Learning can amortize
+the construction across related instances, but it does not by itself establish
+the target property over the full deviation class.
+Sections~\ref{sec:ai4gt} and~\ref{sec:gt4ai} identify, domain by domain, exactly
+which additional argument that missing guarantee requires.

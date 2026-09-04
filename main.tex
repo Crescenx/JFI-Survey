@@ -34,6 +34,11 @@
 
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
+% Run-in lead-in for map-then-march paragraphs. Kept as a plain bold lead inside an
+% ordinary paragraph so spacing matches the surrounding text exactly --- unlike
+% \paragraph, which injects a 10pt before-skip and breaks the inter-paragraph rhythm.
+\newcommand{\runin}[1]{\textbf{#1}}
+
 \makeatletter
 \newlength{\hb@colwidth}
 \def\makeheaderbox{
@@ -99,16 +104,19 @@
 \tsc{DE}
 %%%
 
+% keep the forced line break in \title out of the PDF-string metadata
+\pdfstringdefDisableCommands{\def\\{}}
+
 \begin{document}
 \let\WriteBookmarks\relax
 \def\floatpagepagefraction{1}
 \def\textpagefraction{.001}
-\shorttitle{Learning and Strategic Guarantees}
+\shorttitle{Learning to Compute and Learning to Play}
 \shortauthors{X. Xie et~al.}
 %\begin{frontmatter}
 
-\title [mode = title]{Learning and Strategic Guarantees:
-AI and Game Theory}
+\title [mode = title]{Learning to Compute and Learning to Play:\\
+Strategic Guarantees for AI in Games}
 
 \author[1]{Xiaohan Xie}
 \author[2]{Wenxuan Liu}
@@ -129,18 +137,17 @@ AI and Game Theory}
 \cortext[cor1]{Corresponding author}
 
 \begin{abstract}
-Learning now enters game theory in two roles: as a computational tool and as a
-source of strategic behavior. Training can amortize work across related games,
-but a learned strategy or rule remains a candidate until the method establishes
-the relevant game-theoretic property. Deviation-based properties can quantify
-over alternatives that finite search does not examine. With observational data,
-distinct strategic models may remain indistinguishable. A designed game raises a separate
-question: whether its model of interaction adequately represents the external
-objective. We use these two questions to compare six areas, from equilibrium
-computation to algorithmic-pricing governance. In each area, we distinguish the
-immediate output from the argument needed to extend finite evaluation to the
-target claim. We also consider deployments in which participants respond to a
-learned rule and thereby alter the cases encountered after deployment.
+Learning now plays two roles in game theory: it computes strategic solutions, and it
+acts as a strategic participant in its own right. In both, a learned strategy, model,
+or rule is only a candidate until an argument certifies the property claimed for it. We
+organize the field around the two questions that argument must answer---whether a
+learned output actually has its claimed strategic property (the \emph{claim question}:
+does it hold?), and whether a property proved inside a designed game delivers the
+objective the game was built to serve (the \emph{goal question}: does it help?). We
+read six domains through these questions, from equilibrium computation to
+algorithmic-pricing governance, including deployments where participants' responses
+change the cases a rule later meets. Read together they give one answer: learning has
+changed which strategic computations are cheap, not what makes a strategic claim true.
 \end{abstract}
 
 %\begin{graphicalabstract}

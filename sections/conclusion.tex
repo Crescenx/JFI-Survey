@@ -4,106 +4,108 @@
 \section{Synthesis and Outlook}
 \label{sec:synthesis}
 
-Both output and system validity are needed to connect a learned output to a
-system-level claim. This section derives the combined condition, compares the
-evidentiary demands across the six domains, and identifies research priorities.
+A pricing algorithm that passes every audit its own deployment log can support
+has done everything asked of it. Nothing in that record is false, and the claim
+is still not safe, because the property being asserted reached past the evidence
+gathered for it.
 
-\subsection{Combining Output and System Validity}
+The six domains surveyed here are an account of that reach: where it is short enough
+to close by searching harder, where no amount of searching will close it, and
+what has to be supplied instead. Learning has
+changed which strategic computations are cheap. It has not changed what makes a
+strategic claim true. Something outside the search has to carry the conclusion past
+the cases actually tried: a duality argument, a regret decomposition,
+membership in a truthful family, a protocol theorem, a maintained restriction, a
+logged randomization. Where no such argument is available, the supportable claim is
+confined to the domain the evidence covers.
+
+\subsection{Combining the Claim and Goal Questions}
 \label{sec:synthesis:compose}
 
-Output validity is a claim about the learned object itself. System validity
-connects a result obtained in a designed game to the objective outside that
-game:
+To say that a learned system serves a real-world goal is to assert two implications:
+its output has the claimed property, and that property, established inside the
+designed game, delivers the external objective. The claim question tests the first;
+the goal question tests the second.
+
+Write $\widehat{x}$ for the learned output, $P_\Gamma$ for a property defined
+inside a game $\Gamma$, and $Q$ for the external objective that the game
+$\Gamma_Q$ was built to serve:
 \[
 \begin{aligned}
-\text{output validity:}\qquad
+\text{claim question:}\qquad
 &\widehat{x} \quad\Longrightarrow?\quad P_\Gamma(\widehat{x}),\\
-\text{system validity:}\qquad
+\text{goal question:}\qquad
 &P_{\Gamma_Q}(x) \quad\Longrightarrow?\quad Q(x),
 \end{aligned}
 \]
-where $\Longrightarrow?$ marks an implication whose validity is the object of
-study, $P_\Gamma$ is a property defined for a game $\Gamma$, and $Q$ is the
-objective around which $\Gamma_Q$ was designed.
-
-Composition requires the same object, game, and domain in both claims. Setting
-$x=\widehat{x}$ and $\Gamma=\Gamma_Q$ gives
+where $\Longrightarrow?$ marks an implication whose validity is itself the object
+of study. The chain closes only when both links speak about the same object, in the same game, over the same domain, that is, when $x=\widehat{x}$ and
+$\Gamma=\Gamma_Q$:
 \[
 \widehat{x} \;\Longrightarrow\; P_{\Gamma_Q}(\widehat{x}) \;\Longrightarrow\;
 Q(\widehat{x}).
 \]
-Algorithmic pricing illustrates why the conditions matter. Each pricing
-algorithm may satisfy a local criterion while the market fails an external
-welfare objective. The local property concerns one firm maximizing its own
-profit. The system objective concerns the joint market outcome and includes
-consumers who are affected parties outside that local optimization.
 
-For an output property defined through deviations, finite search generally
-provides a lower bound on the largest gain. Assume that the target class contains
-a null deviation, and define
-$g_\Gamma(x)=\sup_{d\in\mathcal{D}_\Gamma(x)}\Delta_\Gamma(x,d)$ as the largest
-gain over that class. A search that returns some $\widehat d$ establishes the
-lower bound $g_\Gamma(x)\ge\Delta_\Gamma(x,\widehat d)$.
-An upper bound on $g_\Gamma$ requires a guarantee on the search itself: if
-$\Delta_\Gamma(x,\widehat d)\ge g_\Gamma(x)-\epsilon$, then observing
-$\Delta_\Gamma(x,\widehat d)\le\eta$ yields $g_\Gamma(x)\le\eta+\epsilon$.
-Without such a guarantee, the observation controls only the searched class.
-Figure~\ref{fig:candidate-counterexample} summarizes this asymmetry between
-finite counterexample search and a claim over the full deviation class.
+That is a stricter requirement than it looks. It is where the argument usually
+breaks, and the break goes unnoticed because each link can be perfectly sound
+on its own.
+Algorithmic pricing is the standard case. An algorithm can be shown, rigorously,
+to maximize its own firm's profit: a theorem about the single-firm game. A
+regulator's objective is defined in a different game: the joint market outcome, including
+the consumers, who are affected parties and not participants
+in the firm's optimization. Both proofs can be correct and the welfare claim
+still fail to follow, because the property was never established in the game
+where welfare is defined.
 
-Identification claims instead use observations and maintained assumptions to
-define an identified set. They need not involve a searched deviation class.
-
-\begin{figure}[pos=h]
-\centering
-\includegraphics[width=\textwidth]{figure/fig4-candidate-counterexample.pdf}
-\caption{Finite evaluation of a deviation-defined property. A method proposes a
-candidate and searches for a profitable deviation in an accessible class. A
-discovered deviation refutes the candidate. If the search finds none, a claim
-over the target class requires a theorem, bound, or structural argument that
-controls the alternatives not searched. Identification and system-validity
-claims require different arguments.}
-\label{fig:candidate-counterexample}
-\end{figure}
+The two links can meet different limits, and the difference decides the remedy.
+When a finite search covers only part of the relevant deviation class, it creates a
+coverage limit. The best deviation found is a lower bound on the best that exists;
+claiming that nothing better is available requires exhaustive coverage or a bound on
+the unsearched class. An identification limit arises when distinct latent models are
+observationally equivalent under the available regime and maintained assumptions.
+More data from that same regime does not distinguish them.
+Figure~\ref{fig:claim-obstacles} sets these two recurring limits side by side. Coverage and
+identification constrain different forms of evidence, so the
+appropriate remedy depends on how the candidate and game can be queried, which
+variation is available, and which structural assumptions can be defended.
 
 \subsection{What Each Domain Contributes}
 \label{sec:synthesis:map}
 
-Table~\ref{tab:domain-map} summarizes the primary limitation in each domain and
-the additional argument needed for the target claim.
+The survey's organizing map assigns a primary limit to each of the six domains.
+Those assignments identify the constraints foregrounded by the results reviewed here; they do not
+exhaust every possible scientific failure in those domains. What changes across the
+map is which limit is foregrounded and which further argument the target claim needs.
 
-Broader search and response oracles address coverage, whereas identification
-depends on new information or maintained restrictions. Cross-game variation,
-exploration, and logging can reveal otherwise unobserved counterfactuals.
-Pessimistic completion converts counterfactuals that remain unidentified into
-conservative bounds.
+Within this map, equilibrium computation, mechanism design, and strategic evaluation
+foreground coverage because every alternative can in principle be asked about and
+there are too many to exhaust. These cases call for broader search, response
+oracles, membership in a structured family, a bound that carries a finite grid
+to a continuous domain. Strategic inference foregrounds identification. The bids are
+what they are, several valuations explain them equally well, and only new
+variation, an intervention, or a maintained restriction narrows the field.
 
-\subsection{Research Priorities}
-\label{sec:synthesis:open}
+The map assigns designed-game scope to games for training and oversight. The
+central question is whether the designed game is the right one, and no evidence
+gathered only inside it can settle that external fit. In the deployment-governance results surveyed here, coverage and
+identification both arise. Addressing them takes exploration and logging to
+expose counterfactuals, pessimistic completion for those that stay hidden, and
+a welfare or legal benchmark supplied from outside the theorem altogether.
+Table~\ref{tab:domain-map} sets out that reading domain by domain, pairing the
+limitation that binds with the further argument the target claim requires.
 
-For each empirical estimate of strategic performance, reproducible comparisons
-require authors to identify the alternative class and explain how it relates to
-the target claim. Cost comparisons should report training and evaluation as
-well as per-instance inference.
-
-Strategic inference should make greater use of partial identification. When
-several latent explanations fit observed play, the relevant question is which
-counterfactual conclusions hold across the identified set. Pessimistic
-completion in deployment auditing provides one example of this approach.
-
-Claims about training and oversight protocols should state the modeled resource
-and information bounds on every participant. These assumptions determine what
-the designed game establishes and should appear in the main statement of the
-result.
-
-Deployment studies also need evaluation domains that account for participant
-responses. This requires a model or audit of how those responses select the
-post-deployment cases to which the property is claimed to extend.
+Table~\ref{tab:strategic-evidence} groups the same material by the form of support
+it provides. A machine-checked derivation, analytic bound, or theorem establishes a
+deductive conclusion for an encoded statement or stated model. Empirical-game
+evaluation, partial identification, and behavioral tests support population-relative,
+set-valued, or probabilistic conclusions. The force of each conclusion depends on the
+target claim, the match between the evidence and its domain, and the assumptions that
+connect them.
 
 \begin{table}[pos=h]
 \centering
-\caption{The six domains, the question each makes concrete, and what connects
-finite evidence to the target claim.}
+\caption{The survey's organizing map of the six domains, the question each makes
+concrete, and what connects finite evidence to the target claim.}
 \label{tab:domain-map}
 \begin{tabularx}{\textwidth}{@{}
 >{\raggedright\arraybackslash}p{2.6cm}
@@ -113,30 +115,34 @@ Y@{}}
 \toprule
 \textbf{Domain} & \textbf{Question} & \textbf{Primary limit} & \textbf{Additional argument} \\
 \midrule
+\multicolumn{4}{@{}l}{\itshape Learning to compute strategic solutions (\S\ref{sec:ai4gt})}\\
+\addlinespace[3pt]
 Equilibrium computation (\S\ref{sec:ai4gt:equilibrium})
-& Output validity & Coverage
+& Claim & Coverage
 & Duality in the zero-sum case; the regret decomposition; safe-resolving bounds; an executable derivation \\
 \addlinespace
 Strategic inference (\S\ref{sec:ai4gt:inference})
-& Output validity & Identification
+& Claim & Identification
 & Falsifiability plus recoverability; cross-game and cross-environment variation; maintained restrictions \\
 \addlinespace
 Mechanism design (\S\ref{sec:ai4gt:mechanism})
-& Output validity under response & Coverage
+& Claim (under response) & Coverage
 & Membership in a truthful family; post-processing with a regularity bound
 carrying a finite grid to a continuous domain; a stated deployment-domain
 argument where participation or reports shift \\
 \addlinespace
+\multicolumn{4}{@{}l}{\itshape Learning as a strategic actor (\S\ref{sec:gt4ai})}\\
+\addlinespace[3pt]
 Strategic evaluation (\S\ref{sec:gt4ai:evaluation})
-& Output validity under response & Coverage
+& Claim (under response) & Coverage
 & Response-oracle expansion over a stated policy class, or a certified robustness radius \\
 \addlinespace
 Games for training and oversight (\S\ref{sec:gt4ai:training})
-& System validity & Designed-game scope
+& Goal & Designed-game scope
 & Protocol theorems with stated bounds on adversary and judge; an argument that the constructed objective is the intended one \\
 \addlinespace
 Deployment governance (\S\ref{sec:gt4ai:governance})
-& System validity & Coverage \emph{and} identification
+& Goal & Coverage \emph{and} identification
 & Correlated-equilibrium restrictions from low calibrated regret; pessimistic completion; an external welfare or legal benchmark \\
 \bottomrule
 \end{tabularx}
@@ -144,9 +150,9 @@ Deployment governance (\S\ref{sec:gt4ai:governance})
 
 \begin{table}[pos=h]
 \centering
-\caption{Four forms of evidence used in the surveyed domains, together with the
-claims and assumptions associated with each. A system may combine several
-forms.}
+\caption{Forms of evidence used across the surveyed domains, with the claim each
+supports and the assumptions it carries. The relevance of each form depends on the
+target claim and domain. A system may combine several forms.}
 \label{tab:strategic-evidence}
 \footnotesize
 \setlength{\tabcolsep}{3.5pt}
@@ -176,6 +182,16 @@ algorithm
 
 \addlinespace
 
+Analytic bound (duality or regret)
+& A bound on the exploitability or gap of a learned equilibrium quantity
+& An explicit game or simulator; the bound holds only over the deviation class it
+covers
+& Deductive bound over the covered class; the remainder needs a further argument
+\citep{Zinkevich2007,BrownDeepCFR2019}
+\\
+
+\addlinespace
+
 Structural theorem
 & Incentive compatibility or strategy-proofness of a mechanism
 & Membership in the theorem's representation family; domain and regularity
@@ -197,6 +213,25 @@ computation
 
 \addlinespace
 
+Empirical-game / best-response evaluation
+& Strength against a chosen population, or a restricted-exploitability estimate
+& Only the policies or attacks on the list; untried ones stay uncovered
+& Population-relative result; a low value bounds only the counters actually tried
+\citep{Balduzzi2018,Lanctot2017}
+\\
+
+\addlinespace
+
+Partial-identification analysis
+& Which strategic conclusions hold across every latent model consistent with the
+data
+& Maintained assumptions; needs informative variation to narrow the set
+& Set-valued conclusion; more of the same data does not sharpen it
+\citep{HaileHortacsuKosenok2008}
+\\
+
+\addlinespace
+
 Behavioral statistical test
 & Regret or another specified property of a deployed policy
 & Logged play and assumptions on sampling, exploration, and the market
@@ -207,3 +242,45 @@ cost \citep{HartlineLongZhang2024,HartlineWangZhang2025}
 \end{tabularx}
 \end{table}
 \FloatBarrier
+
+\subsection{Open Questions}
+\label{sec:synthesis:open}
+
+Four questions remain open across the domains surveyed here.
+
+\runin{The unstated class.} Nearly every empirical number in this survey --- an
+exploitability estimate, a win rate, a regret figure --- is defined against a
+class of alternatives, and means little without it. That class is often left
+implicit, and cost is reported the same way, with training and evaluation
+separated from per-instance inference or omitted. The remedy at the level of a
+single paper is easy to state: name the alternative class, say how it relates to
+the target claim, and report the full cost. The open problem is that we have no
+shared vocabulary for how far a reported number reaches, so results are not
+comparable across papers even when they carry the same name.
+
+\runin{What survives underdetermination.} When several latent explanations fit
+the observed play equally well, the evidence identifies a set of compatible
+explanations. The unresolved task is to determine which conclusions hold throughout
+that set. Strategic inference has tools for this but uses them rarely; pessimistic
+completion in deployment auditing is one worked example, applied to a missing
+transcript rather than a missing preference.
+
+\runin{Where the result actually lives.} Results about training and oversight
+protocols hold under modeled bounds on what each participant can compute, see,
+and verify. These bounds determine what the designed game establishes and should
+appear in the main claim. The unresolved modeling question is which bounds describe
+a human judge interacting with systems whose capabilities are themselves moving.
+
+\runin{The domain chosen by the response.} A guarantee proved on a fixed
+evaluation distribution need not survive deployment, because participants'
+responses select the cases the system will actually meet. Evaluation domains that
+account for this require a model, or an audit, of that selection. Additional test
+cases from the fixed pre-release distribution do not identify the cases induced by
+post-release strategic responses.
+
+Whether an in-game strategic property supports deployment depends on the evidence
+connecting it to the institution's objective. Proposals to place on a firm the
+burden of showing that its pricing algorithm was not exploiting its rivals make the
+choice of evidence standard explicit. That standard determines which strategic
+claims can support deployment and who bears the remaining uncertainty when coverage
+or identification is incomplete.

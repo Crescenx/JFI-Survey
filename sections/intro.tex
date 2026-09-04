@@ -4,118 +4,120 @@
 \section{Introduction}
 \label{sec:intro}
 
-Game theory first asks whether a solution exists. \Citet{Neumann1928} showed that every
-finite two-person zero-sum game has a value together with a pair of optimal
-mixed strategies, and \citet{vNM1944} incorporated
-this result into a general theory of economic behavior. \citet{Nash1951}
-extended equilibrium existence to finite games with any finite number of players
-and general payoff interactions, well beyond strictly
-competitive play.
+A pricing algorithm can pass every audit on its own deployment log and still be
+exploiting its rivals. A trained auction can post the highest estimated revenue
+found anywhere in the mechanism class its search covered and still not be the
+revenue-maximizing one. In each case a
+learned system produces something that looks right on the evidence gathered so
+far, yet the strategic property actually claimed for it --- competition,
+optimality, truthfulness --- reaches beyond that evidence. This gap between what
+finite evaluation shows and what a game-theoretic claim asserts is the subject of
+this survey.
 
-Mechanism design asks how the rules of interaction should be chosen. In
-the standard quasilinear setting, the Vickrey--Clarke--Groves family showed how
-to make truthful reporting a dominant strategy by charging each participant for
-the externality it imposes~\citep{Vickrey1961,Clarke1971,Groves1973}, and
-\citet{Myerson1981} characterized the
-revenue-maximizing auction for the single-item Bayesian
-setting. Impossibility results identify combinations of
-domain restrictions and desiderata that cannot be satisfied
-simultaneously~\citep{Arrow1951,Gibbard1973,Satterthwaite1975}.
-Together, such results frame mechanism design as the selection of rules under
-explicit incentive and feasibility constraints.
+The two fields meeting at this intersection ask their
+questions in different orders. Game theory begins by asking whether a solution exists.
+\Citet{Neumann1928} showed that every finite two-person zero-sum game has a value
+together with a pair of optimal mixed strategies, and \citet{vNM1944}
+incorporated this result into a general theory of economic behavior.
+\citet{Nash1951} extended equilibrium existence to finite games with any finite
+number of players and general payoff interactions, well beyond strictly
+competitive play. Mechanism design then asks which rules of interaction to
+choose. In the standard quasilinear setting, the Vickrey--Clarke--Groves family
+made truthful reporting a dominant strategy by charging each participant for the
+externality it imposes~\citep{Vickrey1961,Clarke1971,Groves1973}, and
+\citet{Myerson1981} characterized the revenue-maximizing auction for the
+single-item Bayesian setting. Impossibility results mark the outer boundary,
+identifying combinations of domain restrictions and desired properties that no rule can
+satisfy at once~\citep{Arrow1951,Gibbard1973,Satterthwaite1975}.
 
-Once a solution concept has been defined and its existence established, the
-next question is how to compute a solution. Algorithmic game theory studies
-this question for different game representations and solution concepts
-~\mbox{\citep{NisanRoughgardenTardosVazirani2007}}. Computing a Nash
-equilibrium is PPAD-complete in general, and remains so with only two
-players~\citep{DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}. Even
-classical constructive procedures can follow exponentially long
-paths~\citep{LemkeHowson1964,SavaniVonStengel2006}. Established approaches weaken
-the solution concept or exploit a restricted game's structure, often while
-accepting approximation.
+Only after a solution concept exists does the computational question arise: how
+does one find a solution? Algorithmic game theory studies exactly this, across
+different game representations and solution
+concepts~\mbox{\citep{NisanRoughgardenTardosVazirani2007}}. Computing a Nash equilibrium is PPAD-complete in general, and stays so with
+only two players~\citep{DaskalakisGoldbergPapadimitriou2009,ChenDengTeng2009}.
+PPAD is the class of total search problems whose solutions are guaranteed to
+exist yet may be hard to find. Even classical constructive procedures can
+follow exponentially long paths~\citep{LemkeHowson1964,SavaniVonStengel2006}. Established approaches recover
+tractability by weakening the solution concept or exploiting a restricted game's
+structure, usually while accepting some approximation. This is where learning, and more broadly artificial intelligence (AI), enters:
+as a way to make that computation cheaper, and increasingly as a strategic
+actor on its own.
 
 \subsection{How Learning Changes Computation}
 \label{sec:intro:change}
 
-Learning can amortize computation across related instances. An amortized method
-trains a conditional rule on a family of related cases and reuses that rule on
-new cases. This is the standard setup in amortized optimization and
-inference~\citep{Amos2022Amortized,KingmaWelling2014}, and it has also been used
-in strategic systems. In heads-up no-limit poker, learned counterfactual values
-and continual re-solving are among the methods that have produced expert-level
+The first role is amortization: learning spreads the cost of computation across
+many related problems. An amortized method trains a conditional rule on a family
+of related cases and then reuses that rule on a new one, instead of solving each case from the beginning. This is the standard setup in amortized optimization and
+inference~\citep{Amos2022Amortized,KingmaWelling2014}, and it also applies to
+strategic systems. In heads-up no-limit poker, learned counterfactual values and continual
+re-solving are among the ingredients of expert-level
 play~\citep{Moravcik2017,BrownSandholm2018,BrownReBeL2020}. Self-play with
 learned policy and value networks mastered board games from their rules, and
 league training produced a StarCraft II agent at grandmaster
-level~\citep{Silver2018,Vinyals2019}. Neural networks now also search spaces of
-auction mechanisms that no analyst could
+level~\citep{Silver2018,Vinyals2019}. Neural networks now even search spaces of
+auction mechanisms too large for any analyst to
 enumerate~\citep{Duetting2019,Duan2023,Duetting2024}.
 
-In these examples, learning is used as part of the solver: training shares
-computation across related instances and can reduce the cost of solving later
-ones. A learned system can also participate in the interaction being studied.
-Pricing algorithms operate in real
-markets~\citep{Calvano2020,Assad2024}. Language models negotiate and
-coordinate~\citep{Bianchi2024NegotiationArena,Akata2025}, while preference-based
-training procedures use human feedback on model outputs to train policies,
-often via learned reward models~\citep{Christiano2017,Ouyang2022}.
-In each case the system's outputs can change what other participants do and
-which situations the system later faces. Performance on a fixed set of cases
-does not by itself establish performance after those responses. Game-theoretic
-deviation tests provide one relevant standard: whether a participant can gain
-by deviating within a specified class.
+In all of these the learned component is part of the solver: training shares
+computation across instances and lowers the cost of solving later ones. But a
+learned system can also become part of the interaction it was meant to analyze.
+Pricing algorithms set prices in real
+markets~\citep{Calvano2020,Assad2024}; large language models (LLMs) negotiate and
+coordinate~\citep{Bianchi2024NegotiationArena,Akata2025}; preference-based
+training turns human feedback on a model's own outputs into the signal that
+shapes its policy, often through a learned reward
+model~\citep{Christiano2017,Ouyang2022}. In this second role, the system's outputs change what
+other participants do and which situations it will face next, so strong
+performance on a fixed set of cases says little about performance once those
+responses arrive. Game theory supplies the natural standard for that harder
+question: can any participant gain by deviating within a specified class?
 
-\subsection{Construction and Validity}
+\subsection{Construction and Its Guarantee}
 \label{sec:intro:cost}
 
-Evidence for learning-based strategic methods typically comes from finite
-searches or test populations. RegretNet reports the largest gain found by
-gradient search over sampled valuation profiles~\citep{Duetting2019}. Poker
-systems report performance against a test population
-~\citep{Moravcik2017,BrownSandholm2018,BrownReBeL2020}, while pricing audits
-estimate regret against alternatives recoverable from deployment
-logs~\citep{HartlineLongZhang2024}. Each result provides evidence for sampled
-cases and accessible alternatives. Some target properties are defined over a
-broader deviation class than the evaluation covers. For example, they require
-that no deviation in the specified class be
-profitable or that truthful reporting yield at least as much utility as every
-admissible misreport for every type. For such deviation-defined properties, one
-profitable deviation refutes the claim. A search that finds no profitable
-deviation supports a claim over the full target class only if it covers that
-class, or if a separate argument bounds the gain available from deviations
-outside the search space.
+That standard is exactly where finite evidence is not enough. Evidence for a
+learning-based strategic method almost always comes from a finite search or a
+test population. RegretNet reports the largest gain its gradient search found
+over sampled valuation profiles~\citep{Duetting2019}; poker systems report play
+against a test population~\citep{Moravcik2017,BrownSandholm2018,BrownReBeL2020};
+pricing audits estimate regret against the alternatives recoverable from a
+deployment log~\citep{HartlineLongZhang2024}. Each is genuine evidence for the cases sampled and the alternatives reached. The strategic property, though,
+is typically stated over a wider class: that \emph{no} deviation in a specified
+set is profitable, or that truthful reporting beats \emph{every} admissible
+misreport of \emph{every} type. Against such a claim the logic is asymmetric. One
+profitable deviation refutes it, but a search that finds none supports it only if the search covered the whole class, or if a separate argument bounds
+the gain available outside what was searched.
 
-We distinguish two forms of validity.
+Which argument is possible depends on how the object can be inspected. Two
+questions follow, and they recur throughout the survey: the \emph{claim
+question} (does the output hold the property?) and the \emph{goal question}
+(does the property help the real goal?).
 
 \begin{description}
-\item[Output validity.] Does the learned output have the claimed strategic
-property? The answer depends on how the game and candidate can be queried or
-checked.
+\item[The claim question (does it hold?).] Does the learned output actually have the strategic property claimed for it? The answer depends on how the game and the candidate can be queried or checked.
 
-\item[System validity.] Does a property established inside a designed game
-support the objective that the game was designed to serve? For an alignment procedure, oversight protocol,
-or market institution, this depends on how the designed interaction represents
-both the participants and the objective.
+\item[The goal question (does it help?).] Does a property established \emph{inside} a designed game deliver the objective that game was built to serve?
+For an alignment procedure, an oversight protocol, or a market institution, this
+depends on how faithfully the designed interaction represents both the participants
+and the objective.
 \end{description}
 
-The available access determines what further argument is possible. When each
-alternative can be evaluated through an explicit model or simulator, the main
-obstacle may be the size of the class. We call this a coverage limit. Broader
-search or a bound derived from structure may address it.
-With observational data, distinct strategic models can instead generate the
-same realized behavior. This identification limit cannot be resolved by more
-data from the same observational regime. It requires informative variation,
-intervention, or maintained restrictions~\citep{HaileHortacsuKosenok2008}.
-Figure~\ref{fig:validity-gates} summarizes these two validity questions and the
-implication that must hold in each case.
+For the claim question, the kind of access decides the kind of obstacle. Sometimes every
+alternative can be tried. A poker solver can evaluate any specified bluff, so the only
+difficulty is that the bluffs are too many to enumerate: a \emph{coverage} limit, which broader
+search or a structural bound can close. Other times the data are only
+what happened to be observed. From a bidder's bids alone, two different valuations
+can explain the same bidding equally well, and no amount of further data from the
+same auction will distinguish them. This \emph{identification} limit is a different kind of problem: it can be resolved only by informative variation, intervention, or a maintained
+assumption~\citep{HaileHortacsuKosenok2008}.
+Figure~\ref{fig:validity-gates} sets the two questions side by side,
+each with the implication it needs.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{figure/fig1-preservation-gaps.pdf}
-\caption{The two validity questions. \emph{Output validity} concerns the
-strategic property of a learned output. \emph{System validity} concerns whether
-a property established inside a designed game supports the game's external
-objective. Section~\ref{sec:synthesis} gives the conditions for composing the
+\caption{The two questions. The \emph{claim question} concerns whether a learned output has its claimed strategic property. The \emph{goal question} concerns whether a property established inside a designed game supports the game's external objective. Section~\ref{sec:synthesis} gives the conditions for composing the
 two implications.}
 \label{fig:validity-gates}
 \end{figure}
@@ -123,64 +125,64 @@ two implications.}
 \subsection{Why the Distinction Matters}
 \label{sec:intro:why}
 
-The distinction matters when learned strategic systems are evaluated beyond a
-fixed benchmark. Field evidence from retail gasoline markets links algorithmic
-pricing to higher margins~\citep{Assad2024}. In oligopoly experiments,
-language-model agents reach supra-competitive prices without
-instruction~\citep{FishGonczarowskiShorrer2024}. Language models also propose
-executable mechanisms and equilibrium derivations
-~\citep{PrimeNash2025,LegoNE2025,LiuGuoConitzer2025}. These outputs can be
-checked mechanically against a formal specification. Executability alone does
-not supply that specification or establish the strategic claim.
+The distinction becomes practical the moment a learned strategic system is judged
+beyond a fixed benchmark. Field evidence from retail gasoline markets links
+algorithmic pricing to higher margins~\citep{Assad2024}, and in oligopoly
+experiments language-model agents reach supra-competitive prices with no
+instruction to do so~\citep{FishGonczarowskiShorrer2024}. Language models also
+propose executable mechanisms and equilibrium
+derivations~\citep{PrimeNash2025,LegoNE2025,LiuGuoConitzer2025}; such outputs can
+be checked mechanically against a formal specification, yet executability alone
+neither supplies the specification nor establishes the strategic claim.
 
-The same evidentiary question appears in proposals to regulate algorithmic
-collusion. These proposals ask whether a firm can produce evidence that its
-pricing algorithm was not exploiting its rivals, with the burden of producing
-that evidence assigned by
-rule~\citep{HartlineLongZhang2024,HartlineWangZhang2025,Harrington2018}. When a
-statistical property of a deployment log is offered as a legal defense, the
-scope of the claim supported by that finite evidence becomes part of the
-proposed regulatory design.
+The same question about evidence appears in proposals to regulate algorithmic
+collusion, which ask whether a firm can show that its pricing algorithm was not
+exploiting its rivals, and assign the burden of that proof by
+rule~\citep{HartlineLongZhang2024,HartlineWangZhang2025,Harrington2018}. Once a
+statistical property of a deployment log is offered as a legal defense, the scope
+of the claim that finite evidence can support becomes part of the regulatory
+design itself.
 
 \subsection{Scope and How to Read This Survey}
 \label{sec:intro:scope}
 
-\paragraph{Scope.} We study systems that learn strategic rules from data or
-interaction. A high-dimensional trained rule may require empirical queries
-and statistical bounds, whereas executable code or membership in a structured
-family may permit direct checking. The appropriate analysis therefore depends
-on the representation and the property being claimed.
+\runin{Scope.} We study systems that learn strategic rules from data or
+interaction. What counts as adequate evidence depends on the representation: a
+high-dimensional trained rule may be reachable only through empirical queries and
+statistical bounds, whereas executable code or membership in a structured family
+may permit direct checking. The property being claimed and the way the rule can
+be inspected together fix the appropriate analysis.
 
-\paragraph{Related surveys and exclusions.} Stackelberg
-and security games, mean-field games, multi-agent reinforcement learning beyond
-its use as a response oracle, autobidding, and incentive design for federated
-learning fall outside our selected domains. \citet{WellmanTuylsGreenwald2025}
-and \citet{CurryAMDSurvey2025} provide focused reviews of empirical
-game-theoretic analysis and automated mechanism design, respectively.
-\citet{SunWuChengChu2025} survey the game theory--LLM intersection with the
+\runin{Related surveys and exclusions.} We leave aside Stackelberg and
+security games, mean-field games, multi-agent reinforcement learning except where
+it serves as a response oracle, autobidding, and incentive design for federated
+learning. Complementary surveys cover neighboring ground with a different organizing
+choice. \citet{WellmanTuylsGreenwald2025} and \citet{CurryAMDSurvey2025}
+review empirical game-theoretic analysis and automated mechanism design, and
+\citet{SunWuChengChu2025} survey the game-theory--LLM intersection with the
 language model as the focal technology. \citet{Podimata2025} surveys
 incentive-aware machine learning, where individuals adapt their inputs to a
-deployed decision rule. Each of these surveys organizes the literature around
-its object of study. We organize by the relation between a computation, the claim attached
-to it, and the evidence available for that claim.
+deployed decision rule. Each organizes the literature around its object of study.
+We instead organize around the relation between a computation, the claim
+attached to it, and the evidence available for that claim.
 
-\paragraph{Organization.} Section~\ref{sec:recap} introduces the computational
-background. Sections~\ref{sec:ai4gt} and~\ref{sec:gt4ai} organize six application
-areas around the two validity questions, as illustrated in
-Figure~\ref{fig:survey-route}. Section~\ref{sec:synthesis} states when the two
-can be combined. After deployment, participants' responses can alter the inputs
-and counterparties that the system encounters. Performative prediction
-provides one formalization of such feedback~\citep{Perdomo2020Performative}. A
-guarantee established on a fixed evaluation distribution need not extend to the
-deployment distribution shaped by those responses. The relevant response
-process and case domain must therefore be specified as part of the claim.
+\runin{Organization.} Section~\ref{sec:recap} introduces the computational
+background. Section~\ref{sec:ai4gt} covers learning that \emph{computes} strategic solutions, and Section~\ref{sec:gt4ai} learning that \emph{acts} in the game; together they work through six application domains, laid out in Figure~\ref{fig:survey-route}. The two questions cut across both: the claim question runs through
+Section~\ref{sec:ai4gt} and returns once the object acts, while the goal
+question arises only after it does. Section~\ref{sec:synthesis} states when
+they combine. One theme is common to all of them. After deployment, participants' responses can alter the very inputs and
+counterparties a system meets; performative prediction is one formalization of
+this feedback~\citep{Perdomo2020Performative}. A guarantee proved on a fixed
+evaluation distribution therefore need not hold on the deployment distribution
+those responses create. The relevant response process and case domain are therefore
+part of the claim, not context around it.
 
 \begin{figure}[pos=ht]
 \centering
 \includegraphics[width=0.9\textwidth]{figure/fig2-survey-route.pdf}
-\caption{Survey structure and the interaction link. Section~3 studies learned
-strategic objects across related cases. Section~4 studies learned systems in
-interactions where participant responses can change the relevant cases. The
+\caption{Survey structure and the interaction link. Section~\ref{sec:ai4gt} studies learned strategic objects across related
+cases. Section~\ref{sec:gt4ai} studies learned systems in interactions where
+participant responses can change the relevant cases. The
 six labels identify the corresponding subsections and need not be disjoint.}
 \label{fig:survey-route}
 \end{figure}
